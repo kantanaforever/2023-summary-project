@@ -2,9 +2,9 @@
 
 ## Members
 
-- Member 1
-- Member 2
-- Member 3
-- Member 4
+- Eloise
+- Sook Huey
+- Zhi Rui
+- Rae
 
-<Description of your project>
+PAC-MAN MUD
