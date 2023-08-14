@@ -1,14 +1,14 @@
 # Import statements
-from data import Player, Enemy, Zonemap, Inventory
+import data
 
 class MUDGame:
     def __init__(self):
         self.start = 0
         self.end = 10
-        self.player = Player()
-        self.enemy = Enemy()
-        self.map = Zonemap()
-        self.inventory = Inventory()
+        self.player = data.Player(data.)
+        self.enemy = data.Enemy()
+        self.map = data.Zonemap()
+        self.inventory = data.Inventory()
 
     def movement(self):
         if self.start == self.end:
@@ -28,12 +28,14 @@ class MUDGame:
     def run(self, Player, Enemy):
         self.player.set_username()
         self.player.move()
-        self.player.attack(self.enemy)
-        self.player.consume_item()
+        
+        while self.hp > 0:
+            self.player.attack(self.enemy)
         self.player.pick_item()
         
         self.inventory.use()
         self.inventory.get_items()
+        self.player.consume_item()
         
         self.enemy.attack(self.player)
         
