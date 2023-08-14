@@ -131,7 +131,7 @@ class Enemy1(Enemy):
 
 
 # Zonemap callout
-map = Zonemap()
+map = Zonemap('content/zonemap.json')
 
 # Class instantiation
 myPlayer = Player(map)
