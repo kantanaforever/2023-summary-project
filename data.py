@@ -5,7 +5,7 @@ import json
 # Class Implementation
 
 # Zonemap
-class Zonemap:
+class _Zonemap:
     """
     This class encapsulates data for Zonemap
     
@@ -39,7 +39,6 @@ class Player:
     + self.consume_item(item: tuple, inventory: object) -> None: Use the item specified, removing the item from the inventory
     + self.pick_item(item: tuple, inventory: object) -> None: Pick up item specified, adding the item to the inventory
     """
-    
     def __init__(self, map: dict) -> None: # map in json
         self.name = '' # user input
         self.hp = 100
@@ -48,12 +47,18 @@ class Player:
         self.turn = False
         self.map = map
 
-    def attack(self, target): # Enemy object
+    def attack(self, target: object) -> None: # Enemy object
+        """
+        player deal damage to target
+        """
         if self.turn:
             target.hp -= self.attack
 
-    def set_username(self):
-        self.name = input('What would you like to be called')
+    def set_username(self) -> None:
+        """
+        set self.name to input by user
+        """
+        self.name = input('What would you like to be called: ')
 
     def move(self, direction: str): # up down left right
         self.current = self.map[str(self.current)][direction]
@@ -109,9 +114,6 @@ class Enemy:
     + self.hp: (int) enemy hit points (health)
     + self.attack: (int) enemy damage per hit
 
-    Methods
-    --------
-    + self.attack: (target: object) -> None: player deal damage to target
     """
     def __init__(self):
         self.hp = 200
@@ -131,8 +133,4 @@ class Enemy1(Enemy):
 
 
 # Zonemap callout
-map = Zonemap()
-
-# Class instantiation
-myPlayer = Player(map)
-
+map = _Zonemap('content/zonemap.json')
