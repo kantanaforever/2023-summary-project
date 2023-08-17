@@ -60,9 +60,6 @@ class Player:
         """
         self.name = input('What would you like to be called: ')
 
-    def move(self, direction: str): # up down left right
-        self.current = self.map[str(self.current)][direction]
-
     def consume_item(self, item):
         self.inventory.pop(self.inventory.index(item))
 
