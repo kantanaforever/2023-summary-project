@@ -63,11 +63,11 @@ class Player:
     def move(self, direction: str): # up down left right
         self.current = self.map[str(self.current)][direction]
 
-    def consume_item(self):
-        pass
+    def consume_item(self, item):
+        self.inventory.pop(self.inventory.index(item))
 
-    def pick_item(self):
-        pass
+    def pick_item(self, item):
+        self.inventory.append(self.items[item[1]][item[0]])
 
 # Inventory
 class Inventory:
@@ -88,16 +88,6 @@ class Inventory:
             self.items = json.load(f)
         self.inventory = []
         # self.equip = None
-
-    
-
-    def use(self, item):
-        self.inventory.pop(self.inventory.index(item))
-
-    def get_items(self, item: tuple):
-        self.inventory.append(self.items[item[1]][item[0]])
-
-
     
 
 # Items
