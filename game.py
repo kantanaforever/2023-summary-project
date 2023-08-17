@@ -28,15 +28,17 @@ class MUDGame:
     def run(self, Player, Enemy):
         """ defeat boss -> pick item  -> give option to use on next boss ?? """
         self.player.set_username()
-        self.player.move()
-        while self.player.hp or self.enemy.hp > 0:
-            self.player.attack(self.enemy)
-            self.enemy.attack(self.player)
-            if self.player.hp == 0:
-                return "GAME OVER!"
+        while self.player.hp != 0:
+            self.player.movement()
+            while self.enemy.hp > 0:
+                self.player.attack(self.enemy)
+                self.enemy.attack(self.player)
+            print("YOU HAVE DEFEATED THE ENEMY!")
+            
+            
+
                 
-        else:
-            return "GAME OVER!"
+        return "GAME OVER!"
         
         
                     
