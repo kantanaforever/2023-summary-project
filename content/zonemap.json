@@ -3,86 +3,86 @@
     "0": 
         {
     "description": "Starting room", "up": [null], 
-    "down": [1,2,3], "left": [null], 
+    "down": ["1","2","3"], "left": [null], 
     "right": [null], "enemy": false
         },
     
                     
     "1":
         {
-    "description": "Room One", "up": [0],
-    "down": [4], "left": [null],
-    "right": [2], "enemy": true
+    "description": "Room One", "up": ["0"],
+    "down": ["4"], "left": [null],
+    "right": ["2"], "enemy": true
         },
 
 
     "2":
         {
-    "description": "Room Two", "up": [0],
-    "down": [5], "left": [1],
-    "right": [3], "enemy": false
+    "description": "Room Two", "up": ["0"],
+    "down": ["5"], "left": ["1"],
+    "right": ["3"], "enemy": false
         },
 
 
     "3":
         {
-    "description": "Room Three", "up": [0],
-    "down": [6], "left": [2],
+    "description": "Room Three", "up": ["0"],
+    "down": ["6"], "left": ["2"],
     "right": [null], "enemy": false
         },
 
 
     "4":
         {
-    "description": "Room Four", "up": [1],
-    "down": [7], "left": [null],
-    "right": [5], "enemy": true
+    "description": "Room Four", "up": ["1"],
+    "down": ["7"], "left": [null],
+    "right": ["5"], "enemy": true
         },
 
 
     "5":
         {
-    "description": "Room Five", "up": [2],
-    "down": [8], "left": [4],
-    "right": [6], "enemy": false
+    "description": "Room Five", "up": ["2"],
+    "down": ["8"], "left": ["4"],
+    "right": ["6"], "enemy": false
         },
 
     
     "6":
         {
-    "description": "Room Six", "up": [3],
-    "down": [9], "left": [5],
+    "description": "Room Six", "up": ["3"],
+    "down": ["9"], "left": ["5"],
     "right": [null], "enemy": false
         },
 
 
     "7":
         {
-    "description": "Room Seven", "up": [4],
-    "down": [10], "left": [null],
+    "description": "Room Seven", "up": ["4"],
+    "down": ["10"], "left": [null],
     "right": [null], "enemy": true
         },
 
     
     "8":
         {
-    "description": "Room Eight", "up": [5],
-    "down": [10], "left": [null],
-    "right": [9], "enemy": false
+    "description": "Room Eight", "up": ["5"],
+    "down": ["10"], "left": [null],
+    "right": ["9"], "enemy": false
         },
 
 
     "9":
         {
-    "description": "Room Nine", "up": [6],
-    "down": [10], "left": [8],
+    "description": "Room Nine", "up": ["6"],
+    "down": ["10"], "left": ["8"],
     "right": [null], "enemy": true
         },
 
 
     "10":
         {
-    "description": "Room Ten", "up": [7,8,9],
+    "description": "Room Ten", "up": ["7","8","9"],
     "down": [null], "left": [null],
     "right": [null], "enemy": true
         }
