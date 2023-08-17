@@ -27,7 +27,7 @@ class MUDGame:
         while direction_choice not in keys:
             print('You can only move up, down, left or right!')
             direction_choice = input('Which direction do you wish to go to?: ').strip().lower()
-        numpaths = len(choices[keys.find(player_choice)])
+        numpaths = len(choices[keys.find(direction_choice)])
         if numpaths > 1:
             print(f'You entered a corridor, and there are {numpaths} doors...')
             print('The following are the paths that can be taken')
@@ -37,7 +37,7 @@ class MUDGame:
             while path_choice not in keys:
                 print('You can only take the above paths listed!')
                 path_choice = input('Which path do you wish to take? Type the path number.')
-            self.player.current = self.player.map[self.player.current][direction_choice][path_choice - 1]
+            self.player.current = self.player.map[self.player.current][direction_choice][int(path_choice) - 1]
         else:
             self.player.current = self.player.map[self.player.current][direction_choice][0]
 
