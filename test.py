@@ -1,14 +1,13 @@
 # Import statements
 from main import game
-from data import Zonemap
-import zonemap.json
+import data
 
 
 def test_game():
     # Write code to test the game object here
     # Raise an error if the test fails
-    Zonemap(zonemap.json)
-    print(game.MUDGame.movement())
+    print(data.map)
+    print(game.MUDGame.run())
     pass
 
 test_game()
