@@ -8,18 +8,15 @@ class MUDGame:
         self.end = 10
         self.player = data.Player(data.map)
         self.enemy = data.Enemy()
-        self.map = data.map
         self.inventory = data.Inventory()
 
-    def movement(self):
+    def movement(self): # can change after game is working
         """ only up down left right, dont show room number"""
-        if self.player.current == self.end:
-                print("You have reached the end!")
-        else:
-            #change if zonemap keys of keys has been edited
-            keys = ['up', 'down', 'left', 'right']
-            #extracting up, down, left, right
-            choices = [i for i in self.player.map[self.player.current].values()].pop(0).pop()
+    
+        #change if zonemap keys of keys has been edited
+        keys = ['up', 'down', 'left', 'right']
+        #extracting up, down, left, right
+        choices = [i for i in self.player.map[self.player.current].values()].pop(0).pop()
         print('You can move in the following directions: ')
         for index1, i in enumerate(keys):
             print(f'{index1+1}. {i}')
@@ -36,7 +33,7 @@ class MUDGame:
             path_choice = input('Which path do you wish to take? Type the path number.').strip().lower()
             while path_choice not in keys:
                 print('You can only take the above paths listed!')
-                path_choice = input('Which path do you wish to take? Type the path number.')
+                path_choice = input('Which path do you wish to take? Type the path number.').strip().lower()
             self.player.current = self.player.map[self.player.current][direction_choice][int(path_choice) - 1]
         else:
             self.player.current = self.player.map[self.player.current][direction_choice][0]
@@ -53,12 +50,35 @@ class MUDGame:
         print("room description supposed to be here")
 
     def enemy_presence(self):
-        return self.map[str(self.player.current)]["enemy"]
-        
+        return self.player.map[self.player.current]["enemy"]
+
+    def inventory_show(self): # can seperately implement in a class
+        # 56
+        used = []
+        print('╔══════════════════════════════════════════════════════════╗')
+        print('║                   Inventory Display                      ║')
+        print('╟──────────────────────────────────────────────────────────╢')
+        for i, j in enumerate(self.inventory.inventory):
+            name = j.name
+            if name not in used:
+                used.append(name)
+                if j.consumable == True:
+                    status = 'Usable'
+                else:
+                    if j.status == True:
+                        status = 'Equipped'
+                    else:
+                        status = 'carriable'
+                desc = self.inventory.items[j.type][j.name][j.description]
+                count = self.inventory.inventory.count(j)
+                print(f'║{i+1:<6}{name:<16}x{count:<4}{"["+status+"]":<12}{desc:^19}║')
+              
+    print('╚══════════════════════════════════════════════════════════╝')
+    
     def inventory_consume_item(self, Inventory) -> None:
         """ show inventory"""
-        if self.player.current != 0:
-            print(self.inventory)
+        if self.enemy_presence():
+            self.inventory_show()
             item = input("Which item would you like to consume?")
             self.player.consume_item(item)
 
@@ -70,14 +90,14 @@ class MUDGame:
     def item_presence(self):
         return self.map[str(self.player.current)]["item"]
         
-    def pick_item(self, Player):
+    def pick_item(self, Player): # need change
         """ display items in the room"""
         item = self.map[str(self.player.current)]["item"]
         input = (str(item) + 'found! Would you like to keep them?')
         if input.upper() == "YES":
             self.player.pick_item(item)
         
-    def __location__(self, Player) -> int:
+    def __location__(self) -> int:
         location = self.player.current
         return location 
     
