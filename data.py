@@ -39,13 +39,11 @@ class Player:
     + self.consume_item(item: tuple, inventory: object) -> None: Use the item specified, removing the item from the inventory
     + self.pick_item(item: tuple, inventory: object) -> None: Pick up item specified, adding the item to the inventory
     """
-    def __init__(self, map: dict) -> None: # map in json
+    def __init__(self) -> None: # map in json
         self.name = '' # user input
         self.hp = 100
         self.attack = 10
         self.current = '0'
-        self.turn = False
-        self.map = map
 
     def attack(self, target: object) -> None: # Enemy object
         """
@@ -60,17 +58,8 @@ class Player:
         """
         self.name = input('What would you like to be called: ')
 
-    def move(self, direction: str): # up down left right
-        self.current = self.map[str(self.current)][direction]
 
-    def consume_item(self, item):
-        self.inventory.pop(self.inventory.index(item))
-
-    def pick_item(self, item_data):
-        # item_data is in the following format: {'name':'elixer', 'type':'hp', 'consumable':True, 'status':False}
-        item = Item(item_data['name'], item_data['type'], item_data['consumable'], item_data['status'])
-        return item
-        self.inventory.append(self.items[item[1]][item[0]])
+    
 
 # Inventory
 class Inventory:
@@ -89,7 +78,7 @@ class Inventory:
     def __init__(self):
         with open("content/items.json", 'r') as f:
             self.items = json.load(f)
-        self.inventory = []
+        
         
         # self.equip = None
     
@@ -103,6 +92,31 @@ class Item:
         self.status = status
         self.description = description
         self.magnitude = magnitude
+
+
+class PlayerInventory:
+    def __init__(self):
+        self.player_inventory = []
+
+    def consume_item(self, item):
+        item = item.lower()
+        flag = True
+        while flag:
+            if item in self.player_inventory:
+                item_index = self.player_inventory.index(item)
+                self.player_inventory.pop(item_index)
+                flag = False
+        else:
+            print('Invalid item')
+            
+
+    def pick_item(self, item_data):
+        # item_data is in the following format: {'name':'elixer', 'type':'hp', 'consumable':True, 'status':False}
+        item = Item(item_data['name'], item_data['type'], item_data['consumable'], item_data['status'])
+        return item
+        
+        self.player_inventory.append(self.items[item[1]][item[0]])
+        
 
 # Enemy     
 class Enemy:
@@ -133,3 +147,4 @@ class Enemy1(Enemy):
 
 # Zonemap callout
 map = _Zonemap('content/zonemap.json')
+map = map.map

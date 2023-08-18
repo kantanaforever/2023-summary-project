@@ -6,9 +6,10 @@ import data
 class MUDGame:
     def __init__(self):
         self.end = 10
-        self.player = data.Player(data.map)
+        self.player = data.Player()
         self.enemy = data.Enemy()
-        self.inventory = data.Inventory()
+        self.map = data.map
+        self.inventory = data.PlayerInventory()
 
     def movement(self): # can change after game is working
         """ only up down left right, dont show room number"""
@@ -16,12 +17,11 @@ class MUDGame:
         #change if zonemap keys of keys has been edited
         keys = ['up', 'down', 'left', 'right']
         #extracting up, down, left, right
-        choices = [i for i in self.player.map.map[self.player.current]].pop(0)
-        print(choices)
+        choices = [i for i in self.map[self.player.current].values()];choices.pop(0);choices.pop()
         print('You can move in the following directions: ')
-        for index1, i in enumerate(choices):
-            if i != None:
-                print(f'{index1+1}. {keys[index1]}')
+        for index, i in enumerate(choices):
+            if i != [None]:
+                print(f'- {keys[index]}')
         direction_choice = input('Which direction do you wish to go to?: ').strip().lower()
         while direction_choice not in keys:
             print('You can only move up, down, left or right!')
@@ -29,16 +29,17 @@ class MUDGame:
         numpaths = len(choices[keys.index(direction_choice)])
         if numpaths > 1:
             print(f'You entered a corridor, and there are {numpaths} doors...')
-            print('The following are the paths that can be taken')
-            for i in range(1, len(numpaths) + 1):
+            print('The following are the paths that can be taken: ')
+            for i in range(1, numpaths + 1):
                 print(f'path {i}')
-            path_choice = input('Which path do you wish to take? Type the path number.').strip().lower()
-            while path_choice not in keys:
+            path_choice = input('Which path do you wish to take? Type the path number: ').strip().lower()
+            while path_choice not in [str(i) for i in range(1, numpaths + 1)]:
                 print('You can only take the above paths listed!')
-                path_choice = input('Which path do you wish to take? Type the path number.').strip().lower()
-            self.player.current = self.player.map.map[self.player.current][direction_choice][int(path_choice) - 1]
+                path_choice = input('Which path do you wish to take? Type the path number: ').strip().lower()
+            self.player.current = self.map[self.player.current][direction_choice][int(path_choice) - 1]
         else:
-            self.player.current = self.player.map.map[self.player.current][direction_choice][0]
+            self.player.current = self.map[self.player.current][direction_choice][0]
+        
 
     def intro(self):
         # later
@@ -52,7 +53,7 @@ class MUDGame:
         print("room description supposed to be here")
 
     def enemy_presence(self):
-        return self.player.map[self.player.current]["enemy"]
+        return self.map[self.player.current]["enemy"]
 
     def inventory_show(self): # can seperately implement in a class
         # 56
@@ -75,7 +76,7 @@ class MUDGame:
                 count = self.inventory.inventory.count(j)
                 print(f'║{i+1:<6}{name:<16}x{count:<4}{"["+status+"]":<12}{desc:^19}║')
               
-    print('╚══════════════════════════════════════════════════════════╝')
+        print('╚══════════════════════════════════════════════════════════╝')
     
     def inventory_consume_item(self, Inventory) -> None:
         """ show inventory"""
