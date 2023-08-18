@@ -1,0 +1,13 @@
+name, type, consumable, status, magnitude
+elixir, hp, True, False, 10
+fairy bottle, hp, True, False, 10
+balm, hp, False, False, 5
+mushrooms, hp, True, False, 5
+painkillers, hp, True, False, 5
+black lily sword, weapon, False, False, 10
+katana, weapon, False, False, 20
+exacalibur, weapon, False, False, 20
+wind fleuret, weapon, False, False, 20
+spear, weapon, False, False, 20
+claymore, weapon, False, False, 25
+attack potion, attack, True, False, 5

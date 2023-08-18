@@ -39,20 +39,21 @@ class Player:
     + self.consume_item(item: tuple, inventory: object) -> None: Use the item specified, removing the item from the inventory
     + self.pick_item(item: tuple, inventory: object) -> None: Pick up item specified, adding the item to the inventory
     """
-    def __init__(self, map: dict) -> None: # map in json
+    def __init__(self) -> None: # map in json
         self.name = '' # user input
         self.hp = 100
-        self.attack = 10
+        self.attack_punch = 10
+        self.attack_weapon = 10
         self.current = '0'
-        self.turn = False
-        self.map = map
 
-    def attack(self, target: object) -> None: # Enemy object
+    def attack_punch(self, target: object) -> None: # Enemy object
         """
         player deal damage to target
         """
-        if self.turn:
-            target.hp -= self.attack
+        target.hp -= self.attack_punch
+            
+    def attack_weapon(self, target: object) -> None:
+        target.hp -= self.attack_weapon
 
     def set_username(self) -> None:
         """
@@ -60,20 +61,11 @@ class Player:
         """
         self.name = input('What would you like to be called: ')
 
-    def move(self, direction: str): # up down left right
-        self.current = self.map[str(self.current)][direction]
 
-    def consume_item(self, item):
-        self.inventory.pop(self.inventory.index(item))
-
-    def pick_item(self, item_data):
-        # item_data is in the following format: {'name':'elixer', 'type':'hp', 'consumable':True, 'status':False}
-        item = Item(item_data['name'], item_data['type'], item_data['consumable'], item_data['status'])
-        return item
-        self.inventory.append(self.items[item[1]][item[0]])
+    
 
 # Inventory
-class Inventory:
+class _Inventory:
     """
     This class encapsulates data for...
     Attributes
@@ -87,22 +79,53 @@ class Inventory:
     + self.get_items(item: tuple) -> None: pick up items in rooms
     """
     def __init__(self):
-        with open("content/items.json", 'r') as f:
-            self.items = json.load(f)
-        self.inventory = []
+        self.items = []
+        with open("content/items.csv", 'r') as f:
+            f.readline()
+            for line in f:
+                line = line.strip().split(',')
+                item = _Item(line[0], line[1], bool(line[2]), bool(line[3]), line[4])
+                self.items.append(item)
+                
+        
         
         # self.equip = None
     
 
 # Items
-class Item:
-    def __init__(self, name, type, consumable, status, description, magnitude):
+class _Item:
+    def __init__(self, name, type, consumable, status, magnitude):
         self.name  = name
         self.type = type
         self.consumable = consumable
         self.status = status
-        self.description = description
         self.magnitude = magnitude
+
+
+class _PlayerInventory:
+    def __init__(self):
+        self.player_inventory = []
+
+    def consume_item(self, item):
+        item = item.lower()
+        flag = True
+        while flag:
+            if item in self.player_inventory:
+                item_index = self.player_inventory.index(item)
+                self.player_inventory.pop(item_index)
+                flag = False
+        else:
+            print('Invalid item')
+            
+
+    def pick_item(self, item_data):
+        # item_data is in the following format: {'name':'elixer', 'type':'hp', 'consumable':True, 'status':False}
+        # item = _Item(line[0], line[1], line[2], line[3], line[4])
+        # return item
+        
+        # self.player_inventory.append(self.items[item[1]][item[0]])
+        pass
+        
 
 # Enemy     
 class Enemy:
@@ -133,3 +156,11 @@ class Enemy1(Enemy):
 
 # Zonemap callout
 map = _Zonemap('content/zonemap.json')
+map = map.map
+
+# Inventory callout
+player_inventory = _PlayerInventory()
+player_inventory = player_inventory.player_inventory
+
+inventory = _Inventory()
+inventory = inventory.items
