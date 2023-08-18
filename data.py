@@ -43,7 +43,7 @@ class Player:
         self.name = '' # user input
         self.hp = 100
         self.attack = 10
-        self.current = 0
+        self.current = '0'
         self.turn = False
         self.map = map
 
@@ -60,10 +60,16 @@ class Player:
         """
         self.name = input('What would you like to be called: ')
 
+    def move(self, direction: str): # up down left right
+        self.current = self.map[str(self.current)][direction]
+
     def consume_item(self, item):
         self.inventory.pop(self.inventory.index(item))
 
-    def pick_item(self, item):
+    def pick_item(self, item_data):
+        # item_data is in the following format: {'name':'elixer', 'type':'hp', 'consumable':True, 'status':False}
+        item = Item(item_data['name'], item_data['type'], item_data['consumable'], item_data['status'])
+        return item
         self.inventory.append(self.items[item[1]][item[0]])
 
 # Inventory
@@ -84,13 +90,19 @@ class Inventory:
         with open("content/items.json", 'r') as f:
             self.items = json.load(f)
         self.inventory = []
+        
         # self.equip = None
     
 
 # Items
 class Item:
-    def __init__(self):
-        pass
+    def __init__(self, name, type, consumable, status, description, magnitude):
+        self.name  = name
+        self.type = type
+        self.consumable = consumable
+        self.status = status
+        self.description = description
+        self.magnitude = magnitude
 
 # Enemy     
 class Enemy:
