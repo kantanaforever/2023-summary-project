@@ -41,10 +41,11 @@ class MUDGame:
         else:
             self.player.current = self.player.map[self.player.current][direction_choice][0]
 
-    def intro(self):
-        # later
-        print("intro supposed to be here")
-
+    def intro(self) -> str:
+        with open('intro.txt', 'r') as f:
+            intro = f.readlines()
+            print(intro)
+            
     def set_username(self, Player):
         self.player.set_username()
 
