@@ -16,15 +16,17 @@ class MUDGame:
         #change if zonemap keys of keys has been edited
         keys = ['up', 'down', 'left', 'right']
         #extracting up, down, left, right
-        choices = [i for i in self.player.map[self.player.current].values()].pop(0).pop()
+        choices = [i for i in self.player.map.map[self.player.current]].pop(0)
+        print(choices)
         print('You can move in the following directions: ')
-        for index1, i in enumerate(keys):
-            print(f'{index1+1}. {i}')
+        for index1, i in enumerate(choices):
+            if i != None:
+                print(f'{index1+1}. {keys[index1]}')
         direction_choice = input('Which direction do you wish to go to?: ').strip().lower()
         while direction_choice not in keys:
             print('You can only move up, down, left or right!')
             direction_choice = input('Which direction do you wish to go to?: ').strip().lower()
-        numpaths = len(choices[keys.find(direction_choice)])
+        numpaths = len(choices[keys.index(direction_choice)])
         if numpaths > 1:
             print(f'You entered a corridor, and there are {numpaths} doors...')
             print('The following are the paths that can be taken')
@@ -34,9 +36,9 @@ class MUDGame:
             while path_choice not in keys:
                 print('You can only take the above paths listed!')
                 path_choice = input('Which path do you wish to take? Type the path number.').strip().lower()
-            self.player.current = self.player.map[self.player.current][direction_choice][int(path_choice) - 1]
+            self.player.current = self.player.map.map[self.player.current][direction_choice][int(path_choice) - 1]
         else:
-            self.player.current = self.player.map[self.player.current][direction_choice][0]
+            self.player.current = self.player.map.map[self.player.current][direction_choice][0]
 
     def intro(self):
         # later
