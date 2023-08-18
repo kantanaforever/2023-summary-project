@@ -7,9 +7,11 @@ class MUDGame:
     def __init__(self):
         self.end = 10
         self.player = data.Player()
-        self.enemy = data.Enemy()
         self.map = data.map
-        self.inventory = data.PlayerInventory()
+        self.inventory = data.inventory
+        self.player_inventory = data.player_inventory
+        self.game_over = False
+        
 
     def movement(self): # can change after game is working
         """ only up down left right, dont show room number"""
@@ -26,7 +28,7 @@ class MUDGame:
                 available.append(keys[index])
         direction_choice = input('Which direction do you wish to go to?: ').strip().lower()
         while direction_choice not in available:
-            print(f'You can only move in the above stated direction(s)!')
+            print('You can only move in the above stated direction(s)!')
             direction_choice = input('Which direction do you wish to go to?: ').strip().lower()
         numpaths = len(choices[keys.index(direction_choice)])
         if numpaths > 1:
@@ -58,12 +60,12 @@ class MUDGame:
         return self.map[self.player.current]["enemy"]
 
     def inventory_show(self): # can seperately implement in a class
-        # 56
+        # 57
         used = []
         print('╔══════════════════════════════════════════════════════════╗')
         print('║                   Inventory Display                      ║')
         print('╟──────────────────────────────────────────────────────────╢')
-        for i, j in enumerate(self.inventory.inventory):
+        for i, j in enumerate(self.player_inventory):
             name = j.name
             if name not in used:
                 used.append(name)
@@ -74,28 +76,77 @@ class MUDGame:
                         status = 'Equipped'
                     else:
                         status = 'carriable'
-                desc = self.inventory.items[j.type][j.name][j.description]
-                count = self.inventory.inventory.count(j)
-                print(f'║{i+1:<6}{name:<16}x{count:<4}{"["+status+"]":<12}{desc:^19}║')
+                count = self.player_inventory.count(j)
+                print(f'║{i+1:<6}{name:<16}x{count:<4}{"["+status+"]":<19}{"["+j.type+"]":<12}║')
               
         print('╚══════════════════════════════════════════════════════════╝')
     
-    def inventory_consume_item(self, Inventory) -> None:
+    def inventory_consume_item(self) -> None:
         """ show inventory"""
-        if self.enemy_presence():
+        if True: #enemy_presence
             self.inventory_show()
-            item = input("Which item would you like to consume?")
-            self.player.consume_item(item)
+            consume = input("Would you like to consume any item?(y/n)?: ").lower()
+            while consume not in ['y', 'n']:
+                print('Not a valid response!')
+                consume = input("Would you like to consume any item?(y/n)?: ").lower()
+            if consume == 'n':
+                return None
 
-    def fight(self, Player, Enemy):
-        while self.player.hp > 0 and self.enemy.hp > 0:
-                self.player.attack(self.enemy)
-                self.enemy.attack(self.player)
+            else: 
+                item = input("Which item would you like to consume?: ").lower()
+                attributes = [i.name for i in self.player_inventory]
+                while item not in attributes:
+                    print('Invalid item!')
+                    item = input("Which item would you like to consume?: ")
+                item_index = attributes.index(item)
+                used_item = self.player_inventory[item_index]
+                if used_item.consumable == True:
+                    print(f'{used_item.name} has been consumed!')
+                    if used_item.type == 'hp':
+                        self.player.hp += used_item.magnitude
+                        print(f'{used_item.type} has been increased by {used_item.magnitude}. {used_item.type} is now {self.player.hp}')
+                    elif used_item.type == 'attack':
+                        self.player.attack_punch += used_item.magnitude
+                        print(f'punch attack has been increased by {used_item.magnitude}. punch attack is now {self.player.attack_punch}')
+                        
+                    self.player_inventory.pop(item_index)
+                        
+                else:
+                    print(f'{used_item.name} has been equipped!')
+                    if used_item.type == 'weapon':
+                        prev = self.player.attack_weapon
+                        self.player.attack_weapon = used_item.magnitude
+                        used_item.status = True
+                        print(f'weapon attack was {prev}. weapon attack is now {self.player.attack_weapon}')
+                
 
+    def fight(self):
+        #if enemy_presence --> choose whether to consume an item --> player attack enemy first then enemy attack player --> if player hp reaches 0 before enemy, player looses --> else continue
+        enemy = data.Enemy()
+        while self.player.hp > 0:
+            choice = input('The enemy is now in front of you! You can choose to 1. punch 2. attack with existing weapons')
+            
+            while choice not in ['1', '2']:
+                print('Invalid option!')
+                choice = input('The enemy is now in front of you! You can choose to 1. punch 2. attack with existing weapons')
+
+            if choice == '1':
+                self.player.attack_punch(enemy)
+            elif choice == '2':
+                self.player.attack_weapon(enemy)
+
+            enemy.attack(self.player)
+
+            if enemy.hp <= 0:
+                print('You have defeated the enemy!')
+                return None
+
+        self.game_over = True
+    
     def item_presence(self):
         return self.map[str(self.player.current)]["item"]
         
-    def pick_item(self, Player): # need change
+    def pick_item(self): # need change
         """ display items in the room"""
         item = self.map[str(self.player.current)]["item"]
         input = (str(item) + 'found! Would you like to keep them?')
@@ -106,16 +157,16 @@ class MUDGame:
         location = self.player.current
         return location 
     
-    def final_room(self, Player):
+    def final_room(self):
         """ print essay -> consume item -> fight"""
         print("final room stuff supposed to be here")
 
-    def game_over(self, Player, Enemy) -> str:
+    def win(self) -> str:
         if self.player.current == 10:
-            if self.enemy.hp == 0:
+            if self.enemy.hp <= 0:
                 return "You win!"
     
-    def run(self, Player, Enemy, Inventory) -> str:
+    def run(self) -> str:
         """ 
         1. method to call cool intro
         2. set username
@@ -126,19 +177,19 @@ class MUDGame:
         7. when reach room 10, fight big big boss -> game over!! 
         """
         self.intro()
-        self.set_username(Player)
-        while self.player.hp > 0:
+        self.set_username()
+        while not self.game_over:
             if self.player.current != 10:
                 self.movement()
                 self.room_desc()
                 if self.enemy_presence():
-                    self.inventory_consume_item(Inventory)
-                    self.fight(Player, Enemy)
+                    self.inventory_consume_item()
+                    self.fight()
                 if self.item_presence():
-                    self.pick_item(Player)
+                    self.pick_item()
             else:
-                self.final_room(Player)
-            return self.game_over(Player, Enemy)
+                self.final_room()
+            return self.win()
         return "You have been defeated >_<"
            
         
