@@ -78,7 +78,7 @@ class MUDGame:
     def inventory_consume_item(self, Inventory) -> None:
         """ show inventory"""
         if self.enemy_presence():
-            print(self.inventory)
+            self.inventory_show()
             item = input("Which item would you like to consume?")
             self.player.consume_item(item)
 
