@@ -146,11 +146,11 @@ class MUDGame:
     def item_presence(self):
         return self.map[str(self.player.current)]["item"]
         
-    def pick_item(self): # need change
+    def pick_item(self, item_data): # need change
         """ display items in the room"""
-        item = self.map[str(self.player.current)]["item"]
-        input = (str(item) + 'found! Would you like to keep them?')
-        if input.upper() == "YES":
+        item = item_data["name"]
+        input = (item + 'found! Would you like to keep it?')
+        if input.lower() == "yes":
             self.player.pick_item(item)
         
     def __location__(self) -> int:
