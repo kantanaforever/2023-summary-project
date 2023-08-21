@@ -127,7 +127,7 @@ class MUDGame:
 
     def fight(self):
         #if enemy_presence --> choose whether to consume an item --> player attack enemy first then enemy attack player --> if player hp reaches 0 before enemy, player looses --> else continue
-        for i in len(enemy_list):
+        for i in len(self.generate_enemy()):
             enemy = data.Enemy()
             while self.player.hp > 0:
                 choice = input('The enemy is now in front of you! You can choose to 1. punch 2. attack with existing weapons')
@@ -151,10 +151,10 @@ class MUDGame:
         
     def pick_item(self, item_data): # need change
         """ display items in the room"""
-        items = str(items_list)
-        input = (item + 'found! Would you like to keep it? (y/n)')
+        items = str(self.generate_items())
+        input = (items + 'found! Would you like to keep it? (y/n)')
         if input.lower() == "y":
-            self.player.pick_item(item)
+            self.player.pick_item(items)
         
     def __location__(self) -> int:
         location = self.player.current
@@ -189,10 +189,10 @@ class MUDGame:
             if self.player.current != 10:
                 self.movement()
                 self.room_desc(data.Player())
-                if pass:
+                if self.generate_enemy() != []:
                     self.inventory_consume_item()
                     self.fight()
-                if self.item_presence():
+                if self.generate_items() != []:
                     self.pick_item()
             else:
                 self.final_room()
