@@ -46,7 +46,7 @@ class MUDGame:
 
     def intro(self):
         with open('intro.txt', 'r') as f:
-            intro = f.headlines()
+            intro = f.readlines()
             print(intro)
 
     def set_username(self, Player):
