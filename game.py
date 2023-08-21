@@ -56,9 +56,12 @@ class MUDGame:
         desc = self.map[self.player.current]['description']
         print(desc)
 
-    def enemy_presence(self):
-        return self.map[self.player.current]["enemy"]
+    def generate_items():
+        data.generate_items()
 
+    def generate_enemy():
+        data.generate_enemy()
+        
     def inventory_show(self): # can seperately implement in a class
         # 57
         used = []
@@ -124,35 +127,33 @@ class MUDGame:
 
     def fight(self):
         #if enemy_presence --> choose whether to consume an item --> player attack enemy first then enemy attack player --> if player hp reaches 0 before enemy, player looses --> else continue
-        enemy = data.Enemy()
-        while self.player.hp > 0:
-            choice = input('The enemy is now in front of you! You can choose to 1. punch 2. attack with existing weapons')
-            
-            while choice not in ['1', '2']:
-                print('Invalid option!')
+        for i in len(enemy_list):
+            enemy = data.Enemy()
+            while self.player.hp > 0:
                 choice = input('The enemy is now in front of you! You can choose to 1. punch 2. attack with existing weapons')
-
-            if choice == '1':
-                self.player.attack_punch(enemy)
-            elif choice == '2':
-                self.player.attack_weapon(enemy)
-
-            enemy.attack(self.player)
-
-            if enemy.hp <= 0:
-                print('You have defeated the enemy!')
-                return None
-
-        self.game_over = True
+                
+                while choice not in ['1', '2']:
+                    print('Invalid option!')
+                    choice = input('The enemy is now in front of you! You can choose to 1. punch 2. attack with existing weapons')
     
-    def item_presence(self):
-        return self.map[str(self.player.current)]["item"]
+                if choice == '1':
+                    self.player.attack_punch(enemy)
+                elif choice == '2':
+                    self.player.attack_weapon(enemy)
+    
+                enemy.attack(self.player)
+    
+                if enemy.hp <= 0:
+                    print('You have defeated the enemy!')
+                    return None
+    
+            self.game_over = True
         
     def pick_item(self, item_data): # need change
         """ display items in the room"""
-        item = item_data["name"]
-        input = (item + 'found! Would you like to keep it?')
-        if input.lower() == "yes":
+        items = str(items_list)
+        input = (item + 'found! Would you like to keep it? (y/n)')
+        if input.lower() == "y":
             self.player.pick_item(item)
         
     def __location__(self) -> int:
@@ -188,7 +189,7 @@ class MUDGame:
             if self.player.current != 10:
                 self.movement()
                 self.room_desc(data.Player())
-                if self.enemy_presence():
+                if pass:
                     self.inventory_consume_item()
                     self.fight()
                 if self.item_presence():
