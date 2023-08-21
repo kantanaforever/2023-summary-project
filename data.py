@@ -1,5 +1,6 @@
 # Import statements
 import json
+import random as r
 
 
 # Class Implementation
@@ -46,13 +47,13 @@ class Player:
         self.attack_weapon = 10
         self.current = '0'
 
-    def attack_punch(self, target: object) -> None: # Enemy object
+    def attack_p(self, target: object) -> None: # Enemy object
         """
         player deal damage to target
         """
         target.hp -= self.attack_punch
             
-    def attack_weapon(self, target: object) -> None:
+    def attack_w(self, target: object) -> None:
         target.hp -= self.attack_weapon
 
     def set_username(self) -> None:
@@ -84,7 +85,7 @@ class _Inventory:
             f.readline()
             for line in f:
                 line = line.strip().split(',')
-                item = _Item(line[0], line[1], bool(line[2]), bool(line[3]), line[4])
+                item = _Item(line[0].strip(), line[1].strip(), bool(line[2].strip()), bool(line[3].strip()), line[4].strip())
                 self.items.append(item)
                 
         
@@ -125,7 +126,17 @@ class _PlayerInventory:
         
         # self.player_inventory.append(self.items[item[1]][item[0]])
         pass
-        
+
+def generate_items():
+    inventory = _Inventory()
+    game_inventory = inventory.items
+    num_of_items = r.randint(0,5)
+    items_list = []
+    for i in range(num_of_items):
+        items_list.append(r.choice(game_inventory))
+
+    return items_list
+    
 
 # Enemy     
 class Enemy:
@@ -149,10 +160,37 @@ class Enemy:
 class Enemy1(Enemy):
     def __init__(self):
         super().__init__()
+        self.hp = r.randint(100, 200)
+        self.attack = r.randint(0, 10)
     
     def attack(self, player):
         super().attack(player)
 
+class Enemy2(Enemy):
+    def __init__(self):
+        super().__init__()
+        self.hp = r.randint(100, 200)
+        self.attack = r.randint(0, 10)
+    
+    def attack(self, player):
+        super().attack(player)
+        
+
+def generate_enemy() -> list:
+    """generate random enemies in a room"""
+    enemy_list = []
+    enemy1 = Enemy1()
+    enemy2 = Enemy2()
+    num_of_enemies = r.randint(0, 5)
+    for i in range(num_of_enemies):
+        flag = r.choice([True, False])
+        if flag:
+            enemy_list.append(enemy1)
+        else:
+            enemy_list.append(enemy2)
+    return enemy_list
+    
+    
 
 # Zonemap callout
 map = _Zonemap('content/zonemap.json')
