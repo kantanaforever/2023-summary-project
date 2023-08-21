@@ -151,8 +151,8 @@ class MUDGame:
         
     def pick_item(self, item_data): # need change
         """ display items in the room"""
-        items = str(self.generate_items())
-        input = (items + 'found! Would you like to keep it? (y/n)')
+        items = self.generate_items()
+        input = (items + 'found! Collect it to help increase your chances of defeating the monsters!(y/n)')
         if input.lower() == "y":
             self.player.pick_item(items)
         
@@ -190,6 +190,7 @@ class MUDGame:
                 self.movement()
                 self.room_desc(data.Player())
                 if self.generate_enemy() != []:
+                    print('There is a monster in the room. Defeat them to rescue your sibling from the grasp of dark magic!')
                     self.inventory_consume_item()
                     self.fight()
                 if self.generate_items() != []:
