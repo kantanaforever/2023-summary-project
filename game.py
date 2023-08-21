@@ -83,6 +83,8 @@ class MUDGame:
     
     def inventory_consume_item(self) -> None:
         """ show inventory"""
+        if self.player_inventory() is []:
+            return "Nothing in inventory!"
         if True: #enemy_presence
             self.inventory_show()
             consume = input("Would you like to consume any item?(y/n)?: ").lower()
@@ -159,12 +161,16 @@ class MUDGame:
     
     def final_room(self):
         """ print essay -> consume item -> fight"""
-        print("final room stuff supposed to be here")
+        with open('content/finaldesc.txt', 'r') as f:
+            for line in f:
+                print(line.strip())
 
     def win(self) -> str:
         if self.player.current == 10:
             if self.enemy.hp <= 0:
-                return "You win!"
+                with open('content/win_desc.txt', 'r') as f:
+                    for line in f:
+                        print(line.strip())
     
     def run(self) -> str:
         """ 
