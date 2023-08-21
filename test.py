@@ -12,7 +12,7 @@ def test_game():
     # game.room_desc(data.Player()) pass
     # game.enemy_presence() pass
     # game.inventory_show() pass, but test again after picking up items function is done
-    # game.inventory_consume_item()
+    # game.inventory_consume_item() list is not callable
     # enemy = data.Enemy()
     # try:
     #     game.player.attack_punch(enemy)
