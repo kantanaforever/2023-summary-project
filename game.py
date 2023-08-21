@@ -45,7 +45,7 @@ class MUDGame:
             self.player.current = self.map[self.player.current][direction_choice][0]
 
     def intro(self):
-        with open('intro.txt', 'r') as f:
+        with open('content/intro.txt', 'r') as f:
             intro = f.readlines()
             print(intro)
 
