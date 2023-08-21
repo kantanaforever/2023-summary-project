@@ -46,8 +46,8 @@ class MUDGame:
 
     def intro(self):
         with open('content/intro.txt', 'r') as f:
-            intro = f.readlines()
-            print(intro)
+            for line in f:
+                print(line.strip())
 
     def set_username(self, Player):
         self.player.set_username()
@@ -177,11 +177,11 @@ class MUDGame:
         7. when reach room 10, fight big big boss -> game over!! 
         """
         self.intro()
-        self.set_username()
+        self.set_username(data.Player())
         while not self.game_over:
             if self.player.current != 10:
                 self.movement()
-                self.room_desc()
+                self.room_desc(data.Player())
                 if self.enemy_presence():
                     self.inventory_consume_item()
                     self.fight()
@@ -194,8 +194,6 @@ class MUDGame:
            
         
         
-        
-                
             
             
     
