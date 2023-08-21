@@ -12,12 +12,16 @@ def test_game():
     # game.room_desc(data.Player()) pass
     # game.enemy_presence() pass
     # game.inventory_show() pass, but test again after picking up items function is done
-    game.inventory_consume_item()
-    # game.fight()
-    # game.item_presence()
-    # game.pick_item()
+    # game.inventory_consume_item()
+    # enemy = data.Enemy()
+    # try:
+    #     game.player.attack_punch(enemy)
+    # except:
+    #     breakpoint()
+    # game.item_presence() keyerror 'item'
+    # game.pick_item() missing positional argument item_data
     # game.final_room()
-    # game.win()
+    # game.win() no return yet
     # game.run()
     pass
 

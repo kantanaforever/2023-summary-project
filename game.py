@@ -133,7 +133,10 @@ class MUDGame:
                 choice = input('The enemy is now in front of you! You can choose to 1. punch 2. attack with existing weapons')
 
             if choice == '1':
-                self.player.attack_punch(enemy)
+                try:
+                    self.player.attack_punch(enemy)
+                except:
+                    breakpoint()
             elif choice == '2':
                 self.player.attack_weapon(enemy)
 
