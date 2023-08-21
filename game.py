@@ -43,18 +43,18 @@ class MUDGame:
             self.player.current = self.map[self.player.current][direction_choice][int(path_choice) - 1]
         else:
             self.player.current = self.map[self.player.current][direction_choice][0]
-        print(self.player.current)
 
     def intro(self):
-        # later
-        print("intro supposed to be here")
+        with open('intro.txt', 'r') as f:
+            intro = f.headlines()
+            print(intro)
 
     def set_username(self, Player):
         self.player.set_username()
 
-    def room_desc():
-        # later
-        print("room description supposed to be here")
+    def room_desc(self, Player):
+        desc = self.map[self.player.current]['description']
+        print(desc)
 
     def enemy_presence(self):
         return self.map[self.player.current]["enemy"]
