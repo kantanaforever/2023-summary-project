@@ -18,7 +18,7 @@ def test_game():
     # game.pick_item()
     # game.final_room()
     # game.win()
-    # game.run()
+    game.run()
     pass
 
 test_game()
