@@ -83,7 +83,7 @@ class MUDGame:
     
     def inventory_consume_item(self) -> None:
         """ show inventory"""
-        if self.player_inventory() is []:
+        if self.player_inventory() == []:
             return "Nothing in inventory!"
         if True: #enemy_presence
             self.inventory_show()
