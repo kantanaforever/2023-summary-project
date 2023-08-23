@@ -11,8 +11,18 @@ class MUDGame:
         self.inventory = data.inventory
         self.player_inventory = data.player_inventory
         self.game_over = False
-        
 
+    def enemy_presence(self, enemy_list):
+        return enemy_list != []
+
+    def item_presence(self, items_list):
+        return items_list != []
+
+    def not_room_10(self):
+        if self.player.current != 10:
+            return True
+        return False
+        
     def movement(self): # can change after game is working
         """ only up down left right, dont show room number"""
     
@@ -20,7 +30,7 @@ class MUDGame:
         keys = ['up', 'down', 'left', 'right']
         available = []
         #extracting up, down, left, right
-        choices = [i for i in self.map[self.player.current].values()];choices.pop(0);choices.pop()
+        choices = [i for i in self.map[self.player.current].values()];choices.pop(0);choices.pop(0)
         print('You can move in the following directions: ')
         for index, i in enumerate(choices):
             if i != [None]:
@@ -57,10 +67,10 @@ class MUDGame:
         print(desc)
 
     def generate_items():
-        data.generate_items()
+        return data.generate_items()
 
     def generate_enemy():
-        data.generate_enemy()
+        return data.generate_enemy()
         
     def inventory_show(self): # can seperately implement in a class
         # 57
@@ -125,9 +135,9 @@ class MUDGame:
                         print(f'weapon attack was {prev}. weapon attack is now {self.player.attack_weapon}')
                 
 
-    def fight(self):
+    def fight(self, enemy_list):
         #if enemy_presence --> choose whether to consume an item --> player attack enemy first then enemy attack player --> if player hp reaches 0 before enemy, player looses --> else continue
-        for i in len(self.generate_enemy()):
+        for i in len(enemy_list):
             enemy = data.Enemy()
             while self.player.hp > 0:
                 choice = input('The enemy is now in front of you! You can choose to 1. punch 2. attack with existing weapons')
@@ -149,12 +159,17 @@ class MUDGame:
     
             self.game_over = True
         
-    def pick_item(self, item_data): # need change
+    def pick_item(self, items): # need change
         """ display items in the room"""
-        items = self.generate_items()
-        input = (items + 'found! Collect it to help increase your chances of defeating the monsters!(y/n)')
-        if input.lower() == "y":
-            self.player.pick_item(items)
+        for i in items:
+            print(i)
+            choice = input('found! Collect it to help increase your chances of defeating the monsters!(y/n): ').lower()
+            while choice not in ['y', 'n']:
+                print('invalid option!')
+                choice = input('found! Collect it to help increase your chances of defeating the monsters!(y/n): ').lower()
+            if choice.lower() == "y":
+                self.player.pick_item(i)
+                
         
     def __location__(self) -> int:
         location = self.player.current
@@ -186,15 +201,17 @@ class MUDGame:
         self.intro()
         self.set_username(data.Player())
         while not self.game_over:
-            if self.player.current != 10:
+            if self.not_room_10():
                 self.movement()
                 self.room_desc(data.Player())
-                if self.generate_enemy() != []:
+                enemy_list = self.generate_enemy()
+                if self.enemy_presence(enemy_list):
                     print('There is a monster in the room. Defeat them to rescue your sibling from the grasp of dark magic!')
                     self.inventory_consume_item()
-                    self.fight()
-                if self.generate_items() != []:
-                    self.pick_item()
+                    self.fight(enemy_list)
+                items_list = self.generate_items()
+                if self.item_presence(items_list):
+                    self.pick_item(items_list)
             else:
                 self.final_room()
             return self.win()

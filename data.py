@@ -153,7 +153,7 @@ class Enemy:
         self.attack = 5
         self.turn = False
 
-    def attack(self, player):
+    def atk(self, player):
         if self.turn:
             player.hp -= self.attack
 
