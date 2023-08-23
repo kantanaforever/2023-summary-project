@@ -219,10 +219,10 @@ class MUDGame:
             else:
                 self.final_room()
                 
-            if not self.win():
-                print("You have been defeated >_<")
+        if not self.win():
+            print("You have been defeated >_<")
 
-                return
+            return
            
         
         
