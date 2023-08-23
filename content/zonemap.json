@@ -2,90 +2,92 @@
     
     "0": 
         {
-    "description": "Starting room", "up": [null], 
+    "name": "Ducal Manor Foyer", "description": "Once a grand entrance hall, now adorned with dusty chandeliers and torn tapestries. The memories of opulent receptions still linger in the air, a stark contrast to the desolation that now reigns.", "up": [null], 
     "down": ["1","2","3"], "left": [null], 
-    "right": [null], "enemy": false
+    "right": [null]
         },
     
                     
     "1":
         {
-    "description": "Room One", "up": ["0"],
+    "name": "Hidden Safehouse", "description": "A secret chamber your family established during their noble days, hidden away from prying eyes. The walls whisper tales of your siblings' last moments before their disappearances.", "up": ["0"],
     "down": ["4"], "left": [null],
-    "right": ["2"], "enemy": true
+    "right": ["2"]
         },
 
 
     "2":
         {
-    "description": "Room Two", "up": ["0"],
+    "name": "Misty Moors", "description": "The damp, mist-covered moors are a maze of tangled vegetation and murky pools. Legends of lost travelers and the restless spirits of the fallen make this place both haunting and perilous.", "up": ["0"],
     "down": ["5"], "left": ["1"],
-    "right": ["3"], "enemy": false
+    "right": ["3"]
         },
 
 
     "3":
         {
-    "description": "Room Three", "up": ["0"],
+    "name": "Wailing Prison", "description": "The anguished cries of the captive souls here pierce through the air. Rusty iron bars line the walls, and the chains that once held prisoners now sway eerily, as if guided by unseen hands.", "up": ["0"],
     "down": ["6"], "left": ["2"],
-    "right": [null], "enemy": false
+    "right": [null]
         },
 
 
     "4":
         {
-    "description": "Room Four", "up": ["1"],
+    "name": "jsng's house", "description": "turn around he's behind u", "up": ["1"],
     "down": ["7"], "left": [null],
-    "right": ["5"], "enemy": true
+    "right": ["5"]
         },
 
 
     "5":
         {
-    "description": "Room Five", "up": ["2"],
+    "name": "Chamber of Shadows", "description": "A chamber bathed in a perpetual gloom, where you can almost feel the weight of the ancient darkness pressing in on you. Sinister runes etched into the walls seem to pulse with a malevolent energy.", "up": ["2"],
     "down": ["8"], "left": ["4"],
-    "right": ["6"], "enemy": false
+    "right": ["6"]
         },
 
     
     "6":
         {
-    "description": "Room Six", "up": ["3"],
+    "name": "Corrupted Sanctuary", "description": "What was once a place of solace and prayer has been twisted by dark magic. Flickering torchlight casts eerie shadows on shattered stained glass windows, and the altar now stands as a monument to despair.", "up": ["3"],
     "down": ["9"], "left": ["5"],
-    "right": [null], "enemy": false
+    "right": [null]
         },
 
 
     "7":
         {
-    "description": "Room Seven", "up": ["4"],
+    "name": "Throne of Suffering", "description": "An ominous chamber dominated by a sinister throne, surrounded by flickering candles. The very air seems to crackle with malefic energy, a testament to the dark rituals that have taken place here.", "up": ["4"],
     "down": ["10"], "left": [null],
-    "right": [null], "enemy": true
+    "right": [null]
         },
 
     
     "8":
         {
-    "description": "Room Eight", "up": ["5"],
+    "name": "Whispering Woods", "description": "Ancient trees loom overhead, their branches seeming to whisper secrets to those who dare tread here. The eerie tranquility masks the dangerous creatures lurking just beyond the shadows.", "up": ["5"],
     "down": ["10"], "left": [null],
-    "right": ["9"], "enemy": false
+    "right": ["9"]
         },
 
 
     "9":
         {
-    "description": "Room Nine", "up": ["6"],
+    "name": "Cryptic Caverns", "description": "The air grows cold as you enter the labyrinthine caverns beneath the earth. Eerie formations cast strange shadows on the walls, and the distant sound of dripping water echoes through the passages.", "up": ["6"],
     "down": ["10"], "left": ["8"],
-    "right": [null], "enemy": true
+    "right": [null]
         },
 
 
     "10":
         {
-    "description": "Room Ten", "up": ["7","8","9"],
+    "name": "Final Confrontation", "description": "At the heart of the dungeons, a massive chamber awaits. Flickering torches cast dancing shadows as your siblings-turned-monsters await your arrival, their eyes holding a glimmer of recognition amidst the corruption.", "up": ["7","8","9"],
     "down": [null], "left": [null],
-    "right": [null], "enemy": true
+    "right": [null]
         }
+
+    
 
 
 

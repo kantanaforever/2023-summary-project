@@ -66,10 +66,10 @@ class MUDGame:
         desc = self.map[self.player.current]['description']
         print(desc)
 
-    def generate_items():
+    def generate_items(self):
         return data.generate_items()
 
-    def generate_enemy():
+    def generate_enemy(self):
         return data.generate_enemy()
         
     def inventory_show(self): # can seperately implement in a class
@@ -96,48 +96,47 @@ class MUDGame:
     
     def inventory_consume_item(self) -> None:
         """ show inventory"""
-        if self.player_inventory() == []:
+        if self.player_inventory == []:
             return "Nothing in inventory!"
-        if True: #enemy_presence
-            self.inventory_show()
+        self.inventory_show()
+        consume = input("Would you like to consume any item?(y/n)?: ").lower()
+        while consume not in ['y', 'n']:
+            print('Not a valid response!')
             consume = input("Would you like to consume any item?(y/n)?: ").lower()
-            while consume not in ['y', 'n']:
-                print('Not a valid response!')
-                consume = input("Would you like to consume any item?(y/n)?: ").lower()
-            if consume == 'n':
-                return None
+        if consume == 'n':
+            return None
 
-            else: 
-                item = input("Which item would you like to consume?: ").lower()
-                attributes = [i.name for i in self.player_inventory]
-                while item not in attributes:
-                    print('Invalid item!')
-                    item = input("Which item would you like to consume?: ")
-                item_index = attributes.index(item)
-                used_item = self.player_inventory[item_index]
-                if used_item.consumable == True:
-                    print(f'{used_item.name} has been consumed!')
-                    if used_item.type == 'hp':
-                        self.player.hp += used_item.magnitude
-                        print(f'{used_item.type} has been increased by {used_item.magnitude}. {used_item.type} is now {self.player.hp}')
-                    elif used_item.type == 'attack':
-                        self.player.attack_punch += used_item.magnitude
-                        print(f'punch attack has been increased by {used_item.magnitude}. punch attack is now {self.player.attack_punch}')
-                        
-                    self.player_inventory.pop(item_index)
-                        
-                else:
-                    print(f'{used_item.name} has been equipped!')
-                    if used_item.type == 'weapon':
-                        prev = self.player.attack_weapon
-                        self.player.attack_weapon = used_item.magnitude
-                        used_item.status = True
-                        print(f'weapon attack was {prev}. weapon attack is now {self.player.attack_weapon}')
-                
+        else: 
+            item = input("Which item would you like to consume?: ").lower()
+            attributes = [i.name for i in self.player_inventory]
+            while item not in attributes:
+                print('Invalid item!')
+                item = input("Which item would you like to consume?: ")
+            item_index = attributes.index(item)
+            used_item = self.player_inventory[item_index]
+            if used_item.consumable == True:
+                print(f'{used_item.name} has been consumed!')
+                if used_item.type == 'hp':
+                    self.player.hp += used_item.magnitude
+                    print(f'{used_item.type} has been increased by {used_item.magnitude}. {used_item.type} is now {self.player.hp}')
+                elif used_item.type == 'attack':
+                    self.player.attack_punch += used_item.magnitude
+                    print(f'punch attack has been increased by {used_item.magnitude}. punch attack is now {self.player.attack_punch}')
+                    
+                self.player_inventory.pop(item_index)
+                    
+            else:
+                print(f'{used_item.name} has been equipped!')
+                if used_item.type == 'weapon':
+                    prev = self.player.attack_weapon
+                    self.player.attack_weapon = used_item.magnitude
+                    used_item.status = True
+                    print(f'weapon attack was {prev}. weapon attack is now {self.player.attack_weapon}')
+            
 
     def fight(self, enemy_list):
         #if enemy_presence --> choose whether to consume an item --> player attack enemy first then enemy attack player --> if player hp reaches 0 before enemy, player looses --> else continue
-        for i in len(enemy_list):
+        for i in range(len(enemy_list)):
             enemy = data.Enemy()
             while self.player.hp > 0:
                 choice = input('The enemy is now in front of you! You can choose to 1. punch 2. attack with existing weapons')
@@ -151,7 +150,7 @@ class MUDGame:
                 elif choice == '2':
                     self.player.attack_w(enemy)
     
-                enemy.attack(self.player)
+                enemy.atk(self.player)
     
                 if enemy.hp <= 0:
                     print('You have defeated the enemy!')
@@ -170,10 +169,6 @@ class MUDGame:
             if choice.lower() == "y":
                 self.player.pick_item(i)
                 
-        
-    def __location__(self) -> int:
-        location = self.player.current
-        return location 
     
     def final_room(self):
         """ print essay -> consume item -> fight"""
@@ -204,7 +199,10 @@ class MUDGame:
             if self.not_room_10():
                 self.movement()
                 self.room_desc(data.Player())
-                enemy_list = self.generate_enemy()
+                try:
+                    enemy_list = self.generate_enemy()
+                except:
+                    breakpoint()
                 if self.enemy_presence(enemy_list):
                     print('There is a monster in the room. Defeat them to rescue your sibling from the grasp of dark magic!')
                     self.inventory_consume_item()

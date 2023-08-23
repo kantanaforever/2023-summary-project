@@ -163,8 +163,8 @@ class Enemy1(Enemy):
         self.hp = r.randint(100, 200)
         self.attack = r.randint(0, 10)
     
-    def attack(self, player):
-        super().attack(player)
+    def atk(self, player):
+        super().atk(player)
 
 class Enemy2(Enemy):
     def __init__(self):
@@ -172,8 +172,8 @@ class Enemy2(Enemy):
         self.hp = r.randint(100, 200)
         self.attack = r.randint(0, 10)
     
-    def attack(self, player):
-        super().attack(player)
+    def atk(self, player):
+        super().atk(player)
         
 
 def generate_enemy() -> list:
