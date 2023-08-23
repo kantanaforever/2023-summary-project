@@ -43,8 +43,8 @@ class Player:
     def __init__(self) -> None: # map in json
         self.name = '' # user input
         self.hp = 1000
-        self.attack_punch = 10
-        self.attack_weapon = 10
+        self.attack_punch = 100
+        self.attack_weapon = 100
         self.current = '0'
 
     def attack_p(self, target: object) -> None: # Enemy object
@@ -85,7 +85,7 @@ class _Inventory:
             f.readline()
             for line in f:
                 line = line.strip().split(',')
-                item = _Item(line[0].strip(), line[1].strip(), bool(line[2].strip()), bool(line[3].strip()), line[4].strip())
+                item = _Item(line[0].strip(), line[1].strip(), bool(True if line[2].strip() == 'True' else False), bool(True if line[3].strip() == 'True' else False), line[4].strip())
                 self.items.append(item)
                 
         
@@ -100,7 +100,7 @@ class _Item:
         self.type = type
         self.consumable = consumable
         self.status = status
-        self.magnitude = magnitude
+        self.magnitude = int(magnitude)
 
 
 class _PlayerInventory:
@@ -189,11 +189,17 @@ def generate_enemy() -> list:
             enemy_list.append(enemy2)
     return enemy_list
     
+class Boss(Enemy):
+    def __init__(self):
+        self.hp = 500
+        self.attack = 10
+
+    def atk(self, player):
+        super().atk(player)
     
 
 # Zonemap callout
-map = _Zonemap('content/zonemap.json')
-map = map.map
+map = _Zonemap('content/zonemap.json').map
 
 # Inventory callout
 player_inventory_temp = _PlayerInventory()

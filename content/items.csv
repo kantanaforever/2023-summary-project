@@ -1,7 +1,7 @@
 name, type, consumable, status, magnitude
 elixir, hp, True, False, 10
 fairy bottle, hp, True, False, 10
-balm, hp, False, False, 5
+balm, hp, True, False, 5
 mushrooms, hp, True, False, 5
 painkillers, hp, True, False, 5
 black lily sword, weapon, False, False, 10
@@ -11,4 +11,11 @@ wind fleuret, weapon, False, False, 20
 spear, weapon, False, False, 20
 claymore, weapon, False, False, 25
 attack potion, attack, True, False, 5
+healing potion, hp, True, False, 15
+rejuvenating tonic, hp, True, False, 20
+herbal tea, hp, True, False, 8
+lightning bomb, attack, False, True, 25
+poison dart, attack, False, True, 15
+explosive flask, attack, False, True, 30
+knives, attack, False, True, 10
 feather duster, weapon, False, False, 1

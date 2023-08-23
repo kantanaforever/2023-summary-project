@@ -1,16 +1,21 @@
 # Import statements
 import data
+# import os
 
 """call every method here """
 
 class MUDGame:
     def __init__(self):
-        self.end = 10
+        self.end = '10'
         self.player = data.Player()
         self.map = data.map
         self.inventory = data.inventory
         self.player_inventory = data.player_inventory
-        self.game_over = False
+        self.boss = data.Boss()
+        # self.game_over = False
+
+    def game_over(self) -> bool:
+        return self.player.hp < 0
 
     def enemy_presence(self, enemy_list):
         return enemy_list != []
@@ -18,10 +23,23 @@ class MUDGame:
     def item_presence(self, items_list):
         return items_list != []
 
-    def not_room_10(self):
-        if self.player.current != 10:
-            return True
-        return False
+    def room_10(self):
+        return self.player.current == self.end
+
+    def input(self, prompt: str) -> str:
+        return input(prompt).strip().lower()
+
+    def prompt_valid_choice(self, options, question, errormsg):
+        """Prompt the user with a question.
+        If the choice is not in options, display errormsg and re-prompt the user.
+        If the choice is valid, return player choice.
+        """
+        choice = self.input(question)
+        while choice not in options:
+            print(errormsg)
+            choice = self.input(question)
+        return choice
+
         
     def movement(self): # can change after game is working
         """ only up down left right, dont show room number"""
@@ -30,29 +48,36 @@ class MUDGame:
         keys = ['up', 'down', 'left', 'right']
         available = []
         #extracting up, down, left, right
-        choices = [i for i in self.map[self.player.current].values()];choices.pop(0);choices.pop(0)
+        
+        # remove name and description from choices
+        choices = list(self.map[self.player.current].values())[2:]
+        
         print('You can move in the following directions: ')
-        for index, i in enumerate(choices):
-            if i != [None]:
-                print(f'- {keys[index]}')
-                available.append(keys[index])
-        direction_choice = input('Which direction do you wish to go to?: ').strip().lower()
-        while direction_choice not in available:
-            print('You can only move in the above stated direction(s)!')
-            direction_choice = input('Which direction do you wish to go to?: ').strip().lower()
+        for i, choice in enumerate(choices):
+            if choice != [None]:
+                print(f'- {keys[i]}')
+                available.append(keys[i])
+        direction_choice = self.prompt_valid_choice(
+            available,
+            question='Which direction do you wish to go to?: ',
+            errormsg='You can only move in the above stated direction(s)!'
+        )
+        # direction_choice = self.input('Which direction do you wish to go to?: ')
+        # while direction_choice not in available:
+        #     print('You can only move in the above stated direction(s)!')
+        #     direction_choice = self.input('Which direction do you wish to go to?: ')
         numpaths = len(choices[keys.index(direction_choice)])
-        if numpaths > 1:
-            print(f'You entered a corridor, and there are {numpaths} doors...')
-            print('The following are the paths that can be taken: ')
-            for i in range(1, numpaths + 1):
-                print(f'path {i}')
-            path_choice = input('Which path do you wish to take? Type the path number: ').strip().lower()
-            while path_choice not in [str(i) for i in range(1, numpaths + 1)]:
-                print('You can only take the above stated path(s)!')
-                path_choice = input('Which path do you wish to take? Type the path number: ').strip().lower()
-            self.player.current = self.map[self.player.current][direction_choice][int(path_choice) - 1]
-        else:
-            self.player.current = self.map[self.player.current][direction_choice][0]
+        if numpaths == 1:
+            path_choice = 0
+        else:    
+            path_choices = [str(i) for i in range(1, numpaths + 1)]
+            question = f'You entered a corridor, and there are {numpaths} doors...'
+            question += '\nThe following are the paths that can be taken: '
+            for i in path_choices:
+                question += f'\npath {i}'
+            question += '\nWhich path do you wish to take? Type the path number: '
+            path_choice = self.prompt_valid_choice(path_choices, question, 'You can only take the above stated path(s)!')
+        self.player.current = self.map[self.player.current][direction_choice][int(path_choice) - 1]
 
     def intro(self):
         with open('content/intro.txt', 'r') as f:
@@ -73,15 +98,14 @@ class MUDGame:
         return data.generate_enemy()
         
     def inventory_show(self): # can seperately implement in a class
-        # 57
+        # 62
         used = []
-        print('╔══════════════════════════════════════════════════════════╗')
-        print('║                   Inventory Display                      ║')
-        print('╟──────────────────────────────────────────────────────────╢')
-        for i, j in enumerate(self.player_inventory):
-            name = j.name
-            if name not in used:
-                used.append(name)
+        print('╔═══════════════════════════════════════════════════════╗')
+        print('║                   Inventory Display                   ║')
+        print('╟───────────────────────────────────────────────────────╢')
+        for j in self.player_inventory:
+            if j.name not in used:
+                used.append(j.name)
                 if j.consumable == True:
                     status = 'Usable'
                 else:
@@ -90,28 +114,32 @@ class MUDGame:
                     else:
                         status = 'carriable'
                 count = self.player_inventory.count(j)
-                print(f'║{i+1:<6}{name:<16}x{count:<4}{"["+status+"]":<19}{"["+j.type+"]":<12}║')
+                print(f'║{j.name:<20}x{count:<4}{"["+status+"]":<15}{j.magnitude:<5}{"["+j.type+"]":<10}║')
               
-        print('╚══════════════════════════════════════════════════════════╝')
-    
+        print('╚═══════════════════════════════════════════════════════╝')
+ 
     def inventory_consume_item(self) -> None:
         """ show inventory"""
         if self.player_inventory == []:
             return "Nothing in inventory!"
         self.inventory_show()
-        consume = input("Would you like to consume any item?(y/n)?: ").lower()
-        while consume not in ['y', 'n']:
-            print('Not a valid response!')
-            consume = input("Would you like to consume any item?(y/n)?: ").lower()
+        consume = self.prompt_valid_choice(
+            options=['y', 'n'],
+            question="Would you like to consume any item?(y/n)?: ",
+            errormsg='Not a valid response!'                                
+        )
+        
         if consume == 'n':
             return None
 
         else: 
-            item = input("Which item would you like to consume?: ").lower()
             attributes = [i.name for i in self.player_inventory]
-            while item not in attributes:
-                print('Invalid item!')
-                item = input("Which item would you like to consume?: ")
+            item = self.prompt_valid_choice(
+                options=attributes,
+                question="Which item would you like to consume?: ",
+                errormsg='Invalid item!'
+            )
+            
             item_index = attributes.index(item)
             used_item = self.player_inventory[item_index]
             if used_item.consumable == True:
@@ -135,15 +163,16 @@ class MUDGame:
             
 
     def fight(self, enemy_list):
+        
         #if enemy_presence --> choose whether to consume an item --> player attack enemy first then enemy attack player --> if player hp reaches 0 before enemy, player looses --> else continue
         for i in range(len(enemy_list)):
             while self.player.hp > 0 and enemy_list[i].hp > 0:
-                choice = input('The enemy is now in front of you! You can choose to \n1. punch \n2. attack with existing weapons: ')
-                
-                while choice not in ['1', '2']:
-                    print('Invalid option!')
-                    choice = input('The enemy is now in front of you! You can choose to 1. punch 2. attack with existing weapons: ')
-
+                choice = self.prompt_valid_choice(
+                    options=['1', '2'],
+                    question='The enemy is now in front of you! You can choose to \n1. punch \n2. attack with existing weapons: ',
+                    errormsg='Invalid option!'
+                )
+            
                 print(f'{self.player.name} hp: {self.player.hp}')
                 print(f'enemy hp: {enemy_list[i].hp}')
                 
@@ -158,17 +187,21 @@ class MUDGame:
                 if enemy_list[i].hp <= 0:
                     print('You have defeated the enemy!')
                     
-        if self.player.hp < 0:
-            self.game_over = True
+        # if self.player.hp < 0:
+        #     self.game_over = True
         
     def pick_item(self, items): # need change
         """ display items in the room"""
         for i in items:
             print(i.name)
-            choice = input('found! Collect it to help increase your chances of defeating the monsters!(y/n): ').lower()
-            while choice not in ['y', 'n']:
-                print('invalid option!')
-                choice = input('found! Collect it to help increase your chances of defeating the monsters!(y/n): ').lower()
+            choice = self.prompt_valid_choice(
+                options=['y', 'n'],
+                question='found! Collect it to help increase your chances of defeating the monsters!(y/n): ',
+                errormsg='invalid option!'
+                
+                
+            )
+
             if choice.lower() == "y":
                 data.player_inventory_temp.add_item(i)
                 
@@ -180,15 +213,16 @@ class MUDGame:
             for line in f:
                 print(line.strip())
 
-    def win(self) -> str:
-        if self.game_over:
-            if self.enemy.hp <= 0:
+    def win(self) -> bool:
+        if not self.game_over():
+            if self.boss.hp <= 0:
                 with open('content/win_desc.txt', 'r') as f:
                     for line in f:
                         print(line.strip())
                     return True
             else:
                 return False
+        return False
     
     def run(self) -> str:
         """ 
@@ -202,23 +236,28 @@ class MUDGame:
         """
         self.intro()
         self.set_username(data.Player())
-        if self.not_room_10():
-            while not self.game_over:
-                self.movement()
-                self.room_desc(data.Player())
-                enemy_list = self.generate_enemy()
-                if self.enemy_presence(enemy_list):                    
-                    print('There is a monster in the room. Defeat them to rescue your sibling from the grasp of dark magic!')
-                    self.inventory_consume_item()
-                    self.fight(enemy_list)
-                if not self.game_over:
-                    items_list = self.generate_items()
-                    if self.item_presence(items_list):
-                        self.pick_item(items_list)
-                        self.inventory_show()
-                        
-        else:
-            self.final_room()
+        # if os.environ.get('DEBUG'):
+        #     self.player.current = "10"
+        while not self.game_over()  and not self.room_10():
+            self.movement()
+            self.room_desc(data.Player())
+            enemy_list = self.generate_enemy()
+            if self.enemy_presence(enemy_list):                    
+                print('There is a monster in the room. Defeat them to rescue your sibling from the grasp of dark magic!')
+                self.inventory_consume_item()
+                self.fight(enemy_list)
+            else:
+                print("Great save! There are no enemies in this room.")
+            if not self.game_over():
+                items_list = self.generate_items()
+                if self.item_presence(items_list):
+                    self.pick_item(items_list)
+                    self.inventory_show()
+                    print(self.player.current)
+                else:
+                    print("Aww too bad, there are no items in this room :(")
+                    
+        self.final_room()            
                 
         if not self.win():
             print("You have been defeated >_<")

@@ -34,7 +34,7 @@
 
     "4":
         {
-    "name": "jsng's house", "description": "turn around he's behind u", "up": ["1"],
+    "name": "Spooky Town", "description": "idk", "up": ["1"],
     "down": ["7"], "left": [null],
     "right": ["5"]
         },
