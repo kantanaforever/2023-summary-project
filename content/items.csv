@@ -11,3 +11,4 @@ wind fleuret, weapon, False, False, 20
 spear, weapon, False, False, 20
 claymore, weapon, False, False, 25
 attack potion, attack, True, False, 5
+feather duster, weapon, False, False, 1

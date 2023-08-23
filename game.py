@@ -117,10 +117,10 @@ class MUDGame:
             if used_item.consumable == True:
                 print(f'{used_item.name} has been consumed!')
                 if used_item.type == 'hp':
-                    self.player.hp += used_item.magnitude
+                    self.player.hp += int(used_item.magnitude)
                     print(f'{used_item.type} has been increased by {used_item.magnitude}. {used_item.type} is now {self.player.hp}')
                 elif used_item.type == 'attack':
-                    self.player.attack_punch += used_item.magnitude
+                    self.player.attack_punch += int(used_item.magnitude)
                     print(f'punch attack has been increased by {used_item.magnitude}. punch attack is now {self.player.attack_punch}')
                     
                 self.player_inventory.pop(item_index)
@@ -137,37 +137,41 @@ class MUDGame:
     def fight(self, enemy_list):
         #if enemy_presence --> choose whether to consume an item --> player attack enemy first then enemy attack player --> if player hp reaches 0 before enemy, player looses --> else continue
         for i in range(len(enemy_list)):
-            enemy = data.Enemy()
-            while self.player.hp > 0:
-                choice = input('The enemy is now in front of you! You can choose to 1. punch 2. attack with existing weapons')
+            while self.player.hp > 0 and enemy_list[i].hp > 0:
+                choice = input('The enemy is now in front of you! You can choose to \n1. punch \n2. attack with existing weapons: ')
                 
                 while choice not in ['1', '2']:
                     print('Invalid option!')
-                    choice = input('The enemy is now in front of you! You can choose to 1. punch 2. attack with existing weapons')
+                    choice = input('The enemy is now in front of you! You can choose to 1. punch 2. attack with existing weapons: ')
+
+                print(f'{self.player.name} hp: {self.player.hp}')
+                print(f'enemy hp: {enemy_list[i].hp}')
+                
     
                 if choice == '1':
-                    self.player.attack_p(enemy)
+                    self.player.attack_p(enemy_list[i])
                 elif choice == '2':
-                    self.player.attack_w(enemy)
+                    self.player.attack_w(enemy_list[i])
     
-                enemy.atk(self.player)
+                enemy_list[i].atk(self.player)
     
-                if enemy.hp <= 0:
+                if enemy_list[i].hp <= 0:
                     print('You have defeated the enemy!')
-                    return None
-    
+                    
+        if self.player.hp < 0:
             self.game_over = True
         
     def pick_item(self, items): # need change
         """ display items in the room"""
         for i in items:
-            print(i)
+            print(i.name)
             choice = input('found! Collect it to help increase your chances of defeating the monsters!(y/n): ').lower()
             while choice not in ['y', 'n']:
                 print('invalid option!')
                 choice = input('found! Collect it to help increase your chances of defeating the monsters!(y/n): ').lower()
             if choice.lower() == "y":
-                self.player.pick_item(i)
+                data.player_inventory_temp.add_item(i)
+                
                 
     
     def final_room(self):
@@ -182,6 +186,8 @@ class MUDGame:
                 with open('content/win_desc.txt', 'r') as f:
                     for line in f:
                         print(line.strip())
+            return True
+        return False
     
     def run(self) -> str:
         """ 
@@ -199,21 +205,24 @@ class MUDGame:
             if self.not_room_10():
                 self.movement()
                 self.room_desc(data.Player())
-                try:
-                    enemy_list = self.generate_enemy()
-                except:
-                    breakpoint()
+                enemy_list = self.generate_enemy()
                 if self.enemy_presence(enemy_list):
                     print('There is a monster in the room. Defeat them to rescue your sibling from the grasp of dark magic!')
                     self.inventory_consume_item()
                     self.fight(enemy_list)
-                items_list = self.generate_items()
-                if self.item_presence(items_list):
-                    self.pick_item(items_list)
+                if not self.game_over:
+                    items_list = self.generate_items()
+                    if self.item_presence(items_list):
+                        self.pick_item(items_list)
+                        self.inventory_show()
+                        
             else:
                 self.final_room()
-            return self.win()
-        return "You have been defeated >_<"
+                
+            if not self.win():
+                print("You have been defeated >_<")
+
+                return
            
         
         

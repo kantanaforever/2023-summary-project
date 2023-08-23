@@ -42,7 +42,7 @@ class Player:
     """
     def __init__(self) -> None: # map in json
         self.name = '' # user input
-        self.hp = 100
+        self.hp = 1000
         self.attack_punch = 10
         self.attack_weapon = 10
         self.current = '0'
@@ -119,13 +119,14 @@ class _PlayerInventory:
             print('Invalid item')
             
 
-    def pick_item(self, item_data):
+    def add_item(self, item_data):
         # item_data is in the following format: {'name':'elixer', 'type':'hp', 'consumable':True, 'status':False}
         # item = _Item(line[0], line[1], line[2], line[3], line[4])
         # return item
         
-        # self.player_inventory.append(self.items[item[1]][item[0]])
-        pass
+        self.player_inventory.append(item_data)
+        
+        
 
 def generate_items():
     inventory = _Inventory()
@@ -151,17 +152,15 @@ class Enemy:
     def __init__(self):
         self.hp = 200
         self.attack = 5
-        self.turn = False
 
     def atk(self, player):
-        if self.turn:
-            player.hp -= self.attack
+        player.hp -= self.attack
 
 class Enemy1(Enemy):
     def __init__(self):
         super().__init__()
         self.hp = r.randint(100, 200)
-        self.attack = r.randint(0, 10)
+        self.attack = r.randint(0, 5)
     
     def atk(self, player):
         super().atk(player)
@@ -170,7 +169,7 @@ class Enemy2(Enemy):
     def __init__(self):
         super().__init__()
         self.hp = r.randint(100, 200)
-        self.attack = r.randint(0, 10)
+        self.attack = r.randint(0, 5)
     
     def atk(self, player):
         super().atk(player)
@@ -197,8 +196,8 @@ map = _Zonemap('content/zonemap.json')
 map = map.map
 
 # Inventory callout
-player_inventory = _PlayerInventory()
-player_inventory = player_inventory.player_inventory
+player_inventory_temp = _PlayerInventory()
+player_inventory = player_inventory_temp.player_inventory
 
 inventory = _Inventory()
 inventory = inventory.items
