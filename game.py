@@ -181,13 +181,14 @@ class MUDGame:
                 print(line.strip())
 
     def win(self) -> str:
-        if self.player.current == 10:
+        if self.game_over:
             if self.enemy.hp <= 0:
                 with open('content/win_desc.txt', 'r') as f:
                     for line in f:
                         print(line.strip())
-            return True
-        return False
+                    return True
+            else:
+                return False
     
     def run(self) -> str:
         """ 
@@ -201,12 +202,12 @@ class MUDGame:
         """
         self.intro()
         self.set_username(data.Player())
-        while not self.game_over:
-            if self.not_room_10():
+        if self.not_room_10():
+            while not self.game_over:
                 self.movement()
                 self.room_desc(data.Player())
                 enemy_list = self.generate_enemy()
-                if self.enemy_presence(enemy_list):
+                if self.enemy_presence(enemy_list):                    
                     print('There is a monster in the room. Defeat them to rescue your sibling from the grasp of dark magic!')
                     self.inventory_consume_item()
                     self.fight(enemy_list)
@@ -216,16 +217,14 @@ class MUDGame:
                         self.pick_item(items_list)
                         self.inventory_show()
                         
-            else:
-                self.final_room()
+        else:
+            self.final_room()
                 
         if not self.win():
             print("You have been defeated >_<")
-
             return
-           
-        
-        
+
+
             
             
     
