@@ -52,15 +52,15 @@ class MUDGame:
         # remove name and description from choices
         choices = list(self.map[self.player.current].values())[2:]
         
-        print('You can move in the following directions: ')
+        print('\nYou can move in the following directions: \n')
         for i, choice in enumerate(choices):
             if choice != [None]:
                 print(f'- {keys[i]}')
                 available.append(keys[i])
         direction_choice = self.prompt_valid_choice(
             available,
-            question='Which direction do you wish to go to?: ',
-            errormsg='You can only move in the above stated direction(s)!'
+            question='\nWhich direction do you wish to go to?: ',
+            errormsg='\nYou can only move in the above stated direction(s)!'
         )
         # direction_choice = self.input('Which direction do you wish to go to?: ')
         # while direction_choice not in available:
@@ -71,25 +71,26 @@ class MUDGame:
             path_choice = 0
         else:    
             path_choices = [str(i) for i in range(1, numpaths + 1)]
-            question = f'You entered a corridor, and there are {numpaths} doors...'
+            question = f'\nYou entered a corridor, and there are {numpaths} doors...\n'
             question += '\nThe following are the paths that can be taken: '
             for i in path_choices:
                 question += f'\npath {i}'
             question += '\nWhich path do you wish to take? Type the path number: '
-            path_choice = self.prompt_valid_choice(path_choices, question, 'You can only take the above stated path(s)!')
+            path_choice = self.prompt_valid_choice(path_choices, question, '\nYou can only take the above stated path(s)!')
         self.player.current = self.map[self.player.current][direction_choice][int(path_choice) - 1]
+        print('\n' * 3 + 'You are now in the '+ self.map[self.player.current]["name"] + '!\n')
 
     def intro(self):
         with open('content/intro.txt', 'r') as f:
             for line in f:
-                print(line.strip())
+                print(line, end='')
 
     def set_username(self, Player):
         self.player.set_username()
 
     def room_desc(self, Player):
         desc = self.map[self.player.current]['description']
-        print(desc)
+        print(f'\n{desc}')
 
     def generate_items(self):
         return data.generate_items()
@@ -235,6 +236,7 @@ class MUDGame:
         7. when reach room 10, fight big big boss -> game over!! 
         """
         self.intro()
+        print('\n')
         self.set_username(data.Player())
         # if os.environ.get('DEBUG'):
         #     self.player.current = "10"

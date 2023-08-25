@@ -197,7 +197,16 @@ class Boss(Enemy):
     def atk(self, player):
         super().atk(player)
     
+class Colour:
+    def __init__(self):
+        self.gray = '\033[1;30;40m '
+        self.red = '\033[1;31;40m '
+        self.green = '\033[1;32;40m '
+        self.yellow = '\033[1;33;40m '
 
+    def colourise(self, colour, text):
+        return colour + text
+        
 # Zonemap callout
 map = _Zonemap('content/zonemap.json').map
 

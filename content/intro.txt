@@ -1,3 +1,111 @@
-You are the eldest child of a large ducal family who lost their title due to war. After the fall, all of your siblings, who hated the restrictive noble life and controlling parents, all managed to flee by disguising themselves. As the eldest, you told all of your siblings to live out their life their way. Time passed, and you managed to maintain contact with your siblings. Until one day, the messages stopped coming in, and you have received news that all of them have been kidnapped by mysterious people. As an adventurer and the eldest sibling, it is now your job to save them!
+You are the eldest child of a large ducal family who lost their title due to war. 
 
-However, when you reach the dungeons where they are supposedly held captive, dark magic rituals practised by the kidnappers have turned them all into monsters. Defeat the monsters to free your siblings! 
+After the fall, all of your siblings, who hated the restrictive noble life and controlling parents, all managed to flee by disguising themselves. 
+
+As the eldest, you told all of your siblings to live out their life their way. 
+
+Time passed, and you managed to maintain contact with your siblings. 
+
+Until one day, the messages stopped coming in, and you have received news that all of them have been kidnapped by mysterious people. 
+
+As an adventurer and the eldest sibling, it is now your job to save them!
+
+                                                     f,  !]]YbdQQZCC/]|a                                                     
+                                                    c;  I]]upp0CQOCr]1Z                                                      
+                                                   wl  ,]]fppdOLpdc]}Y                                                       
+                                                  M<  ^?]\addbdqbO[[v                                                        
+                                                 @r  `-]1komdbddq{]r                                                         
+                                              #& *kU!+]}pop{vdpq|]/B   OZZC                                                  
+                                          o# *kkokkbo|]O*h([fdpj](k    ZmZQOZ                                                
+                                         *bbahkko*koWkJ**Y}(hac]1Q     wZZOm0Q    QQL                                        
+                                        #kbbaMkaWW*WWWM*Qcrpo0]}X     k#oapw0C    mm0C                                       
+                                       8*hbhWWMWWW8WWWWwvcd*q}[u     #oMbbppZZ0CZmZOOCQ                                      
+                                      %#*#oWWW8&W888WWa0zw*h)]j@    hoqwwpbpOdZLdpZO0QOW                                     
+                                     BM###88W888#88&&*OOq*o/]\M  JCo#kwmaW*w0kmQwmOOZmOmZZ                                   
+                                      oa*&%%*88&aW&&&dOwWMn])d   bkkkwmZqmbwZmmpOZQQZZZmZ0q                                  
+                                       ph%%%kW&B@8&&WMpMWWf{J    bkkdmZqqmqwmZwwZZQQqOZmZqmL                                 
+                                        kW% $M8B%88WWW&WWWaX     hhkdZZmf||\\tYYfzQQCrQmwwZJ                                 
+                                         B@  hh8888&WW&&WM&     8hkdqZO0/())(/zv(uQQX|0qqq0UU                                
+                                             BMd8888&&&8W&$     khdppwZJ|((fvczu(jZZn(Oqqq0JCu                               
+                                    ZO      %WBBW8888&8888      pbpqqvzn()(jzzzx)(JJf(mqqqQwb0{                              
+                                   quxXd   @WMW%88888a88WW%     pZOZZ0LLCCCL000CXzzzcvZZZZLwd0r                              
+                                  *cxxxQoB WMM&888#88%#WMWB      bZQUUUUUJJJCCCCLLOZ0QQ0JQLLpwz]                             
+                                 &XxxxUhkoWMMW88%%*W%B%WWB        qv][{{[[}{{{11)(rnt\\\jUQO#kU!                             
+                                 JxxxckkkaOm*&88% &#B%8&8         mf~t0LJr~~~~~~~~vcvv}+|vL0Z00#                             
+                                LxxxubkkhLJLCp8%   ad8&WWB        )i<xZO0r<<<<<<<<00mm}~|n0p*aha                             
+                               auxxnqkkk0xuYX0a   8B8*WMWB        !i<(jrr1~<<<<<<+ccXc_<\xdWhbZn                             
+                              MhbYxZkkkwxxxxLOm8 8WW%%WM8         `><1\/t[~<<<<<~_\\t(><txQwOmOC                             
+                             &akkhphkkdnxxxUZOaM%8oW8&&8          ;>>\fjj]~<<<<<~?/tf(<>fxOMmLL                              
+                            @okkkkkkkkcxxxzZObM#W bb&&8           ,></frx?~<<<<<~[fjx)<<jxZ*0O                               
+                             odkkkkkkpzxxvOZpM###W #*8@           l<<-?]]~<<<<<<<?11}?<<xxvUYO                               
+                              bmbkkkkkh0u0Zw#####&  M##W  @@      [><~~~~<<<<<<<<_[?~~<~xxuWkJ                               
+                               b0qkkkkkkoZZ*####WW&&aaa*  ZUCO@   [~~~~~~<<<<<<<<-[-~~<+xxvopo                               
+                                p0Zbkkk*Mao####M@aaoo#MW&&*Z0mW   ?~~~~~~~~~~~~~~?[-~~~?nxxCCa                               
+                                B8%dwkoMMM####MBodh#MMW&&&8okh*   [????--__++++++][-+++]nxxn                                 
+                                %BB@*O*MM#####8 qpkoMW&%aMMaO0mB  [[[[[[[]?----]][[[[[[(nxxq                                 
+                               &MW8%8aO######&  mwpd*&%8hMMa0Q0B  {{{{{{{}[]]]?[[}}}[[[|vxxf                                 
+                              &##MW88&ZZ####W   qqpdhW&WoMMhQCLB <))(((((((((((((((((((fcnxj                                 
+                             &M##M88% @pw#*W   #pdbkb######bJYU@ \tfffjjft/||((((())(((rcux                                  
+                            %M##M888$   oaMB   kZhaob####*opXcX@#akYcvnnncccccccvvvvunnvcnna&                                
+                           BW##M888@     @B    mOwwqwdbbbbdOvvz$b0YYzzYYYXuvvvvvvvvvvvvvc0XzYb                               
+                          @W##M&88%          bpmw0OOOO00LJzvuuz$kqwLYzYYUYzzcvvvunnxxuunuQJJUk                               
+                          W###&88%           wZqk0OOO0QLJYcvuuzopqwwoXYUUYvv0QQLCCJJUYXX0QJJJM Bddpa@                        
+                         &###W88%           W0ZqbmwmmZOLJXcvuuuXUZwwoXUJJUYXOMMMWWWW&aJYYJCJCM dZw0LXUJoB                    
+                        @W##W88%            ZOmwddppqqqqqqqqqwmCuuJqaXUJJJJUwMMMMWWW8aQCCCLCQWaZZ0QUcuuwkaoW@                
+                         @WM888@            Qqqqk**#***ooaahhkpZUuuzOYUJCJJJd&WWW&&8%hCCCCLC0WwZb0LYcnn0kkhkh#               
+                           B88B            @0qqqo*************wOQmqpwUJJCJJJJXzzXYUCLCJJJCLLLmmdhZJXcnnJkkhhho               
+                            BB             aQqqp*************kq0QwqpwUJJCCCCJJJUUUUCCCCCCLLLO*bhhmUYznnzkkkkkh@              
+                                           Lmqqb*************pqm0wqdmUJCCCCCJJJJJJJCCCCCLLCLZ*khhmmCzunuZdkkkb8              
+                                           Cqqqa************hqqwwkhamUJCCCCCJJJJJJJCCCLLLLCLm*khhbb0zunuuvzCOq*              
+                                           mqqq***********o*dqqwq**MmYUUCOOmQQQQLLLQQQ00mQCCp&*akbbmzUYvuvvccvXJO            
+                                           pwqd*********o***pqqwq**MOYUULZZwQQQQ000000ZZpQCLb&ohkbbpYqqqm0JXvcccU@           
+                                           #ahbkkhhhaaooo**Wkqqwp**MQYUUQZZmQQQ0000000ZZpLCCk&ohkbbbbdqqqqqqwOLYz*           
+                                             @kbbddddpqwwwdBbqqwd**MLYUUYzzJLLQQQQQQQQYYLLCCa&ohkbb#W&W*abqqqqqqqO@          
+                                                     @$@%MM bqwwd**MJUUUUUUUCCCCCLLLLLLLCCCCoWakkboWWWWWWWW#okpqpCo          
+                                                            bqwqb**MUUUUUUUJCCCCLCCLLLLCCCCC#WakkhWWWWWWWWWWWWWkqOp          
+                                                           @dqwbWW&aCYYUUUUJCCCCLCLLLLLCCCCCM#hhhWWWWWWWWWWWWWaqqd&          
+                                                           @dqwbW8%bWMMpLLLLQQQQQQQLQLLL0##*Waak#WWWWWWWWWWWW*qqp#           
+                                                           Bdqwk#&8bM&%pLLLQ000000QQQLLLm888MaaoWWWWWWWWWWWW#qqp*            
+                                                            hqwk*&&b#W8mLLLQ000000QQQLLLw8&&#aoWWWWWWWWWWWWWpqqa             
+                                                            kqwh*WWb*W80JCCmppppppppZLCCq&&&#aWWWWWW&&MWWWWbqqh              
+                                                            bwwa*M#k*M&CYUU*@@@@@@@@dCJJp&&&*MW&kw0JcxnwWWhqqb@              
+                                                            bwwa*Mok*#MYYYUW@BBBBBB@qJJJb&&&MWWqjjjjjxYYaoqqd&               
+                                                            #qwa*Mah*#oYYYUW8&&&&&&%ZUUJk&&&WWarrnujrXYYLpqpM                
+                                                             aqo*Mhh*#hzzXX&&WMMMMW80XYYaW&&ahvrC0ujcYYUkopo                 
+                                                              ho*#kh*#bzzXY8WMMMMMWWCXXX*WW*dzjY0zjuYYUmMMM                  
+                                                               opqao##pczXU8WMMMMMMMUXXXM&B80jrunjxYYUQ#MMM8                 
+                                                                aq*8%#aO00w&M#####MWaqqp&@ mxjjjjrzYYJaMMMMW%                
+                                                               8dw*W8*a&8&&WM######MW&&88@auxucXUJYYUpMMMMMMW                
+                                                           Bo$%pZZd#%*aMWWWWM#####MMW&&@@ *dppppppCUOMMMMMMM&                
+                                                          %wQOwwmmqkWqbM%B%BB@$$@@@@@@     odpppppqC*MMMMMMWB                
+                                                          wCJJJJ0qpom00O*           bXzzXYUUhpppph*#MMMMMMM%                 
+                                                          kmCzzz0powQQ0mb           LvnnnuuuOkppppMWMMMMMM&                  
+                                                          aqpwCQwkd0Q0mmk           LvnnuuvvLWdpppbMWMMMMW@                  
+                                                          Mqqqpwwpq00mmbW           QvxnnuvvC opppphMMMMW%                   
+                                                          @dqqqqwpbqmmbMM@      *o@@QvxxxnnnU  hpppp*MMM&                    
+                                                           hdwqwmpaqwdMM#8     %UrnzUvxxxnnnY  BkbbbkW&&@                    
+                                                            @adww#WWaMM#*W     0crxuYvxxxnnnY                                
+                                                              &**WWWWM#*#oh   bzcrxuYLQLCJUUL@                               
+                                                              B%WMMMW#*#*ww   pcY0QLZkbdpqwqo                                
+                                                              &&%%&MM##8aLw   dzwaaaoW%%%B%%                                 
+                                                             &#MW8%%&#%BdJw   hOpaaaaoMWWWW&                                 
+                                                             M*##MW&o&%#OQW   8qphaaaoooooo#                                 
+                                                             Moo*##hb##qOp    8qqkkkhaaaooo*$                                
+                                                            &dh**oow***qq@    %qwbkkhaaaaaaoB                                
+                                                            p0ZqkooddwwZ*     %qwbkhadkkkkkha%                               
+                                                           @wQLL0ZqwO0Lw      %qqhaokpkkkkkkh%                               
+                                                            bwOJUUUJJL0%      8pwobZOQZmmwqpp#B                              
+                                                            @adwQXczXCb       %Zm*znnnnnnnnnxn0                              
+                                                              @adwLcYm        BLZOvnnnnnnnnuuuC                              
+                                                                @adwQ#         COzcnnnnnuuuuuuJ                              
+                                                                  @ab          JOczXXzzzzzccccC                              
+                                                                               C0c0mmmmmmmmmmwo                              
+                                                                               C0Cmmmmmmmmmmmk                               
+                                                                               CObbbbbbbddddk                                
+                                                                               LmddbbbbbbbbaB                                
+                                                                               dpppqqppqqqp#                                 
+                                                                                                                             
+
+However, when you reach the dungeons where they are supposedly held captive, dark magic rituals practised by the kidnappers have turned them all into monsters. 
+                                                   
+Defeat the monsters to free your siblings! 
