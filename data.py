@@ -3,20 +3,11 @@ import json
 import random as r
 
 
-# Class Implementation
+with open('content/zonemap.json', 'r') as f:
+    map = json.load(f)
 
-# Zonemap
-class _Zonemap:
-    """
-    This class encapsulates data for Zonemap
-    
-    Attributes
-    -----------
-    + self.map: (dicts in dict) contains contents of json file with rooms and their characteristics
-    """
-    def __init__(self, file: str) -> None:
-        with open(file, 'r') as f:
-            self.map = json.load(f)
+
+# Class Implementation
 
 # Player
 class Player:
@@ -279,8 +270,6 @@ class Colours:
     def colourised(colour, text):
         return colour + text
         
-# Zonemap callout
-map = _Zonemap('content/zonemap.json').map
 
 # Inventory callout
 player_inventory_temp = _PlayerInventory()
