@@ -1,6 +1,7 @@
 # Import statements
 import data
 from data import Colours
+import text
 
 """call every method here """
 
@@ -73,15 +74,15 @@ class MUDGame:
         # remove name and description from choices
         choices = list(self.map[self.player.current].values())[2:]
         
-        print(Colours.colourised(Colours.BLUE,'\nYou can move in the following directions: \n'))
+        print(Colours.colourised(Colours.BLUE, f'\n{text.direction_instruction} \n'))
         for i, choice in enumerate(choices):
             if choice != [None]:
                 print(f'- {keys[i]}')
                 available.append(keys[i])
         direction_choice = self.prompt_valid_choice(
             available,
-            question='\nWhich direction do you wish to go to?: ',
-            errormsg='\nYou can only move in the above stated direction(s)!',
+            question=f'\n{text.direction_prompt}: ',
+            errormsg=f'\n{text.direction_error}',
             col = Colours.BLUE
         )
         numpaths = len(choices[keys.index(direction_choice)])
@@ -89,21 +90,15 @@ class MUDGame:
             path_choice = 0
         else:    
             path_choices = [str(i) for i in range(1, numpaths + 1)]
-            question = f'\nYou entered a corridor, and there are {numpaths} doors...\n'
-            question += '\nThe following are the paths that can be taken: '
-            for i in path_choices:
-                question += f'\npath {i}'
-            question += '\nWhich path do you wish to take? Type the path number: '
-            path_choice = self.prompt_valid_choice(path_choices, question, '\nYou can only take the above stated path(s)!', col=Colours.BLUE)
+            question = text.path_instruction(path_choices)
+            path_choice = self.prompt_valid_choice(path_choices, question, f'\n{text.path_error}', col=Colours.BLUE)
         self.player.current = self.map[self.player.current][direction_choice][int(path_choice) - 1] #  updating the player position 
         print(Colours.colourised(Colours.DARK_GRAY,'\n' * 3 + 'You are now in the '+ self.map[self.player.current]["name"] + '!\n')) # printing the name of the room
 
     
     def intro(self):
         """prints the introduction to the game"""
-        with open('content/intro.txt', 'r') as f:
-            for line in f:
-                print(Colours.colourised(Colours.DARK_GRAY, line), end= '')
+        print(Colours.colourised(Colours.DARK_GRAY, text.intro), end= '')
 
     def ask_username(self):
         """prompts and sets the player's username"""
@@ -121,13 +116,13 @@ class MUDGame:
         Prompt the player if they want to comsume any items from their inventory.
         """
         if self.player.inventory.is_empty():
-            print(Colours.colourised(Colours.RED, "\nNothing in inventory!\n"))
+            print(Colours.colourised(Colours.RED, f"\n{text.inventory_empty}\n"))
             return
         self.player.inventory.show()
         consume = self.prompt_valid_choice(
             options=['y', 'n'],
-            question="Would you like to equip/consume any item?(y/n)?: ",
-            errormsg='\nNot a valid response!\n',
+            question=f"{text.use_item_prompt}: ",
+            errormsg=f'\n{text.use_item_error}\n',
             col= Colours.LIGHT_GREEN
         )
         
@@ -137,8 +132,8 @@ class MUDGame:
         else: 
             name = self.prompt_valid_choice(
                 options=self.player.inventory.item_names(),
-                question="Which item would you like to equip/consume?: ",
-                errormsg='Invalid item!',
+                question=f"{text.choose_item_prompt}: ",
+                errormsg=text.choose_item_error,
                 col=Colours.LIGHT_GREEN
             )
             used_item = self.player.use_item(name)
@@ -163,12 +158,12 @@ class MUDGame:
         for i in range(len(enemy_list)):
             
             while not self.player.is_dead() and not enemy_list[i].is_dead():
-                print(Colours.colourised(Colours.PURPLE, (f'\n{self.player.name} hp: {self.player.hp}')))
-                print(Colours.colourised(Colours.GREEN, (f'enemy hp: {enemy_list[i].hp}')))
+                print(Colours.colourised(Colours.PURPLE, text.hp_report(self.player.name, self.player.hp)))
+                print(Colours.colourised(Colours.GREEN, text.hp_report("enemy", enemy.hp)))
                 choice = self.prompt_valid_choice(
                     options=['1', '2'],
-                    question='\nThe enemy is now in front of you! You can choose to \n1. punch \n2. attack with existing weapons: ',
-                    errormsg='\nInvalid option!',
+                    question=f'\n{text.combat_prompt}',
+                    errormsg=f'\n{text.combat_error}',
                     col=Colours.LIGHT_GREEN
                 )
             
@@ -180,9 +175,9 @@ class MUDGame:
                 self.player.take_damage(enemy_list[i].attack)
     
                 if enemy_list[i].is_dead():
-                    print(Colours.colourised(Colours.LIGHT_WHITE, ('\nYou have defeated the enemy!\n')))
+                    print(Colours.colourised(Colours.LIGHT_WHITE, (f'\n{text.enemy_defeated}\n')))
                     if i < len(enemy_list) - 1:
-                        print("Another enemy has entered...")
+                        print(text.enemy_enter)
                     
         
     def pick_item(self, items): 
@@ -192,8 +187,8 @@ class MUDGame:
         #print(self.colour...item)
             choice = self.prompt_valid_choice(
                 options=['y', 'n'],
-                question=f'\n{item} found! Collect it to help increase your chances of defeating the monsters!(y/n):',
-                errormsg='\ninvalid option!\n',
+                question=f'\n{text.loot_prompt(item.name)}',
+                errormsg=f'\n{text.loot_error}\n',
                 col= Colours.LIGHT_GREEN
             )
 
@@ -207,19 +202,17 @@ class MUDGame:
         Prompt the player if they would like to consume any items.
         Make the player fight the enemy
         """
-        with open('content/finaldesc.txt', 'r') as f:
-            for line in f:
-                print(Colours.colourised(Colours.DARK_GRAY, (line.strip())))
+        print(Colours.colourised(Colours.DARK_GRAY, text.final_room))
 
     def final_boss_fight(self):
         """player and final boss take turns to attack each other""" 
-        print(Colours.colourised(Colours.PURPLE, (f'{self.player.name} hp: {self.player.hp}')))           
-        print(Colours.colourised(Colours.GREEN, (f'boss hp: {self.boss.hp}\n')))
+        print(Colours.colourised(Colours.PURPLE, text.hp_report(self.player.name, self.player.hp)))
+        print(Colours.colourised(Colours.GREEN, text.hp_report("boss", boss.hp)))
         while not self.player.is_dead() and not self.boss.is_dead():
             choice = self.prompt_valid_choice(
                 options=['1','2'],
-                question = 'The enemy is now in front of you! You can choose to \n1. punch \n2. attack with existing weapons: ',
-                errormsg='\nInvalid option\n',
+                question = text.combat_prompt,
+                errormsg=f'\n{text.combat_error\n',
                 col= Colours.LIGHT_GREEN
                 )
             
@@ -230,11 +223,11 @@ class MUDGame:
             self.player.take_damage(boss.attack)
 
             if self.boss.is_dead():
-                print(Colours.colourised(Colours.PURPLE, (f'\n{self.player.name} hp: {self.player.hp}')))
-                print(Colours.colourised(Colours.GREEN, 'The boss is dead!'))
+                print(Colours.colourised(Colours.PURPLE, (f'\n{text.hp_report(self.player.name, self.player.hp)}')))
+                print(Colours.colourised(Colours.GREEN, text.boss_dead))
             else:
                 print(Colours.colourised(Colours.PURPLE, (f'\n{self.player.name} hp: {self.player.hp}')))
-                print(Colours.colourised(Colours.GREEN, (f'boss hp: {self.boss.hp}\n')))
+                print(Colours.colourised(Colours.GREEN, (f'{text.hp_report("boss", boss.hp)}\n')))
 
     def win(self) -> bool:
         """Prints winning plot when boss hp is less than 0, returns True
@@ -242,11 +235,9 @@ class MUDGame:
         """
         if not self.game_over():
             if self.boss.hp <= 0:
-                print(Colours.colourised(Colours.LIGHT_WHITE, ("\nThe boss has been defeated!\n")))
-                with open('content/win_desc.txt', 'r') as f:
-                    for line in f: 
-                        print(Colours.colourised(Colours.DARK_GRAY, (line.strip())))
-                    return True
+                print(Colours.colourised(Colours.LIGHT_WHITE, (f"\n{text.boss_defeated}\n")))
+                print(Colours.colourised(Colours.DARK_GRAY, text.game_won))
+                return True
             else:
                 return False
         return False
@@ -270,18 +261,18 @@ class MUDGame:
             self.room_desc(data.Player())
             enemy_list = data.generate_enemy()
             if self.enemy_presence(enemy_list):                    
-                print(Colours.colourised(Colours.BROWN, ('\nThere is a monster in the room. Defeat them to rescue your family from the grasp of dark magic!')))
+                print(Colours.colourised(Colours.BROWN, (f'\n{text.enemy_present}')))
                 self.inventory_consume_item()
                 self.fight(enemy_list)
             else:
-                print(Colours.colourised(Colours.LIGHT_GRAY, ("\nGreat save! There are no enemies in this room.\n")))
+                print(Colours.colourised(Colours.LIGHT_GRAY, (f"\n{text.enemy_absent}\n")))
             if not self.game_over():
                 items_list = data.generate_items()
                 if self.item_presence(items_list):
                     self.pick_item(items_list)
                     self.player.inventory.show()
                 else:
-                    print(Colours.colourised(Colours.LIGHT_GRAY, ("Aww too bad, there are no items in this room :(")))
+                    print(Colours.colourised(Colours.LIGHT_GRAY, text.item_absent))
                     
         self.final_room()
         self.inventory_consume_item()
@@ -289,4 +280,4 @@ class MUDGame:
         
                 
         if not self.win():
-            print(Colours.colourised(Colours.DARK_GRAY, ("You have been defeated >_<")))
+            print(Colours.colourised(Colours.DARK_GRAY, text.game_lost))
