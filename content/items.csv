@@ -1,4 +1,4 @@
-name,type,consumable,status,magnitude
+name,type,consumable,equipped,magnitude
 elixir,hp,True,False,10
 fairy bottle,hp,True,False,10
 balm,hp,True,False,5

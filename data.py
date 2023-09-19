@@ -52,13 +52,13 @@ class Item:
     -----------
     self.name: (str) name of item
     self.type: (str) type of item
-    self.status: (str) whether item is equipped
+    self.equipped: (str) whether item is equipped
     self.magnitude: (str) magnitude of items
     """
-    def __init__(self, name: str, type: str, status: str, magnitude: str) -> None:
+    def __init__(self, name: str, type: str, equipped: str, magnitude: str) -> None:
         self.name  = name
         self.type = type
-        self.status = status
+        self.equipped = equipped
         self.magnitude = magnitude
 
 
@@ -76,7 +76,7 @@ with open("content/items.csv", 'r') as f:
         # Record is a dict with column headers as keys, row data as values
         # The ** operator unpacks a dict into keyword arguments
         consumable = bool(record.pop("consumable"))
-        record["status"] = bool(record["status"])
+        record["equipped"] = bool(record["equipped"])
         record["magnitude"] = int(record["magnitude"])        
         if consumable:
             item = Consumable(**record)
@@ -143,8 +143,8 @@ class _PlayerInventory:
 
     def unequip_all(self) -> None:
         for item in self._data:
-            if item.status == True:
-                item.status = False
+            if item.equipped == True:
+                item.equipped = False
 
     def use_item(self, name: str) -> Item | None:
         """Finds the first item matching name.
@@ -157,7 +157,7 @@ class _PlayerInventory:
                 if isinstance(item, Consumable):
                     del self._data[i]
                 elif isinstance(item, Equippable):
-                    item.status = True
+                    item.equipped = True
                 return item
         return None
 
