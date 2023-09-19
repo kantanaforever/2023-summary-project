@@ -70,7 +70,7 @@ class MUDGame:
         colorise is an optional
         """
         linebreak()
-        choice = self.input(question)
+        choice = self.input(question + ": ")
         while choice not in options:
             linebreak()
             print(color.red(errormsg))
@@ -219,22 +219,19 @@ class MUDGame:
                 show_text(color.light_white(text.enemy_defeated))
             if enemies:
                 show_text(text.enemy_enter)
-                    
         
-    def pick_item(self, items: list):
+    def pick_item(self, items: list[data.Item]):
         """Displays the item available in the room"""
         for item in items:
-            item = color.yellow(item.name)
-        #print(self.colour...item)
             choice = self.prompt_valid_choice(
                 options=['y', 'n'],
-                question=text.loot_prompt(item.name),
+                question=text.loot_prompt(color.yellow(item.name)),
                 errormsg=text.loot_error,
                 colorise=color.light_green
             )
 
             if choice.lower() == "y":
-                self.player.inventory.add_item(i)
+                self.player.inventory.add_item(item)
                 
     def final_room(self):
         """Display the story text for the final room.

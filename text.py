@@ -9,25 +9,27 @@ with open('content/win_desc.txt', 'r') as f:
 
 game_lost = "You have been defeated >_<"
 
-direction_instruction = "You can move in the following directions:"
+direction_instruction = "You can move in the following directions"
 direction_prompt = "Which direction do you wish to go to?"
 direction_error = "You can only move in the above stated direction(s)!"
 
 def path_instruction(choices: list[str]) -> str:
     prompt = f"""You entered a corridor, and there are {len(choices)} doors...
-The following are the paths that can be taken:"""
+The following are the paths that can be taken"""
     for choice in choices:
         prompt += f'\npath {choice}'
-    prompt += "\nWhich path do you wish to take? Type the path number:"
+    prompt += "\nWhich path do you wish to take? Type the path number"
+    return prompt
+
 path_error = "You can only take the above stated path(s)!"
 
 combat_prompt = """The enemy is now in front of you! You can choose to
 1. punch
-2. attack with existing weapons:"""
+2. attack with existing weapons"""
 combat_error = "Invalid option!"
 
 def loot_prompt(item_name: str) -> str:
-    return f"{item_name} found! Collect it to help increase your chances of defeating the monsters!(y/n):"
+    return f"{item_name} found! Collect it to help increase your chances of defeating the monsters!(y/n)"
 loot_error = "invalid option!"
 
 boss_dead = "The boss is dead!"

@@ -3,6 +3,8 @@ import csv
 import json
 import random
 
+import color
+
 
 with open('content/zonemap.json', 'r') as f:
     map = json.load(f)
@@ -33,13 +35,13 @@ class Consumable(Item):
 
 class HP(Consumable):
     """HP items increase HP when consumed"""
-    def __init__(self, name: str, magnitude: str) -> None:
+    def __init__(self, name: str, magnitude: int) -> None:
         super().__init__(name, magnitude)
     
 
 class Attack(Consumable):
     """Attack items increase attack when consumed"""
-    def __init__(self, name: str, magnitude: str) -> None:
+    def __init__(self, name: str, magnitude: int) -> None:
         super().__init__(name, magnitude)
     
 
@@ -49,7 +51,7 @@ class Equippable(Item):
 
 class Weapon(Equippable):
     """A weapon boosts the user's attack when equipped"""
-    def __init__(self, name: str, magnitude: str) -> None:
+    def __init__(self, name: str, magnitude: int) -> None:
         super().__init__(name, magnitude)
 
 
@@ -113,9 +115,9 @@ class Inventory:
     def show(self):
         """displays the player's inventory"""
         used = []
-        print(Colours.colourised(Colours.LIGHT_WHITE, ('╔═══════════════════════════════════════════════════════╗')))
-        print(Colours.colourised(Colours.LIGHT_WHITE, ('║                   Inventory Display                   ║')))
-        print(Colours.colourised(Colours.LIGHT_WHITE, ('╟───────────────────────────────────────────────────────╢')))
+        print(color.light_white('╔═══════════════════════════════════════════════════════╗'))
+        print(color.light_white('║                   Inventory Display                   ║'))
+        print(color.light_white('╟───────────────────────────────────────────────────────╢'))
         for j in self._data:
             if j.name not in used:
                 used.append(j.name)
@@ -127,9 +129,9 @@ class Inventory:
                     else:
                         status = 'carriable'
                 count = self._data.count(j)
-                print(Colours.colourised(Colours.LIGHT_WHITE, (f'║{j.name:<20}x{count:<4}{"["+status+"]":<15}{j.magnitude:<5}{"["+j.type+"]":<10}║'))) # formating for inventory
+                print(color.light_white(f'║{j.name:<20}x{count:<4}{"["+status+"]":<15}{j.magnitude:<5}{"["+j.type+"]":<10}║')) # formating for inventory
               
-        print(Colours.colourised(Colours.LIGHT_WHITE, ('╚═══════════════════════════════════════════════════════╝')))
+        print(color.light_white('╚═══════════════════════════════════════════════════════╝'))
 
     def unequip_all(self) -> None:
         for item in self._data:
