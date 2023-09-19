@@ -77,8 +77,7 @@ with open("content/items.csv", 'r') as f:
 
 
 class Inventory:
-    """
-    This class encapsulates data for Player inventory
+    """This class encapsulates data for Player inventory
     
     Attributes
     ----------
@@ -154,8 +153,7 @@ class Inventory:
 
         
 class Player:
-    """
-    This class encapsulates data for Player
+    """This class encapsulates data for Player
     
     Attributes
     ----------
@@ -206,9 +204,7 @@ class Player:
 
 
 def generate_items() -> list:
-    """
-    generate random items from 0 to 5, using the game inventory
-    """
+    """generate random items from 0 to 5, using the game inventory"""
     num_of_items = random.randint(0, 5)
     items_list = []
     for i in range(num_of_items):
@@ -219,8 +215,7 @@ def generate_items() -> list:
 
 # Enemy     
 class Enemy:
-    """
-    This class encapsulates data for Enemy
+    """This class encapsulates data for Enemy
     
     Attributes
     -----------
@@ -240,9 +235,7 @@ class Enemy:
 
 
 def generate_enemy() -> list:
-    """
-    generate random enemies in a room
-    """
+    """generate random enemies in a room"""
     enemy_list = []
     num_of_enemies = random.randint(0, 5)
     for i in range(num_of_enemies):
@@ -251,8 +244,7 @@ def generate_enemy() -> list:
 
     
 class Colours:
-    """
-    ANSI color codes
+    """ANSI color codes
     used for UX
     """
     # class attributes
