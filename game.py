@@ -21,7 +21,7 @@ class MUDGame:
         self.player = data.Player()
         self.map = data.map
         # self.inventory = data.inventory
-        self.player_inventory = data.player_inventory
+        self.player_inventory = data._PlayerInventory()
         self.boss = data.Boss()
 
     def game_over(self) -> bool:
@@ -123,7 +123,8 @@ class MUDGame:
         """if player wishes to equip another weapon, 
         unquip the initial one and equip the new one 
         """
-        for i in self.player_inventory:
+        # TODO: Avoid direct attribute access, use a method
+        for i in self.player_inventory._data:
             if i.status == True:
                 i.status = False
         return 
@@ -133,7 +134,8 @@ class MUDGame:
         """Display the inventory to the player
         Prompt the player if they want to comsume any items from their inventory.
         """
-        if self.player_inventory == []:
+        # TODO: Avoid direct attribute access, use a method
+        if self.player_inventory._data == []:
             print(Colours.colourised(Colours.RED, "\nNothing in inventory!\n"))
             return
         self.player_inventory.show()
@@ -148,7 +150,8 @@ class MUDGame:
             return None
 
         else: 
-            attributes = [i.name for i in self.player_inventory]
+            # TODO: Avoid direct attribute access, use a method
+            attributes = [i.name for i in self.player_inventory._data]
             item = self.prompt_valid_choice(
                 options=attributes,
                 question="Which item would you like to equip/consume?: ",
@@ -157,7 +160,8 @@ class MUDGame:
             )
             
             item_index = attributes.index(item)
-            used_item = self.player_inventory[item_index]
+            # TODO: Avoid direct attribute access, use a method
+            used_item = self.player_inventory._data[item_index]
             if used_item.consumable == True:
                 print(Colours.colourised(Colours.BLUE, (f'{used_item.name} has been consumed!')))
                 if used_item.type == 'hp':
@@ -167,7 +171,8 @@ class MUDGame:
                     self.player.attack_punch += int(used_item.magnitude)
                     print(Colours.colourised(Colours.BLUE, (f'punch attack has been increased by {used_item.magnitude}. punch attack is now {self.player.attack_punch}')))
                     
-                self.player_inventory.pop(item_index)
+                # TODO: Avoid direct attribute access, use a method
+                self.player_inventory._data.pop(item_index)
                     
             else:
                 print(Colours.colourised(Colours.BLUE, (f'{used_item.name} has been equipped!')))
@@ -222,7 +227,7 @@ class MUDGame:
             )
 
             if choice.lower() == "y":
-                data.player_inventory_temp.add_item(i)
+                self.player_inventory.add_item(i)
                 
                 
     

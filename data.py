@@ -79,7 +79,7 @@ class _PlayerInventory:
     
     Attributes
     ----------
-    + self.player_inventory: (objects in a list)
+    - data: list[Item]
    
     Methods
     -------
@@ -87,15 +87,15 @@ class _PlayerInventory:
     + self.add_item(item: object) -> None: add item to inventory
     """
     def __init__(self) -> None:
-        self.player_inventory = []
+        self._data = []
 
     def consume_item(self, item: object) -> bool:
         item = item.lower()
         flag = True
         while flag:
-            if item in self.player_inventory:
-                item_index = self.player_inventory.index(item)
-                self.player_inventory.pop(item_index)
+            if item in self._data:
+                item_index = self._data.index(item)
+                self._data.pop(item_index)
                 flag = False 
         else:
             print('Invalid item')
@@ -106,7 +106,7 @@ class _PlayerInventory:
         print(Colours.colourised(Colours.LIGHT_WHITE, ('╔═══════════════════════════════════════════════════════╗')))
         print(Colours.colourised(Colours.LIGHT_WHITE, ('║                   Inventory Display                   ║')))
         print(Colours.colourised(Colours.LIGHT_WHITE, ('╟───────────────────────────────────────────────────────╢')))
-        for j in self.player_inventory:
+        for j in self._data:
             if j.name not in used:
                 used.append(j.name)
                 if j.consumable == True:
@@ -116,14 +116,14 @@ class _PlayerInventory:
                         status = 'Equipped'
                     else:
                         status = 'carriable'
-                count = self.player_inventory.count(j)
+                count = self._data.count(j)
                 print(Colours.colourised(Colours.LIGHT_WHITE, (f'║{j.name:<20}x{count:<4}{"["+status+"]":<15}{j.magnitude:<5}{"["+j.type+"]":<10}║'))) # formating for inventory
               
         print(Colours.colourised(Colours.LIGHT_WHITE, ('╚═══════════════════════════════════════════════════════╝')))
 
 
     def add_item(self, item: object) -> None:
-        self.player_inventory.append(item)
+        self._data.append(item)
         
         
 
@@ -274,8 +274,3 @@ class Colours:
     @staticmethod # functions of the class such that there is no need to insantiate the object
     def colourised(colour, text):
         return colour + text
-        
-
-# Inventory callout
-player_inventory_temp = _PlayerInventory()
-player_inventory = player_inventory_temp.player_inventory
