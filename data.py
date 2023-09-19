@@ -114,6 +114,14 @@ class Inventory:
     def add_item(self, item: object) -> None:
         self._data.append(item)
         
+    def count_item(self, name: str) -> int:
+        """Returns the number of items with the name in inventory."""
+        count = 0
+        for item in self._data:
+            if item.name == name:
+                count += 1
+        return count
+
     def get_item(self, name: str) -> Item | None:
         """Returns the first item matching name, without removing it
         from inventory.
@@ -123,14 +131,6 @@ class Inventory:
                 return item
         return None
 
-    def has_item(self, name: str) -> int:
-        """Returns the number of items with the name in inventory."""
-        count = 0
-        for item in self._data:
-            if item.name == name:
-                count += 1
-        return count
-
     def is_empty(self) -> bool:
         return len(self._data) == 0
 
@@ -138,17 +138,19 @@ class Inventory:
         """Returns a list of item names in the inventory"""
         return [item.name for item in self._data]
 
+    def item_report(self, item: Item) -> str:
+        """Return a detailed item report"""
+        return f'{self.count_item(item.name):<4}× {item.status()}(strength: {item.magnitude})'
+
     def show(self) -> None:
         """displays the player's inventory"""
-        used = []
         print(color.light_white('╔═══════════════════════════════════════════════════════╗'))
         print(color.light_white('║                   Inventory Display                   ║'))
         print(color.light_white('╟───────────────────────────────────────────────────────╢'))
         for item in self._data:
-            if item.name not in used:
-                used.append(item.name)
-                count = self._data.count(item)
-                print(color.light_white(f'║{count:<4}x {item.status():<15}{item.magnitude:<5}{"["+item.type+"]":<10}║')) # formating for inventory
+            # if item.name not in used:
+                # used.append(item.name)
+                print(color.light_white(f'║{self.item_report(item):<53}║')) # formating for inventory
               
         print(color.light_white('╚═══════════════════════════════════════════════════════╝'))
 
