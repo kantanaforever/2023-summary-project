@@ -43,6 +43,9 @@ map = {}
 for key, record in map_data.items():
     map[key] = room_from_dict(record)
 
+def get_room(key: str) -> Room:
+    return map[key]
+
 
 # Items
 class Item:

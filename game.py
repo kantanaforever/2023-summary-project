@@ -35,7 +35,7 @@ class MUDGame:
         self.player = data.Player("player", hp=1000)
         self.map = data.map_data
         self.boss = data.Enemy("boss", hp=500, attack=10)
-        self.current_room = data.FIRST_ROOM
+        self.current_room = data.get_room(data.FIRST_ROOM)
 
     def game_over(self) -> bool:
         """returns True if player's hp is less than 0
@@ -46,7 +46,7 @@ class MUDGame:
     def last_room(self):
         """checks if player is at last room
         """
-        return self.current_room == data.LAST_ROOM
+        return self.current_room == data.get_room(data.LAST_ROOM)
 
     def input(self, prompt: str) -> str:
         """strips the empty spaces and changes the input to lower case
