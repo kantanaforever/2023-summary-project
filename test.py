@@ -6,9 +6,7 @@ def test_game():
     # Raise an error if the test fails
     game.movement()
     game.intro()
-    game.room_desc(data.Player())
-    game.set_username(data.Player())
-    game.inventory_show()
+    game.room_desc()
     game.inventory_consume_item()
     game.final_room()
     game.final_boss_fight()
