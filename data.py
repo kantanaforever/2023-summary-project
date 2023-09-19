@@ -52,26 +52,22 @@ class Item:
     -----------
     self.name: (str) name of item
     self.type: (str) type of item
-    self.consumable: (str) whether the item is consumable
     self.status: (str) whether item is equipped
     self.magnitude: (str) magnitude of items
     """
-    def __init__(self, name: str, type: str, consumable: str, status: str, magnitude: str) -> None:
+    def __init__(self, name: str, type: str, status: str, magnitude: str) -> None:
         self.name  = name
         self.type = type
-        self.consumable = consumable
         self.status = status
         self.magnitude = magnitude
 
 
 class Consumable(Item):
-    def __init__(self, name: str, type: str, consumable: str, status: str, magnitude: str) -> None:
-        super().__init__(name, type, True, status, magnitude)
+    """A Consumable is removed from inventory when used"""
 
 
 class Equippable(Item):
-    def __init__(self, name: str, type: str, consumable: str, status: str, magnitude: str) -> None:
-        super().__init__(name, type, False, status, magnitude)
+    """An Equippable is equipped in inventory when used"""
     
 
 inventory = []
@@ -79,10 +75,10 @@ with open("content/items.csv", 'r') as f:
     for record in csv.DictReader(f):
         # Record is a dict with column headers as keys, row data as values
         # The ** operator unpacks a dict into keyword arguments
-        record["consumable"] = bool(record["consumable"])
+        consumable = bool(record.pop("consumable"))
         record["status"] = bool(record["status"])
-        record["magnitude"] = int(record["magnitude"])
-        if record["consumable"]:
+        record["magnitude"] = int(record["magnitude"])        
+        if consumable:
             item = Consumable(**record)
         else:
             item = Equippable(**record)
