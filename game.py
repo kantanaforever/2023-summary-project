@@ -139,10 +139,8 @@ class MUDGame:
             return None
 
         else: 
-            # TODO: Avoid direct attribute access, use a method
-            attributes = [i.name for i in self.player_inventory._data]
-            item = self.prompt_valid_choice(
-                options=attributes,
+            index = self.prompt_valid_choice(
+                options=self.player_inventory.item_names(),
                 question="Which item would you like to equip/consume?: ",
                 errormsg='Invalid item!',
                 col=Colours.LIGHT_GREEN

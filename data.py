@@ -105,6 +105,10 @@ class _PlayerInventory:
 
     def is_empty(self) -> bool:
         return len(self._data) == 0
+
+    def item_names(self) -> list[str]:
+        """Returns a list of item names in the inventory"""
+        return [item.name for item in self._data]
             
     def show(self):
         """displays the player's inventory"""
