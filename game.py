@@ -59,17 +59,18 @@ class MUDGame:
         """
         return input(prompt).strip().lower()
 
-    def prompt_valid_choice(self, options, question, errormsg, col):
+    def prompt_valid_choice(self, options: list, question: str, errormsg: str, colorise=color.black):
         """Prompt the user with a question.
         If the choice is not in options, display errormsg and re-prompt the user.
         If the choice is valid, return player choice.
+        colorise is an optional
         """
         linebreak()
         choice = self.input(question)
         while choice not in options:
             linebreak()
-            print(color.colorise(color.RED, errormsg))
-            choice = self.input(color.colorise(col, question + ": "))
+            print(color.red(errormsg))
+            choice = self.input(colorise(question + ": "))
         return choice
 
         
@@ -87,7 +88,7 @@ class MUDGame:
         # remove name and description from choices
         choices = list(self.map[self.player.current].values())[2:]
         
-        show_text(color.colorise(color.BLUE, text.direction_instruction))
+        show_text(color.blue(text.direction_instruction))
         for i, choice in enumerate(choices):
             if choice != [None]:
                 print(f'- {keys[i]}')
@@ -96,7 +97,7 @@ class MUDGame:
             available,
             question=text.direction_prompt,
             errormsg=text.direction_error,
-            col = color.BLUE
+            colorise=color.blue
         )
         numpaths = len(choices[keys.index(direction_choice)])
         if numpaths == 1:
@@ -107,12 +108,12 @@ class MUDGame:
             path_choice = self.prompt_valid_choice(path_choices, question, text.path_error, col=color.BLUE)
         self.player.current = self.map[self.player.current][direction_choice][int(path_choice) - 1] #  updating the player position 
         linebreak()
-        show_text(color.colorise(color.DARK_GRAY, 'You are now in the ' + self.map[self.player.current]["name"] + '!')) # printing the name of the room
+        show_text(color.dark_gray('You are now in the ' + self.map[self.player.current]["name"] + '!')) # printing the name of the room
 
     
     def intro(self):
         """prints the introduction to the game"""
-        print(color.colorise(color.DARK_GRAY, text.intro), end= '')
+        show_text(color.dark_gray(text.intro), break_after=False)
 
     def ask_username(self):
         """prompts and sets the player's username"""
@@ -123,15 +124,14 @@ class MUDGame:
         """prints the description for the room the player is in
         """
         desc = self.map[self.player.current]['description']
-        linebreak()
-        print(color.colorise(color.BROWN, desc))
+        show_text(color.brown(desc), break_after=False)
 
     def inventory_consume_item(self) -> None:
         """Display the inventory to the player
         Prompt the player if they want to comsume any items from their inventory.
         """
         if self.player.inventory.is_empty():
-            show_text(color.colorise(color.RED, text.inventory_empty))
+            show_text(color.red(text.inventory_empty))
             return
         self.player.inventory.show()
         consume = self.prompt_valid_choice(
@@ -153,17 +153,17 @@ class MUDGame:
             )
             used_item = self.player.use_item(name)
             if isinstance(used_item, data.Consumable):
-                print(color.colorise(color.BLUE, (f'{used_item.name} has been consumed!')))
+                show_text(color.blue(f'{used_item.name} has been consumed!'))
                 
                 if isinstance(used_item, data.HP):
-                    print(color.colorise(color.BLUE, (f'HP increased by {used_item.magnitude}. HP is now {self.player.hp}')))
+                    show_text(color.blue(f'HP increased by {used_item.magnitude}. HP is now {self.player.hp}'))
                 elif isinstance(used_item, data.Attack):
-                    print(color.colorise(color.BLUE, (f'punch attack has been increased by {used_item.magnitude}. punch attack is now {self.player.attack_punch}')))
+                    show_text(color.blue(f'punch attack has been increased by {used_item.magnitude}. punch attack is now {self.player.attack_punch}'))
                     
-            else:
-                print(color.colorise(color.BLUE, (f'{used_item.name} has been equipped!')))
+            elif isinstance(used_item, data.Equippable):
+                show_text(color.blue(f'{used_item.name} has been equipped!'), break_after=False)
                 if isinstance(used_item, data.Weapon):
-                    print(color.colorise(color.BLUE, (f'weapon attack is now {self.player.attack_weapon}')))
+                    show_text(color.blue(f'weapon attack is now {self.player.attack_weapon}'))
             
     def fight(self, enemies: list[data.Enemy]):
         #if enemy_presence -> choose whether to consume an item -> player attack enemy first then enemy attack player -> if player hp reaches 0 before enemy, player looses -> else continue
@@ -174,8 +174,10 @@ class MUDGame:
             enemy = enemies.pop(0)
             
             while not self.player.is_dead() and not enemy.is_dead():
-                print(color.colorise(color.PURPLE, text.hp_report(self.player.name, self.player.hp)))
-                print(color.colorise(color.GREEN, text.hp_report("enemy", enemy.hp)))
+                show_text(color.purple(text.hp_report(self.player.name, self.player.hp)),
+                          break_after=False)
+                show_text(color.green(text.hp_report("enemy", enemy.hp)),
+                          break_after=False)
                 choice = self.prompt_valid_choice(
                     options=['1', '2'],
                     question=text.combat_prompt,
@@ -191,15 +193,15 @@ class MUDGame:
                 self.player.take_damage(enemy.attack)
     
                 if enemy.is_dead():
-                    show_text(color.colorise(color.LIGHT_WHITE, text.enemy_defeated))
+                    show_text(color.light_white(text.enemy_defeated))
                     if enemies:
                         show_text(text.enemy_enter)
                     
         
-    def pick_item(self, items):
+    def pick_item(self, items: list):
         """Displays the item available in the room"""
-        for i in items:
-            item = color.colorise(color.YELLOW, i.name)
+        for item in items:
+            item = color.yellow(item.name)
         #print(self.colour...item)
             choice = self.prompt_valid_choice(
                 options=['y', 'n'],
@@ -216,12 +218,12 @@ class MUDGame:
         Prompt the player if they would like to consume any items.
         Make the player fight the enemy
         """
-        print(color.colorise(color.DARK_GRAY, text.final_room))
+        print(color.dark_gray(text.final_room))
 
     def final_boss_fight(self):
         """player and final boss take turns to attack each other""" 
-        print(color.colorise(color.PURPLE, text.hp_report(self.player.name, self.player.hp)))
-        print(color.colorise(color.GREEN, text.hp_report("boss", self.boss.hp)))
+        print(color.purple(text.hp_report(self.player.name, self.player.hp)))
+        print(color.green(text.hp_report("boss", self.boss.hp)))
         while not self.player.is_dead() and not self.boss.is_dead():
             choice = self.prompt_valid_choice(
                 options=['1','2'],
@@ -237,11 +239,11 @@ class MUDGame:
             self.player.take_damage(self.boss.attack)
 
             if self.boss.is_dead():
-                show_text(color.colorise(color.PURPLE, text.hp_report(self.player.name, self.player.hp), break_after=False))
-                show_text(color.colorise(color.GREEN, text.boss_dead))
+                show_text(color.purple(text.hp_report(self.player.name, self.player.hp), break_after=False))
+                show_text(color.green(text.boss_dead))
             else:
-                show_text(color.colorise(color.PURPLE, text.hp_report(self.player.name, self.player.hp)), break_after=False)
-                show_text(color.colorise(color.GREEN, text.hp_report("boss", boss.hp)))
+                show_text(color.purple(text.hp_report(self.player.name, self.player.hp)), break_after=False)
+                show_text(color.green(text.hp_report("boss", boss.hp)))
 
     def win(self) -> bool:
         """Prints winning plot when boss hp is less than 0, returns True
@@ -249,8 +251,8 @@ class MUDGame:
         """
         if not self.game_over():
             if self.boss.is_dead():
-                show_text(color.colorise(color.LIGHT_WHITE, text.boss_defeated), break_after=False)
-                show_text(color.colorise(color.DARK_GRAY, text.game_won))
+                show_text(color.light_white(text.boss_defeated), break_after=False)
+                show_text(color.dark_gray(text.game_won))
                 return True
             else:
                 return False
@@ -275,18 +277,18 @@ class MUDGame:
             self.room_desc()
             enemy_list = data.generate_enemy()
             if self.enemy_presence(enemy_list):
-                show_text(color.colorise(color.BROWN, text.enemy_present))
+                show_text(color.brown(text.enemy_present))
                 self.inventory_consume_item()
                 self.fight(enemy_list)
             else:
-                show_text(color.colorise(color.LIGHT_GRAY, (text.enemy_absent)))
+                show_text(color.light_gray(text.enemy_absent))
             if not self.game_over():
                 items_list = data.generate_items()
                 if self.item_presence(items_list):
                     self.pick_item(items_list)
                     self.player.inventory.show()
                 else:
-                    show_text(color.colorise(color.LIGHT_GRAY, text.item_absent))
+                    show_text(color.light_gray(text.item_absent))
                     
         self.final_room()
         self.inventory_consume_item()
@@ -294,4 +296,4 @@ class MUDGame:
         
                 
         if not self.win():
-            show_text(color.colorise(color.DARK_GRAY, text.game_lost))
+            show_text(color.dark_gray(text.game_lost))
