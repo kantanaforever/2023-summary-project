@@ -25,7 +25,7 @@ class MUDGame:
         """returns True if player's hp is less than 0
         otherwise returns False
         """
-        return self.player.hp < 0
+        return self.player.is_dead()
 
     def enemy_presence(self, enemy_list):
         """checks if any enemies is present in the room
