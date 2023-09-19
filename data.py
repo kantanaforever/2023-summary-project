@@ -101,6 +101,7 @@ class Inventory:
     -------
     + add_item(item: Item) -> None
     + get_item(name: str) -> Item | None
+    + has_item(name: str) -> int
     + is_empty() -> bool
     + item_names() -> list[str]
     + show() -> None
@@ -121,6 +122,14 @@ class Inventory:
             if item.name == name:
                 return item
         return None
+
+    def has_item(self, name: str) -> int:
+        """Returns the number of items with the name in inventory."""
+        count = 0
+        for item in self._data:
+            if item.name == name:
+                count += 1
+        return count
 
     def is_empty(self) -> bool:
         return len(self._data) == 0
