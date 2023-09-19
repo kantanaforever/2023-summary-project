@@ -44,9 +44,9 @@ class Player:
 
 
 # Items
-class _Item:
+class Item:
     """
-    This class encapsulates data for _Item
+    This class encapsulates data for Item
 
     Attributes
     -----------
@@ -69,7 +69,7 @@ with open("content/items.csv", 'r') as f:
     f.readline()
     for line in f:
         line = line.strip().split(',')
-        item = _Item(line[0].strip(), line[1].strip(), bool(True if line[2].strip() == 'True' else False), bool(True if line[3].strip() == 'True' else False), line[4].strip()) #convert strings from csv file to bool
+        item = Item(line[0].strip(), line[1].strip(), bool(True if line[2].strip() == 'True' else False), bool(True if line[3].strip() == 'True' else False), line[4].strip()) #convert strings from csv file to bool
         inventory.append(item)
 
 
