@@ -2,7 +2,7 @@ with open('content/intro.txt', 'r') as f:
     intro = f.read()
 
 with open('content/finaldesc.txt', 'r') as f:
-    final_rooom = f.read()
+    final_room = f.read()
 
 with open('content/win_desc.txt', 'r') as f:
     game_won = f.read()
