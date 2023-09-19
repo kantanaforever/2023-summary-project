@@ -76,7 +76,7 @@ with open("content/items.csv", 'r') as f:
         inventory.append(item)
 
 
-class PlayerInventory:
+class Inventory:
     """
     This class encapsulates data for Player inventory
     
@@ -178,7 +178,7 @@ class Player:
         self.attack_punch = 10
         self.attack_weapon = 10
         self.current = '0'
-        self.inventory = PlayerInventory()
+        self.inventory = Inventory()
 
     def attack_p(self, target: object) -> None: # Enemy object
         target.hp -= self.attack_punch
