@@ -170,7 +170,40 @@ class MUDGame:
                 show_text(color.blue(f'{used_item.name} has been equipped!'), break_after=False)
                 if isinstance(used_item, data.Weapon):
                     show_text(color.blue(f'weapon attack is now {self.player.attack_weapon}'))
-            
+
+    @staticmethod
+    def hp_report(combatant: data.Combatant) -> None:
+        """Display the HP status of a combatant"""
+        if isinstance(combatant, data.Player):
+            show_text(color.purple(text.hp_report(combatant.name, combatant.hp)),
+                      break_after=False)
+        if isinstance(combatant, data.Enemy):
+            show_text(color.green(text.hp_report(combatant.name, combatant.hp)),
+                      break_after=False)
+
+    @staticmethod
+    def trade_blows(choice: str, player: data.Player, enemy: data.Enemy) -> None:
+        """Trade blows based on player's choice"""
+        if choice == '1':
+            enemy.take_damage(player.attack_punch)
+        elif choice == '2':
+            enemy.take_damage(player.attack_weapon)
+        player.take_damage(enemy.attack)
+        
+    def combat_choice(self, player: data.Player, enemy: data.Enemy) -> str:
+        """Present choice of combat options to user.
+        Process the effects.
+        """
+        self.hp_report(player)
+        self.hp_report(enemy)
+        choice = self.prompt_valid_choice(
+            options=['1', '2'],
+            question=text.combat_prompt,
+            errormsg=text.combat_error,
+            colorise=color.light_green
+        )
+        return choice
+
     def fight(self, enemies: list[data.Enemy]):
         #if enemy_presence -> choose whether to consume an item -> player attack enemy first then enemy attack player -> if player hp reaches 0 before enemy, player looses -> else continue
         """
@@ -180,28 +213,14 @@ class MUDGame:
             enemy = enemies.pop(0)
             
             while not self.player.is_dead() and not enemy.is_dead():
-                show_text(color.purple(text.hp_report(self.player.name, self.player.hp)),
-                          break_after=False)
-                show_text(color.green(text.hp_report(enemy.name, enemy.hp)),
-                          break_after=False)
-                choice = self.prompt_valid_choice(
-                    options=['1', '2'],
-                    question=text.combat_prompt,
-                    errormsg=text.combat_error,
-                    colorise=color.light_green
-                )
-            
-    
-                if choice == '1':
-                    enemy.take_damage(self.player.attack_punch)
-                elif choice == '2':
-                    enemy.take_damage(self.player.attack_weapon)
-                self.player.take_damage(enemy.attack)
-    
-                if enemy.is_dead():
-                    show_text(color.light_white(text.enemy_defeated))
-                    if enemies:
-                        show_text(text.enemy_enter)
+                choice = self.combat_choice(self.player, enemy)
+                self.trade_blows(choice, self.player, enemy)
+
+            # What if player is dead?
+            if enemy.is_dead():
+                show_text(color.light_white(text.enemy_defeated))
+            if enemies:
+                show_text(text.enemy_enter)
                     
         
     def pick_item(self, items: list):
@@ -229,29 +248,18 @@ class MUDGame:
     def final_boss_fight(self):
         """player and final boss take turns to attack each other""" 
         while not self.player.is_dead() and not self.boss.is_dead():
-            show_text(color.purple(text.hp_report(self.player.name, self.player.hp)),
-                     break_after=False)
-            show_text(color.green(text.hp_report(self.boss.name, self.boss.hp)),
-                     break_after=False)
-            choice = self.prompt_valid_choice(
-                options=['1','2'],
-                question = text.combat_prompt,
-                errormsg=text.combat_error,
-                colorise=color.light_green
-                )
-            
-            if choice == '1':
-                self.boss.take_damage(self.player.attack_punch)
-            elif choice == '2':
-                self.boss.take_damage(self.player.attack_weapon)
-            self.player.take_damage(self.boss.attack)
+            choice = self.combat_choice(self.player, self.boss)
+            self.trade_blows(choice, self.player, self.boss)
 
-            if self.boss.is_dead():
-                show_text(color.purple(text.hp_report(self.player.name, self.player.hp), break_after=False))
-                show_text(color.green(text.boss_dead))
-            else:
-                show_text(color.purple(text.hp_report(self.player.name, self.player.hp)), break_after=False)
-                show_text(color.green(text.hp_report(boss.name, boss.hp)))
+        # What if player is dead?
+        if self.boss.is_dead():
+            show_text(color.purple(text.hp_report(self.player.name, self.player.hp)),
+                      break_after=False)
+            show_text(color.green(text.boss_dead))
+        else:
+            show_text(color.purple(text.hp_report(self.player.name, self.player.hp)),
+                      break_after=False)
+            show_text(color.green(text.hp_report(self.boss.name, self.boss.hp)))
 
     def win(self) -> bool:
         """Prints winning plot when boss hp is less than 0, returns True
