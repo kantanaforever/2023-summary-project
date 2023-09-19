@@ -26,7 +26,13 @@ class Room:
     def __init__(self, name: str, description: str, paths: dict={}):
         self.name = name
         self.description = description
+        for key in paths:
+            assert key in DIRECTIONS
         self.paths = paths
+
+    def directions(self) -> list[str]:
+        """Returns a list of available directions"""
+        return list(self.paths.keys())
 
 
 def room_from_dict(record: dict) -> Room:
@@ -39,12 +45,12 @@ def room_from_dict(record: dict) -> Room:
 with open('content/zonemap.json', 'r') as f:
     map_data = json.load(f)
 
-map = {}
+_map = {}
 for key, record in map_data.items():
-    map[key] = room_from_dict(record)
+    _map[key] = room_from_dict(record)
 
 def get_room(key: str) -> Room:
-    return map[key]
+    return _map[key]
 
 
 # Items

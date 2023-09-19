@@ -33,7 +33,6 @@ class MUDGame:
         + self.boss: contains the Boss class
         """
         self.player = data.Player("player", hp=1000)
-        self.map = data.map_data
         self.boss = data.Enemy("boss", hp=500, attack=10)
         self.current_room = data.get_room(data.FIRST_ROOM)
 
@@ -73,53 +72,36 @@ class MUDGame:
             choice = self.input(colorise(question + ": "))
         return choice
 
-    def prompt_movement(self) -> Tuple[str, str]:  # can change after game is working
+    def prompt_movement(self) -> str:  # can change after game is working
         """Displays the direction that the player can travel in
         If there are more than one paths in that direction, prompts user to select a path
-        Prints the name of the room
+        Returns the room key (numerical str)
         """
-
-        #change if zonemap keys of keys has been edited
-        keys = ['up', 'down', 'left', 'right']
-        available = []
-        #extracting up, down, left, right
-
-        # remove name and description from choices
-        choices = list(self.map[self.current_room].values())[2:]
-
         show_text(color.blue(text.direction_instruction))
-        for i, choice in enumerate(choices):
-            if choice != [None]:
-                print(f'- {keys[i]}')
-                available.append(keys[i])
-        direction_choice = self.prompt_valid_choice(
-            available,
+        for direction in self.current_room.directions():
+            print(f'- {direction}')
+        choice = self.prompt_valid_choice(
+            self.current_room.directions(),
             question=text.direction_prompt,
             errormsg=text.direction_error,
             colorise=color.blue)
-        numpaths = len(choices[keys.index(direction_choice)])
-        if numpaths == 1:
-            path_choice = "0"
-        else:
-            path_choices = [str(i) for i in range(1, numpaths + 1)]
-            question = text.path_instruction(path_choices)
+        path_choice = self.current_room.paths[choice]
+        if isinstance(path_choice, list):
+            # Pick from available paths
             path_choice = self.prompt_valid_choice(
-                path_choices,
-                question,
+                path_choice,
+                text.path_instruction(path_choice),
                 text.path_error,
                 colorise=color.blue
             )
-        return direction_choice, path_choice
+        return path_choice
             
 
-    def move(self, direction: str, path: str):
-        self.current_room = self.map[self.current_room][direction][
-            int(path) - 1]  #  updating the player position
-        linebreak()
-        show_text(
-            color.dark_gray('You are now in the ' +
-                            self.map[self.current_room]["name"] +
-                            '!'))  # printing the name of the room
+    def move(self, path: str):
+        self.current_room = data.get_room(path)
+        show_text(color.dark_gray(
+            f'You are now in the {self.current_room.name}!'
+        ))
 
     def show_intro(self):
         """prints the introduction to the game"""
@@ -130,11 +112,10 @@ class MUDGame:
         name = self.input('What would you like to be called: ')
         self.player.name = name
 
-    def room_desc(self):
-        """prints the description for the room the player is in
+    def show_room_description(self, room: data.Room):
+        """prints the description for the room
         """
-        desc = self.map[self.current_room]['description']
-        show_text(color.brown(desc), break_after=False)
+        show_text(color.brown(room.description), break_after=False)
 
     def prompt_use_item(self) -> str | None:
         """Display the inventory to the player
@@ -247,7 +228,7 @@ class MUDGame:
                 show_text(text.enemy_enter)
 
     def pick_item(self, items: list[data.Item]) -> None:
-        """Displays the item available in the room"""
+        """Displays the available items for player to pick"""
         if not items:
             show_text(color.light_gray(text.item_absent))
             return
@@ -318,9 +299,9 @@ class MUDGame:
         linebreak()
         self.prompt_username()
         while not self.game_over() and not self.last_room():
-            direction, path = self.prompt_movement()
-            self.move(direction, path)
-            self.room_desc()
+            path = self.prompt_movement()
+            self.move(path)
+            self.show_room_description(self.current_room)
             item_name = self.prompt_use_item()
             self.use_item(item_name)
             enemies = data.generate_enemy()
