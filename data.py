@@ -76,7 +76,7 @@ with open("content/items.csv", 'r') as f:
         inventory.append(item)
 
 
-class _PlayerInventory:
+class PlayerInventory:
     """
     This class encapsulates data for Player inventory
     
@@ -185,6 +185,23 @@ class Player:
             
     def attack_w(self, target: object) -> None:
         target.hp -= self.attack_weapon
+
+    def take_item(self, item: Item) -> None:
+        self.inventory.add_item(item)
+
+    def use_item(self, name: str) -> Item | None:
+        """Use item with the given name, applying its effects to the player.
+        Return the item used, or None if not found.
+        """
+        item = self.inventory.use_item(name)
+        if isinstance(item, HP):
+            self.hp += item.magnitude
+        elif isinstance(item, Attack):
+            self.attack_punch += item.magnitude
+        elif isinstance(item, Weapon):
+            self.inventory.unequip_all()
+            self.attack_weapon = item.magnitude
+        return item
 
 
 

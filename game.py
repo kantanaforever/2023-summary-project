@@ -141,23 +141,19 @@ class MUDGame:
                 errormsg='Invalid item!',
                 col=Colours.LIGHT_GREEN
             )
-            used_item = self.player.inventory.use_item(name)
+            used_item = self.player.use_item(name)
             if isinstance(used_item, data.Consumable):
                 print(Colours.colourised(Colours.BLUE, (f'{used_item.name} has been consumed!')))
-                if used_item.type == 'hp':
-                    self.player.hp += int(used_item.magnitude)
-                    print(Colours.colourised(Colours.BLUE, (f'{used_item.type} has been increased by {used_item.magnitude}. {used_item.type} is now {self.player.hp}')))
-                elif used_item.type == 'attack':
-                    self.player.attack_punch += int(used_item.magnitude)
+                
+                if isinstance(used_item, data.HP):
+                    print(Colours.colourised(Colours.BLUE, (f'HP increased by {used_item.magnitude}. HP is now {self.player.hp}')))
+                elif isinstance(used_item, data.Attack):
                     print(Colours.colourised(Colours.BLUE, (f'punch attack has been increased by {used_item.magnitude}. punch attack is now {self.player.attack_punch}')))
                     
             else:
                 print(Colours.colourised(Colours.BLUE, (f'{used_item.name} has been equipped!')))
-                if used_item.type == 'weapon':
-                    self.player.inventory.unequip_all()
-                    prev = self.player.attack_weapon
-                    self.player.attack_weapon = used_item.magnitude
-                    print(Colours.colourised(Colours.BLUE, (f'weapon attack was {prev}. weapon attack is now {self.player.attack_weapon}')))
+                if isinstance(used_item, data.Weapon):
+                    print(Colours.colourised(Colours.BLUE, (f'weapon attack is now {self.player.attack_weapon}')))
             
     def fight(self, enemy_list):
         #if enemy_presence -> choose whether to consume an item -> player attack enemy first then enemy attack player -> if player hp reaches 0 before enemy, player looses -> else continue
