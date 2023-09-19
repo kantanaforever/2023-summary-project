@@ -50,3 +50,23 @@ use_item_prompt = "Would you like to equip/consume any item?(y/n)?"
 use_item_error = "Not a valid response!"
 choose_item_prompt = "Which item would you like to equip/consume?"
 choose_item_error = "Invalid item!"
+
+def title_box(title: str, contents: list [str], width: int) -> str:
+    # These assert statements will not give detailed error messages
+    # They are only a temporary validation fix
+    # and should be replaced with more robust checks
+    assert width > 3
+    assert width > len(title) + 2
+    if contents:
+        assert width > max([len(line) for line in contents]) + 2
+    window = [
+        f'╔{"═" * (width - 2)}╗',
+        f'║{title:^{width - 2}}║',
+        f'╟{"─" * (width - 2)}╢',
+    ]
+    for line in contents:
+        window.append(f"║{line:<{width - 2}}║")
+    window.append(
+        f'╚{"═" * (width - 2)}╝'
+    )
+    return "\n".join(window)

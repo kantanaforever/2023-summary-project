@@ -4,7 +4,7 @@ import json
 import random
 
 import color
-
+from text import title_box
 
 with open('content/zonemap.json', 'r') as f:
     map = json.load(f)
@@ -140,19 +140,14 @@ class Inventory:
 
     def item_report(self, item: Item) -> str:
         """Return a detailed item report"""
-        return f'{self.count_item(item.name):<4}× {item.status()}(strength: {item.magnitude})'
+        return f'{self.count_item(item.name):>4}× {item.status()} (strength: {item.magnitude})'
 
     def show(self) -> None:
         """displays the player's inventory"""
-        print(color.light_white('╔═══════════════════════════════════════════════════════╗'))
-        print(color.light_white('║                   Inventory Display                   ║'))
-        print(color.light_white('╟───────────────────────────────────────────────────────╢'))
-        for item in self._data:
-            # if item.name not in used:
-                # used.append(item.name)
-                print(color.light_white(f'║{self.item_report(item):<53}║')) # formating for inventory
-              
-        print(color.light_white('╚═══════════════════════════════════════════════════════╝'))
+        contents = [self.item_report(item) for item in self._data]
+        print(color.light_white(
+            title_box("Inventory Display ", contents, width=55)
+        ))
 
     def unequip_all(self) -> None:
         for item in self._data:
