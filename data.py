@@ -46,26 +46,6 @@ class Player:
         self.name = input('What would you like to be called: ')
 
 
-    
-
-# Inventory
-class _Inventory:
-    """ 
-    This class encapsulates data for game inventory
-    
-    Attributes
-    -----------
-    + self.items: (dicts in dict) Contains contents of json file with items and their characteristics (all items in the game NOT THE PLAYER INVENTORY)
-    """
-    def __init__(self) -> None:
-        self.items = []
-        with open("content/items.csv", 'r') as f:
-            f.readline()
-            for line in f:
-                line = line.strip().split(',')
-                item = _Item(line[0].strip(), line[1].strip(), bool(True if line[2].strip() == 'True' else False), bool(True if line[3].strip() == 'True' else False), line[4].strip()) #convert strings from csv file to bool
-                self.items.append(item)
-
 # Items
 class _Item:
     """
@@ -85,6 +65,15 @@ class _Item:
         self.consumable = consumable
         self.status = status
         self.magnitude = int(magnitude)
+
+
+inventory = []
+with open("content/items.csv", 'r') as f:
+    f.readline()
+    for line in f:
+        line = line.strip().split(',')
+        item = _Item(line[0].strip(), line[1].strip(), bool(True if line[2].strip() == 'True' else False), bool(True if line[3].strip() == 'True' else False), line[4].strip()) #convert strings from csv file to bool
+        inventory.append(item)
 
 
 class _PlayerInventory:
@@ -124,12 +113,10 @@ def generate_items() -> list:
     """
     generate random items from 0 to 5, using the game inventory
     """
-    inventory = _Inventory()
-    game_inventory = inventory.items
-    num_of_items = r.randint(0,5)
+    num_of_items = r.randint(0, 5)
     items_list = []
     for i in range(num_of_items):
-        items_list.append(r.choice(game_inventory))
+        items_list.append(r.choice(inventory))
 
     return items_list
     
@@ -274,5 +261,3 @@ class Colours:
 # Inventory callout
 player_inventory_temp = _PlayerInventory()
 player_inventory = player_inventory_temp.player_inventory
-
-inventory = _Inventory().items

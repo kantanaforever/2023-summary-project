@@ -21,7 +21,7 @@ class MUDGame:
         self.end = '10'
         self.player = data.Player()
         self.map = data.map
-        self.inventory = data.inventory
+        # self.inventory = data.inventory
         self.player_inventory = data.player_inventory
         self.boss = data.Boss()
 
