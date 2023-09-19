@@ -1,6 +1,6 @@
 # Import statements
-import data
 import color
+import data
 import text
 
 
@@ -8,7 +8,9 @@ def linebreak() -> None:
     print()
 
 
-def show_text(text: str, break_before: bool = True, break_after: bool = False) -> None:
+def show_text(text: str,
+              break_before: bool = True,
+              break_after: bool = False) -> None:
     if break_before:
         linebreak()  # next line
     print(text)
@@ -17,18 +19,17 @@ def show_text(text: str, break_before: bool = True, break_after: bool = False) -
 
 
 class MUDGame:
+
     def __init__(self):
         """This class encapsulates data for MUDGame
                     
         Attributes
         -----------
-        + self.end: contains the final room number
         + self.player: contains the Player class
         + self.map: contains json file with rooms and their characteristics
         + self.inventory: contins the inventory class
         + self.boss: contains the Boss class
         """
-        self.end = '10'
         self.player = data.Player("player", hp=1000)
         self.map = data.map
         self.boss = data.Enemy("boss", hp=500, attack=10)
@@ -49,10 +50,10 @@ class MUDGame:
         """
         return items_list != []
 
-    def room_10(self):
-        """checks if player is at room 10
+    def last_room(self):
+        """checks if player is at last room
         """
-        return self.player.current == self.end
+        return self.player.current == data.LAST_ROOM
 
     def input(self, prompt: str) -> str:
         """strips the empty spaces and changes the input to lower case
@@ -77,21 +78,20 @@ class MUDGame:
             choice = self.input(colorise(question + ": "))
         return choice
 
-        
-    def movement(self): # can change after game is working
+    def movement(self):  # can change after game is working
         """Displays the direction that the player can travel in
         If there are more than one paths in that direction, prompts user to select a path
         Prints the name of the room
         """
-    
+
         #change if zonemap keys of keys has been edited
         keys = ['up', 'down', 'left', 'right']
         available = []
         #extracting up, down, left, right
-        
+
         # remove name and description from choices
         choices = list(self.map[self.player.current].values())[2:]
-        
+
         show_text(color.blue(text.direction_instruction))
         for i, choice in enumerate(choices):
             if choice != [None]:
@@ -101,8 +101,7 @@ class MUDGame:
             available,
             question=text.direction_prompt,
             errormsg=text.direction_error,
-            colorise=color.blue
-        )
+            colorise=color.blue)
         numpaths = len(choices[keys.index(direction_choice)])
         if numpaths == 1:
             path_choice = 0
@@ -113,11 +112,14 @@ class MUDGame:
                                                    question,
                                                    text.path_error,
                                                    colorise=color.blue)
-        self.player.current = self.map[self.player.current][direction_choice][int(path_choice) - 1] #  updating the player position 
+        self.player.current = self.map[self.player.current][direction_choice][
+            int(path_choice) - 1]  #  updating the player position
         linebreak()
-        show_text(color.dark_gray('You are now in the ' + self.map[self.player.current]["name"] + '!')) # printing the name of the room
+        show_text(
+            color.dark_gray('You are now in the ' +
+                            self.map[self.player.current]["name"] +
+                            '!'))  # printing the name of the room
 
-    
     def intro(self):
         """prints the introduction to the game"""
         show_text(color.dark_gray(text.intro), break_after=False)
@@ -144,9 +146,8 @@ class MUDGame:
         consume = self.prompt_valid_choice(options=['y', 'n'],
                                            question=text.use_item_prompt,
                                            errormsg=text.use_item_error,
-                                           colorise=color.light_green
-        )
-        
+                                           colorise=color.light_green)
+
         if consume == 'n':
             return None
 
@@ -155,61 +156,71 @@ class MUDGame:
                 options=self.player.inventory.item_names(),
                 question=text.choose_item_prompt,
                 errormsg=text.choose_item_error,
-                colorise=color.light_green
-            )
+                colorise=color.light_green)
             used_item = self.player.use_item(name)
             if isinstance(used_item, data.Consumable):
                 show_text(color.blue(f'{used_item.name} has been consumed!'))
-                
+
                 if isinstance(used_item, data.HP):
-                    show_text(color.blue(f'HP increased by {used_item.magnitude}. HP is now {self.player.hp}'))
+                    show_text(
+                        color.blue(
+                            f'HP increased by {used_item.magnitude}. HP is now {self.player.hp}'
+                        ))
                 elif isinstance(used_item, data.Attack):
-                    show_text(color.blue(f'punch attack has been increased by {used_item.magnitude}. punch attack is now {self.player.attack_punch}'))
-                    
+                    show_text(
+                        color.blue(
+                            f'punch attack has been increased by {used_item.magnitude}. punch attack is now {self.player.attack_punch}'
+                        ))
+
             elif isinstance(used_item, data.Equippable):
-                show_text(color.blue(f'{used_item.name} has been equipped!'), break_after=False)
+                show_text(color.blue(f'{used_item.name} has been equipped!'),
+                          break_after=False)
                 if isinstance(used_item, data.Weapon):
-                    show_text(color.blue(f'weapon attack is now {self.player.attack_weapon}'))
+                    show_text(
+                        color.blue(
+                            f'weapon attack is now {self.player.attack_weapon}'
+                        ))
 
     @staticmethod
     def hp_report(combatant: data.Combatant) -> None:
         """Display the HP status of a combatant."""
         if isinstance(combatant, data.Player):
-            show_text(color.purple(text.hp_report(combatant.name, combatant.hp)),
+            show_text(color.purple(text.hp_report(combatant.name,
+                                                  combatant.hp)),
                       break_after=False)
         if isinstance(combatant, data.Enemy):
-            show_text(color.green(text.hp_report(combatant.name, combatant.hp)),
+            show_text(color.green(text.hp_report(combatant.name,
+                                                 combatant.hp)),
                       break_after=False)
 
     @staticmethod
-    def trade_blows(choice: str, player: data.Player, enemy: data.Enemy) -> None:
+    def trade_blows(choice: str, player: data.Player,
+                    enemy: data.Enemy) -> None:
         """Trade blows based on player's choice"""
         if choice == '1':
             enemy.take_damage(player.attack_punch)
         elif choice == '2':
             enemy.take_damage(player.attack_weapon)
         player.take_damage(enemy.attack)
-        
+
     def combat_choice(self, player: data.Player, enemy: data.Enemy) -> str:
         """Present choice of combat options to user."""
         self.hp_report(player)
         self.hp_report(enemy)
-        choice = self.prompt_valid_choice(
-            options=['1', '2'],
-            question=text.combat_prompt,
-            errormsg=text.combat_error,
-            colorise=color.light_green
-        )
+        choice = self.prompt_valid_choice(options=['1', '2'],
+                                          question=text.combat_prompt,
+                                          errormsg=text.combat_error,
+                                          colorise=color.light_green)
         return choice
 
     def fight(self, enemies: list[data.Enemy]):
         #if enemy_presence -> choose whether to consume an item -> player attack enemy first then enemy attack player -> if player hp reaches 0 before enemy, player looses -> else continue
         """
-        The player and enemy take turns to attack each other until one of their hp is less than 0
+        The player and enemy take turns to attack each other until one of them is dead
         """
         while enemies:
             enemy = enemies.pop(0)
-            
+
             while not self.player.is_dead() and not enemy.is_dead():
                 choice = self.combat_choice(self.player, enemy)
                 self.trade_blows(choice, self.player, enemy)
@@ -219,57 +230,60 @@ class MUDGame:
                 show_text(color.light_white(text.enemy_defeated))
             if enemies:
                 show_text(text.enemy_enter)
-        
+
     def pick_item(self, items: list[data.Item]):
         """Displays the item available in the room"""
         for item in items:
-            choice = self.prompt_valid_choice(
-                options=['y', 'n'],
-                question=text.loot_prompt(color.yellow(item.name)),
-                errormsg=text.loot_error,
-                colorise=color.light_green
-            )
+            choice = self.prompt_valid_choice(options=['y', 'n'],
+                                              question=text.loot_prompt(
+                                                  color.yellow(item.name)),
+                                              errormsg=text.loot_error,
+                                              colorise=color.light_green)
 
             if choice.lower() == "y":
                 self.player.inventory.add_item(item)
-                
-    def final_room(self):
+
+    def show_final_room(self) -> None:
         """Display the story text for the final room.
         Prompt the player if they would like to consume any items.
         Make the player fight the enemy
         """
         print(color.dark_gray(text.final_room))
 
-    def final_boss_fight(self):
-        """player and final boss take turns to attack each other""" 
+    def final_boss_fight(self) -> None:
+        """player and final boss take turns to attack each other"""
         while not self.player.is_dead() and not self.boss.is_dead():
             choice = self.combat_choice(self.player, self.boss)
             self.trade_blows(choice, self.player, self.boss)
 
         # What if player is dead?
         if self.boss.is_dead():
-            show_text(color.purple(text.hp_report(self.player.name, self.player.hp)),
+            show_text(color.purple(
+                text.hp_report(self.player.name, self.player.hp)),
                       break_after=False)
             show_text(color.green(text.boss_dead))
         else:
-            show_text(color.purple(text.hp_report(self.player.name, self.player.hp)),
+            show_text(color.purple(
+                text.hp_report(self.player.name, self.player.hp)),
                       break_after=False)
-            show_text(color.green(text.hp_report(self.boss.name, self.boss.hp)))
+            show_text(color.green(text.hp_report(self.boss.name,
+                                                 self.boss.hp)))
 
-    def win(self) -> bool:
-        """Prints winning plot when boss hp is less than 0, returns True
+    def has_won(self) -> bool:
+        """Prints winning plot when boss is dead, returns True
         Otherwise returns False
         """
         if not self.game_over():
             if self.boss.is_dead():
-                show_text(color.light_white(text.boss_defeated), break_after=False)
+                show_text(color.light_white(text.boss_defeated),
+                          break_after=False)
                 show_text(color.dark_gray(text.game_won))
                 return True
             else:
                 return False
         return False
-    
-    def run(self) -> str:
+
+    def run(self) -> None:
         """ Begin the game loop.
         
         1. method to call story intro
@@ -278,12 +292,12 @@ class MUDGame:
         4. if room has enemy then fight (method to check if enemy is inside) , if not pick item
         5. finish fighting -> pick item if any
         6. repeat 3-5 but before 4. ask if want to consume item (need method to call inventory)
-        7. when reach room 10, fight the final boss. If the player is defeated before the enemy is over, prompt game over.
+        7. when reach last room, fight the final boss. If the player is defeated before the enemy is over, prompt game over.
         """
         self.intro()
-        print('\n')
+        linebreak()
         self.ask_username()
-        while not self.game_over()  and not self.room_10():
+        while not self.game_over() and not self.last_room():
             self.movement()
             self.room_desc()
             enemy_list = data.generate_enemy()
@@ -300,11 +314,10 @@ class MUDGame:
                     self.player.inventory.show()
                 else:
                     show_text(color.light_gray(text.item_absent))
-                    
-        self.final_room()
+
+        self.show_final_room()
         self.inventory_consume_item()
         self.final_boss_fight()
-        
-                
-        if not self.win():
+
+        if not self.has_won():
             show_text(color.dark_gray(text.game_lost))

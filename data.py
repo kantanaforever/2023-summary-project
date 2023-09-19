@@ -6,11 +6,16 @@ import random
 import color
 from text import title_box
 
+
+# Constants
+WIDTH = 55
+LAST_ROOM = "10"
+
 with open('content/zonemap.json', 'r') as f:
     map = json.load(f)
 
 
-# Class Implementation
+
 
 # Items
 class Item:
@@ -146,7 +151,7 @@ class Inventory:
         """displays the player's inventory"""
         contents = [self.item_report(item) for item in self._data]
         print(color.light_white(
-            title_box("Inventory Display ", contents, width=55)
+            title_box("Inventory Display ", contents, width=WIDTH)
         ))
 
     def unequip_all(self) -> None:
