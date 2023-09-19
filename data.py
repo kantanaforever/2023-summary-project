@@ -89,6 +89,9 @@ class _PlayerInventory:
     def __init__(self) -> None:
         self._data = []
 
+    def add_item(self, item: object) -> None:
+        self._data.append(item)
+        
     def consume_item(self, item: object) -> bool:
         item = item.lower()
         flag = True
@@ -120,11 +123,6 @@ class _PlayerInventory:
                 print(Colours.colourised(Colours.LIGHT_WHITE, (f'║{j.name:<20}x{count:<4}{"["+status+"]":<15}{j.magnitude:<5}{"["+j.type+"]":<10}║'))) # formating for inventory
               
         print(Colours.colourised(Colours.LIGHT_WHITE, ('╚═══════════════════════════════════════════════════════╝')))
-
-
-    def add_item(self, item: object) -> None:
-        self._data.append(item)
-        
         
 
 def generate_items() -> list:
