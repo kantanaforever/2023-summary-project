@@ -170,11 +170,11 @@ class MUDGame:
         """
         The player and enemy take turns to attack each other until one of their hp is less than 0
         """
-        for i in range(len(enemy_list)):
+        for i, enemy in enumerate(enemy_list):
             
-            while not self.player.is_dead() and not enemy_list[i].is_dead():
+            while not self.player.is_dead() and not enemy.is_dead():
                 print(Colours.colourised(Colours.PURPLE, text.hp_report(self.player.name, self.player.hp)))
-                print(Colours.colourised(Colours.GREEN, text.hp_report("enemy", enemy_list[i].hp)))
+                print(Colours.colourised(Colours.GREEN, text.hp_report("enemy", enemy.hp)))
                 choice = self.prompt_valid_choice(
                     options=['1', '2'],
                     question=text.combat_prompt,
@@ -184,12 +184,12 @@ class MUDGame:
             
     
                 if choice == '1':
-                    enemy_list[i].take_damage(self.player.attack_punch)
+                    enemy.take_damage(self.player.attack_punch)
                 elif choice == '2':
-                    enemy_list[i].take_damage(self.player.attack_weapon)
-                self.player.take_damage(enemy_list[i].attack)
+                    enemy.take_damage(self.player.attack_weapon)
+                self.player.take_damage(enemy.attack)
     
-                if enemy_list[i].is_dead():
+                if enemy.is_dead():
                     show_text(Colours.colourised(Colours.LIGHT_WHITE, text.enemy_defeated))
                     if i < len(enemy_list) - 1:
                         print(text.enemy_enter)
