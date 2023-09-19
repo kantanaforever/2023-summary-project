@@ -144,7 +144,7 @@ class MUDGame:
                 errormsg='Invalid item!',
                 col=Colours.LIGHT_GREEN
             )
-            used_item = self.player_inventory.get_item(name)
+            used_item = self.player_inventory.use_item(name)
             if isinstance(used_item, data.Consumable):
                 print(Colours.colourised(Colours.BLUE, (f'{used_item.name} has been consumed!')))
                 if used_item.type == 'hp':
@@ -153,7 +153,6 @@ class MUDGame:
                 elif used_item.type == 'attack':
                     self.player.attack_punch += int(used_item.magnitude)
                     print(Colours.colourised(Colours.BLUE, (f'punch attack has been increased by {used_item.magnitude}. punch attack is now {self.player.attack_punch}')))
-                self.player_inventory.pop_item(item)
                     
             else:
                 print(Colours.colourised(Colours.BLUE, (f'{used_item.name} has been equipped!')))
@@ -161,7 +160,6 @@ class MUDGame:
                     self.player_inventory.unequip_all()
                     prev = self.player.attack_weapon
                     self.player.attack_weapon = used_item.magnitude
-                    used_item.status = True
                     print(Colours.colourised(Colours.BLUE, (f'weapon attack was {prev}. weapon attack is now {self.player.attack_weapon}')))
             
     def fight(self, enemy_list):

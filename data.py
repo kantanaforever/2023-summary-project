@@ -130,7 +130,7 @@ class _PlayerInventory:
     def item_names(self) -> list[str]:
         """Returns a list of item names in the inventory"""
         return [item.name for item in self._data]
-            
+
     def pop_item(self, name: str) -> Item | None:
         """Returns the first item matching name, removing it
         from inventory.
@@ -165,6 +165,21 @@ class _PlayerInventory:
         for item in self._data:
             if item.status == True:
                 item.status = False
+
+    def use_item(self, name: str) -> Item | None:
+        """Finds the first item matching name.
+        Removes it from inventory if consumable.
+        Equips it if equippable.
+        Returns the item if found, otherwise returns None.
+        """
+        for i, item in enumerate(self._data):
+            if item.name == name:
+                if isinstance(item, Consumable):
+                    del self._data[i]
+                elif isinstance(item, Equippable):
+                    item.status = True
+                return item
+        return None
 
         
 
