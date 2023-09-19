@@ -100,7 +100,7 @@ class _PlayerInventory:
         else:
             print('Invalid item')
             
-    def inventory_show(self):
+    def show(self):
         """displays the player's inventory"""
         used = []
         print(Colours.colourised(Colours.LIGHT_WHITE, ('╔═══════════════════════════════════════════════════════╗')))
