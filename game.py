@@ -19,7 +19,7 @@ class MUDGame:
         self.end = '10'
         self.player = data.Player()
         self.map = data.map
-        self.boss = data.Boss()
+        self.boss = data.Enemy(hp=500, attack=10)
 
     def game_over(self) -> bool:
         """returns True if player's hp is less than 0

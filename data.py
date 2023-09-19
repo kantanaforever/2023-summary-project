@@ -231,92 +231,24 @@ class Enemy:
     -------
     + self.atk(Player: class) enemy attack player
     """
-    def __init__(self):
-        self.hp = 200
-        self.attack = 5
+    def __init__(self, hp: int = 200, attack: int = 5):
+        self.hp = hp
+        self.attack = attack
 
     def atk(self, player):
         player.hp -= self.attack
 
-class Enemy1(Enemy):
-    """
-    This class encapsulates data for Enemy1 and inherits from the enemy class.
-    
-    Attributes
-    -----------
-    + self.hp: (int) enemy hit points (health)
-    + self.attack: (int) enemy damage per hit
-
-    Methods
-    -------
-    + self.atk(Player: class) enemy attack player
-    """
-    def __init__(self):
-        super().__init__()
-        self.hp = random.randint(100, 200)
-        self.attack = random.randint(0, 5)
-    
-    def atk(self, player):
-        super().atk(player)
-
-class Enemy2(Enemy):
-    """
-    This class encapsulates data for Enemy2 and inherits from the enemy class.
-    
-    Attributes
-    -----------
-    + self.hp: (int) enemy hit points (health)
-    + self.attack: (int) enemy damage per hit
-
-    Methods
-    -------
-    + self.atk(Player: class) enemy attack player
-    """
-    def __init__(self):
-        super().__init__()
-        self.hp = random.randint(100, 200)
-        self.attack = random.randint(0, 5)
-    
-    def atk(self, player):
-        super().atk(player)
-        
 
 def generate_enemy() -> list:
     """
     generate random enemies in a room
     """
     enemy_list = []
-    enemy1 = Enemy1()
-    enemy2 = Enemy2()
     num_of_enemies = random.randint(0, 5)
     for i in range(num_of_enemies):
-        flag = random.choice([True, False])
-        if flag:
-            enemy_list.append(enemy1)
-        else:
-            enemy_list.append(enemy2)
+        enemy_list.append(Enemy(random.randint(100, 200), random.randint(0, 5)))
     return enemy_list
-    
-class Boss(Enemy):
-    """
-    Inherited from the Enemy class
-    This class encapsulates data for Boss
-    
-    Attributes
-    -----------
-    + self.hp: (int) enemy hit points (health)
-    + self.attack: (int) enemy damage per hit
 
-    Methods
-    -------
-    + self.atk(Player: object) enemy attack player
-    """
-    def __init__(self):
-        self.hp = 500
-        self.attack = 10
-
-    def atk(self, player: object):
-        super().atk(player)
     
 class Colours:
     """
