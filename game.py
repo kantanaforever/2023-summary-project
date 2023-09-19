@@ -228,9 +228,11 @@ class MUDGame:
 
     def final_boss_fight(self):
         """player and final boss take turns to attack each other""" 
-        print(color.purple(text.hp_report(self.player.name, self.player.hp)))
-        print(color.green(text.hp_report(boss.name, self.boss.hp)))
         while not self.player.is_dead() and not self.boss.is_dead():
+            show_text(color.purple(text.hp_report(self.player.name, self.player.hp)),
+                     break_after=False)
+            show_text(color.green(text.hp_report(self.boss.name, self.boss.hp)),
+                     break_after=False)
             choice = self.prompt_valid_choice(
                 options=['1','2'],
                 question = text.combat_prompt,
@@ -240,7 +242,7 @@ class MUDGame:
             
             if choice == '1':
                 self.boss.take_damage(self.player.attack_punch)
-            else:
+            elif choice == '2':
                 self.boss.take_damage(self.player.attack_weapon)
             self.player.take_damage(self.boss.attack)
 
