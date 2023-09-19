@@ -1,4 +1,6 @@
 # Import statements
+from typing import Tuple
+
 import color
 import data
 import text
@@ -68,7 +70,7 @@ class MUDGame:
             choice = self.input(colorise(question + ": "))
         return choice
 
-    def movement(self):  # can change after game is working
+    def prompt_movement(self) -> Tuple[str, str]:  # can change after game is working
         """Displays the direction that the player can travel in
         If there are more than one paths in that direction, prompts user to select a path
         Prints the name of the room
@@ -94,27 +96,33 @@ class MUDGame:
             colorise=color.blue)
         numpaths = len(choices[keys.index(direction_choice)])
         if numpaths == 1:
-            path_choice = 0
+            path_choice = "0"
         else:
             path_choices = [str(i) for i in range(1, numpaths + 1)]
             question = text.path_instruction(path_choices)
-            path_choice = self.prompt_valid_choice(path_choices,
-                                                   question,
-                                                   text.path_error,
-                                                   colorise=color.blue)
-        self.player.current = self.map[self.player.current][direction_choice][
-            int(path_choice) - 1]  #  updating the player position
+            path_choice = self.prompt_valid_choice(
+                path_choices,
+                question,
+                text.path_error,
+                colorise=color.blue
+            )
+        return direction_choice, path_choice
+            
+
+    def move(self, direction: str, path: str):
+        self.player.current = self.map[self.player.current][direction][
+            int(path) - 1]  #  updating the player position
         linebreak()
         show_text(
             color.dark_gray('You are now in the ' +
                             self.map[self.player.current]["name"] +
                             '!'))  # printing the name of the room
 
-    def intro(self):
+    def show_intro(self):
         """prints the introduction to the game"""
         show_text(color.dark_gray(text.intro), break_after=False)
 
-    def ask_username(self):
+    def prompt_username(self):
         """prompts and sets the player's username"""
         name = self.input('What would you like to be called: ')
         self.player.name = name
@@ -125,51 +133,59 @@ class MUDGame:
         desc = self.map[self.player.current]['description']
         show_text(color.brown(desc), break_after=False)
 
-    def inventory_consume_item(self) -> None:
+    def prompt_use_item(self) -> str | None:
         """Display the inventory to the player
         Prompt the player if they want to comsume any items from their inventory.
+        Return the name of the item if player picked one, otherwise None
         """
         if self.player.inventory.is_empty():
             show_text(color.red(text.inventory_empty))
             return
         self.player.inventory.show()
-        consume = self.prompt_valid_choice(options=['y', 'n'],
+        choice = self.prompt_valid_choice(options=['y', 'n'],
                                            question=text.use_item_prompt,
                                            errormsg=text.use_item_error,
                                            colorise=color.light_green)
 
-        if consume == 'n':
+        if choice == 'n':
             return None
+        name = self.prompt_valid_choice(
+            options=self.player.inventory.item_names(),
+            question=text.choose_item_prompt,
+            errormsg=text.choose_item_error,
+            colorise=color.light_green
+        )
+        return name
 
-        else:
-            name = self.prompt_valid_choice(
-                options=self.player.inventory.item_names(),
-                question=text.choose_item_prompt,
-                errormsg=text.choose_item_error,
-                colorise=color.light_green)
-            used_item = self.player.use_item(name)
-            if isinstance(used_item, data.Consumable):
-                show_text(color.blue(f'{used_item.name} has been consumed!'))
+    def use_item(self, name: str | None) -> None:
+        """Use the given item"""
+        if name is None:
+            return
+        
+        used_item = self.player.use_item(name)
+        if isinstance(used_item, data.Consumable):
+            show_text(color.blue(
+                f'{used_item.name} has been consumed!'
+            ))
 
-                if isinstance(used_item, data.HP):
-                    show_text(
-                        color.blue(
-                            f'HP increased by {used_item.magnitude}. HP is now {self.player.hp}'
-                        ))
-                elif isinstance(used_item, data.Attack):
-                    show_text(
-                        color.blue(
-                            f'punch attack has been increased by {used_item.magnitude}. punch attack is now {self.player.attack_punch}'
-                        ))
-
-            elif isinstance(used_item, data.Equippable):
-                show_text(color.blue(f'{used_item.name} has been equipped!'),
-                          break_after=False)
-                if isinstance(used_item, data.Weapon):
-                    show_text(
-                        color.blue(
-                            f'weapon attack is now {self.player.attack_weapon}'
-                        ))
+        if isinstance(used_item, data.HP):
+            show_text(color.blue(
+                f'HP increased by {used_item.magnitude}. HP is now {self.player.hp}'
+            ))
+        elif isinstance(used_item, data.Attack):
+            show_text(color.blue(
+                f'punch attack has been increased by {used_item.magnitude}. punch attack is now {self.player.attack_punch}'
+            ))
+        elif isinstance(used_item, data.Equippable):
+                
+            show_text(color.blue(
+                    
+                f'{used_item.name} has been equipped!'
+            ), break_after=False)
+        if isinstance(used_item, data.Weapon):
+            show_text(color.blue(
+                f'weapon attack is now {self.player.attack_weapon}'
+            ))
 
     @staticmethod
     def hp_report(combatant: data.Combatant) -> None:
@@ -208,6 +224,12 @@ class MUDGame:
         """
         The player and enemy take turns to attack each other until one of them is dead
         """
+        if not enemies:
+            show_text(color.light_gray(text.enemy_absent))
+            return
+        else:
+            show_text(color.brown(text.enemy_present))
+        
         while enemies:
             enemy = enemies.pop(0)
 
@@ -221,8 +243,12 @@ class MUDGame:
             if enemies:
                 show_text(text.enemy_enter)
 
-    def pick_item(self, items: list[data.Item]):
+    def pick_item(self, items: list[data.Item]) -> None:
         """Displays the item available in the room"""
+        if not items:
+            show_text(color.light_gray(text.item_absent))
+            return
+
         for item in items:
             choice = self.prompt_valid_choice(options=['y', 'n'],
                                               question=text.loot_prompt(
@@ -232,6 +258,7 @@ class MUDGame:
 
             if choice.lower() == "y":
                 self.player.inventory.add_item(item)
+        self.player.inventory.show()
 
     def show_final_room(self) -> None:
         """Display the story text for the final room.
@@ -284,29 +311,23 @@ class MUDGame:
         6. repeat 3-5 but before 4. ask if want to consume item (need method to call inventory)
         7. when reach last room, fight the final boss. If the player is defeated before the enemy is over, prompt game over.
         """
-        self.intro()
+        self.show_intro()
         linebreak()
-        self.ask_username()
+        self.prompt_username()
         while not self.game_over() and not self.last_room():
-            self.movement()
+            direction, path = self.prompt_movement()
+            self.move(direction, path)
             self.room_desc()
+            item_name = self.prompt_use_item()
+            self.use_item(item_name)
             enemies = data.generate_enemy()
-            if enemies:
-                show_text(color.brown(text.enemy_present))
-                self.inventory_consume_item()
-                self.fight(enemies)
-            else:
-                show_text(color.light_gray(text.enemy_absent))
+            self.fight(enemies)
             if not self.game_over():
                 items = data.generate_items()
-                if items:
-                    self.pick_item(items)
-                    self.player.inventory.show()
-                else:
-                    show_text(color.light_gray(text.item_absent))
+                self.pick_item(items)
 
         self.show_final_room()
-        self.inventory_consume_item()
+        self.prompt_use_item()
         self.final_boss_fight()
 
         if not self.has_won():
