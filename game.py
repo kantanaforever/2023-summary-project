@@ -119,14 +119,6 @@ class MUDGame:
         desc = self.map[self.player.current]['description']
         print(Colours.colourised(Colours.BROWN, f'\n{desc}'))
 
-    def generate_items(self):
-        """generates a random list of items for each room"""
-        return data.generate_items()
-
-    def generate_enemy(self):
-        """generates a random list of enemies for each room"""
-        return data.generate_enemy()
-        
     def inventory_show(self): # can seperately implement in a class
         # 62
         """displays the player's inventory"""
@@ -323,7 +315,7 @@ class MUDGame:
         while not self.game_over()  and not self.room_10():
             self.movement()
             self.room_desc(data.Player())
-            enemy_list = self.generate_enemy()
+            enemy_list = data.generate_enemy()
             if self.enemy_presence(enemy_list):                    
                 print(Colours.colourised(Colours.BROWN, ('\nThere is a monster in the room. Defeat them to rescue your family from the grasp of dark magic!')))
                 self.inventory_consume_item()
@@ -331,7 +323,7 @@ class MUDGame:
             else:
                 print(Colours.colourised(Colours.LIGHT_GRAY, ("\nGreat save! There are no enemies in this room.\n")))
             if not self.game_over():
-                items_list = self.generate_items()
+                items_list = data.generate_items()
                 if self.item_presence(items_list):
                     self.pick_item(items_list)
                     self.inventory_show()
