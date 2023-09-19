@@ -18,15 +18,21 @@ class Item:
 
     Attributes
     -----------
-    self.name: (str) name of item
-    self.type: (str) type of item
-    self.equipped: (str) whether item is equipped
-    self.magnitude: (str) magnitude of items
+    + name: str
+      name of item
+    + magnitude: int
+      magnitude of items
+
+    Methods
+    -------
+    + status() -> str
     """
     def __init__(self, name: str, magnitude: int) -> None:
         self.name  = name
-        self.equipped = False
         self.magnitude = magnitude
+
+    def status(self) -> str:
+        return self.name
 
 
 class Consumable(Item):
@@ -35,24 +41,30 @@ class Consumable(Item):
 
 class HP(Consumable):
     """HP items increase HP when consumed"""
-    def __init__(self, name: str, magnitude: int) -> None:
-        super().__init__(name, magnitude)
     
 
 class Attack(Consumable):
     """Attack items increase attack when consumed"""
-    def __init__(self, name: str, magnitude: int) -> None:
-        super().__init__(name, magnitude)
     
 
 class Equippable(Item):
-    """An Equippable is equipped in inventory when used"""
+    """An Equippable is equipped in inventory when used
+
+    Attributes
+    ----------
+    + equipped: bool
+      whether item is equipped
+    """
+    def __init__(self, name: str, magnitude: int) -> None:
+        super().__init__(name, magnitude)
+        self.equipped = False
+
+    def status(self) -> str:
+        return self.name + (" (Equipped)" if self.equipped else "")
 
 
 class Weapon(Equippable):
     """A weapon boosts the user's attack when equipped"""
-    def __init__(self, name: str, magnitude: int) -> None:
-        super().__init__(name, magnitude)
 
 
 inventory = []
@@ -118,18 +130,11 @@ class Inventory:
         print(color.light_white('╔═══════════════════════════════════════════════════════╗'))
         print(color.light_white('║                   Inventory Display                   ║'))
         print(color.light_white('╟───────────────────────────────────────────────────────╢'))
-        for j in self._data:
-            if j.name not in used:
-                used.append(j.name)
-                if j.consumable == True:
-                    status = 'Usable'
-                else:
-                    if j.status == True:
-                        status = 'Equipped'
-                    else:
-                        status = 'carriable'
-                count = self._data.count(j)
-                print(color.light_white(f'║{j.name:<20}x{count:<4}{"["+status+"]":<15}{j.magnitude:<5}{"["+j.type+"]":<10}║')) # formating for inventory
+        for item in self._data:
+            if item.name not in used:
+                used.append(item.name)
+                count = self._data.count(item)
+                print(color.light_white(f'║{count:<4}x {item.status():<15}{item.magnitude:<5}{"["+item.type+"]":<10}║')) # formating for inventory
               
         print(color.light_white('╚═══════════════════════════════════════════════════════╝'))
 
