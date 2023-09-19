@@ -1,4 +1,5 @@
 # Import statements
+import csv
 import json
 import random as r
 
@@ -66,10 +67,10 @@ class Item:
 
 inventory = []
 with open("content/items.csv", 'r') as f:
-    f.readline()
-    for line in f:
-        line = line.strip().split(',')
-        item = Item(line[0].strip(), line[1].strip(), bool(True if line[2].strip() == 'True' else False), bool(True if line[3].strip() == 'True' else False), line[4].strip()) #convert strings from csv file to bool
+    for record in csv.DictReader(f):
+        # Record is a dict with column headers as keys, row data as values
+        # The ** operator unpacks a dict into keyword arguments
+        item = Item(**record)
         inventory.append(item)
 
 
