@@ -35,6 +35,7 @@ class MUDGame:
         self.player = data.Player("player", hp=1000)
         self.map = data.map_data
         self.boss = data.Enemy("boss", hp=500, attack=10)
+        self.current_room = data.FIRST_ROOM
 
     def game_over(self) -> bool:
         """returns True if player's hp is less than 0
@@ -45,18 +46,20 @@ class MUDGame:
     def last_room(self):
         """checks if player is at last room
         """
-        return self.player.current == data.LAST_ROOM
+        return self.current_room == data.LAST_ROOM
 
     def input(self, prompt: str) -> str:
         """strips the empty spaces and changes the input to lower case
         """
         return input(prompt).strip().lower()
 
-    def prompt_valid_choice(self,
-                            options: list,
-                            question: str,
-                            errormsg: str,
-                            colorise=color.black):
+    def prompt_valid_choice(
+        self,
+        options: list,
+        question: str,
+        errormsg: str,
+        colorise=color.black
+    ):
         """Prompt the user with a question.
         If the choice is not in options, display errormsg and re-prompt the user.
         If the choice is valid, return player choice.
@@ -82,7 +85,7 @@ class MUDGame:
         #extracting up, down, left, right
 
         # remove name and description from choices
-        choices = list(self.map[self.player.current].values())[2:]
+        choices = list(self.map[self.current_room].values())[2:]
 
         show_text(color.blue(text.direction_instruction))
         for i, choice in enumerate(choices):
@@ -110,12 +113,12 @@ class MUDGame:
             
 
     def move(self, direction: str, path: str):
-        self.player.current = self.map[self.player.current][direction][
+        self.current_room = self.map[self.current_room][direction][
             int(path) - 1]  #  updating the player position
         linebreak()
         show_text(
             color.dark_gray('You are now in the ' +
-                            self.map[self.player.current]["name"] +
+                            self.map[self.current_room]["name"] +
                             '!'))  # printing the name of the room
 
     def show_intro(self):
@@ -130,7 +133,7 @@ class MUDGame:
     def room_desc(self):
         """prints the description for the room the player is in
         """
-        desc = self.map[self.player.current]['description']
+        desc = self.map[self.current_room]['description']
         show_text(color.brown(desc), break_after=False)
 
     def prompt_use_item(self) -> str | None:

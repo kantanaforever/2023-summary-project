@@ -10,10 +10,11 @@ from text import title_box
 # Constants
 DIRECTIONS = ('up', 'down', 'left', 'right')
 WIDTH = 55
+FIRST_ROOM = "0"
 LAST_ROOM = "10"
 
 
-class Zone:
+class Room:
     """Encapsulates data for a game location.
 
     Attributes
@@ -28,11 +29,11 @@ class Zone:
         self.paths = paths
 
 
-def zone_from_dict(record: dict) -> Zone:
+def room_from_dict(record: dict) -> Room:
     name = record.pop("name")
     description = record.pop("description")
     # Remaining keys should be directions only
-    return Zone(name, description, paths=record)
+    return Room(name, description, paths=record)
     
 
 with open('content/zonemap.json', 'r') as f:
@@ -40,7 +41,7 @@ with open('content/zonemap.json', 'r') as f:
 
 map = {}
 for key, record in map_data.items():
-    map[key] = zone_from_dict(record)
+    map[key] = room_from_dict(record)
 
 
 # Items
@@ -236,7 +237,6 @@ class Player(Combatant):
     + self.name: (str) Player username
     + self.attack_punch: (int) Player punch damage per hit
     + self.attack_weapon: (int) Player attack damage per hit
-    + self.current: (int) Room number (player position)
    
 
     Methods
@@ -249,7 +249,6 @@ class Player(Combatant):
         super().__init__(name, hp)
         self.attack_punch = 10
         self.attack_weapon = 10
-        self.current = '0'
         self.inventory = Inventory()
 
     def take_item(self, item: Item) -> None:
