@@ -182,7 +182,7 @@ class MUDGame:
             while not self.player.is_dead() and not enemy.is_dead():
                 show_text(color.purple(text.hp_report(self.player.name, self.player.hp)),
                           break_after=False)
-                show_text(color.green(text.hp_report("enemy", enemy.hp)),
+                show_text(color.green(text.hp_report(enemy.name, enemy.hp)),
                           break_after=False)
                 choice = self.prompt_valid_choice(
                     options=['1', '2'],
@@ -229,7 +229,7 @@ class MUDGame:
     def final_boss_fight(self):
         """player and final boss take turns to attack each other""" 
         print(color.purple(text.hp_report(self.player.name, self.player.hp)))
-        print(color.green(text.hp_report("boss", self.boss.hp)))
+        print(color.green(text.hp_report(boss.name, self.boss.hp)))
         while not self.player.is_dead() and not self.boss.is_dead():
             choice = self.prompt_valid_choice(
                 options=['1','2'],
@@ -249,7 +249,7 @@ class MUDGame:
                 show_text(color.green(text.boss_dead))
             else:
                 show_text(color.purple(text.hp_report(self.player.name, self.player.hp)), break_after=False)
-                show_text(color.green(text.hp_report("boss", boss.hp)))
+                show_text(color.green(text.hp_report(boss.name, boss.hp)))
 
     def win(self) -> bool:
         """Prints winning plot when boss hp is less than 0, returns True
