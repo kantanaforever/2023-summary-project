@@ -179,7 +179,7 @@ class MUDGame:
                     enemy_list[i].take_damage(self.player.attack_weapon)
                 self.player.take_damage(enemy_list[i].attack)
     
-                if enemy_list[i].hp <= 0:
+                if enemy_list[i].is_dead():
                     print(Colours.colourised(Colours.LIGHT_WHITE, ('\nYou have defeated the enemy!\n')))
                     if i < len(enemy_list) - 1:
                         print("Another enemy has entered...")
@@ -215,7 +215,7 @@ class MUDGame:
         """player and final boss take turns to attack each other""" 
         print(Colours.colourised(Colours.PURPLE, (f'{self.player.name} hp: {self.player.hp}')))           
         print(Colours.colourised(Colours.GREEN, (f'boss hp: {self.boss.hp}\n')))
-        while self.player.hp > 0 and self.boss.hp > 0:
+        while not self.player.is_dead() and not self.boss.is_dead():
             choice = self.prompt_valid_choice(
                 options=['1','2'],
                 question = 'The enemy is now in front of you! You can choose to \n1. punch \n2. attack with existing weapons: ',
@@ -229,7 +229,7 @@ class MUDGame:
                 self.boss.take_damage(self.player.attack_weapon)
             self.player.take_damage(boss.attack)
 
-            if self.boss.hp <= 0:
+            if self.boss.is_dead():
                 print(Colours.colourised(Colours.PURPLE, (f'\n{self.player.name} hp: {self.player.hp}')))
                 print(Colours.colourised(Colours.GREEN, 'The boss is dead!'))
             else:
