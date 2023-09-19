@@ -25,7 +25,7 @@ class Player:
 
     Methods
     -------
-    + self.set_username() -> None: set self.name to input by user
+    + self.set_username(name: str) -> None
     + self.attack_p(target: object) -> None: player punch target (object)
     + self.attack_w(target: object) -> None: player weapon target (object)
     """
@@ -42,8 +42,8 @@ class Player:
     def attack_w(self, target: object) -> None:
         target.hp -= self.attack_weapon
 
-    def set_username(self) -> None:
-        self.name = input('What would you like to be called: ')
+    def set_username(self, name: str) -> None:
+        self.name = name
 
 
 # Items

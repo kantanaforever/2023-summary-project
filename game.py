@@ -122,7 +122,8 @@ class MUDGame:
         """
         sets the player's username
         """
-        self.player.set_username()
+        name = self.input('What would you like to be called: ')
+        self.player.set_username(name)
 
     def room_desc(self, Player):
         """
