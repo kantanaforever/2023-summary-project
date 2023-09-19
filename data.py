@@ -123,6 +123,12 @@ class _PlayerInventory:
                 print(Colours.colourised(Colours.LIGHT_WHITE, (f'║{j.name:<20}x{count:<4}{"["+status+"]":<15}{j.magnitude:<5}{"["+j.type+"]":<10}║'))) # formating for inventory
               
         print(Colours.colourised(Colours.LIGHT_WHITE, ('╚═══════════════════════════════════════════════════════╝')))
+
+    def unequip_all(self) -> None:
+        for item in self._data:
+            if item.status == True:
+                item.status = False
+
         
 
 def generate_items() -> list:

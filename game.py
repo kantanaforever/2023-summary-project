@@ -119,17 +119,6 @@ class MUDGame:
         desc = self.map[self.player.current]['description']
         print(Colours.colourised(Colours.BROWN, f'\n{desc}'))
 
-    def is_equipped(self):
-        """if player wishes to equip another weapon, 
-        unquip the initial one and equip the new one 
-        """
-        # TODO: Avoid direct attribute access, use a method
-        for i in self.player_inventory._data:
-            if i.status == True:
-                i.status = False
-        return 
-        
- 
     def inventory_consume_item(self) -> None:
         """Display the inventory to the player
         Prompt the player if they want to comsume any items from their inventory.
@@ -177,7 +166,7 @@ class MUDGame:
             else:
                 print(Colours.colourised(Colours.BLUE, (f'{used_item.name} has been equipped!')))
                 if used_item.type == 'weapon':
-                    self.is_equipped()
+                    self.player_inventory.unequip_all()
                     prev = self.player.attack_weapon
                     self.player.attack_weapon = used_item.magnitude
                     used_item.status = True
