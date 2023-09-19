@@ -21,7 +21,7 @@ class Item:
     self.equipped: (str) whether item is equipped
     self.magnitude: (str) magnitude of items
     """
-    def __init__(self, name: str, magnitude: str) -> None:
+    def __init__(self, name: str, magnitude: int) -> None:
         self.name  = name
         self.equipped = False
         self.magnitude = magnitude
@@ -157,6 +157,8 @@ class Combatant:
 
     Attributes
     ----------
+    + name: str
+      Combatant's name
     + hp: int
       Combatant's hit points (health)
 
@@ -165,7 +167,8 @@ class Combatant:
     + is_dead() -> bool:
     + take_damage(dmg: int) -> None
     """
-    def __init__(self, hp: int):
+    def __init__(self, name: str, hp: int):
+        self.name = name
         self.hp = hp
 
     def is_dead(self) -> bool:
@@ -193,9 +196,8 @@ class Player(Combatant):
     + self.attack_p(target: object) -> None: player punch target (object)
     + self.attack_w(target: object) -> None: player weapon target (object)
     """
-    def __init__(self, hp: int) -> None: # map in json
-        super().__init__(hp)
-        self.name = ''
+    def __init__(self, name: str, hp: int) -> None: # map in json
+        super().__init__(name, hp)
         self.attack_punch = 10
         self.attack_weapon = 10
         self.current = '0'
@@ -227,8 +229,8 @@ class Enemy(Combatant):
     -----------
     + self.attack: (int) enemy damage per hit
     """
-    def __init__(self, hp: int = 200, attack: int = 5):
-        self.hp = hp
+    def __init__(self, name: str = "enemy", hp: int = 200, attack: int = 5):
+        super().__init__(name, hp)
         self.attack = attack
 
 
