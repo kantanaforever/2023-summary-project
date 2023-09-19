@@ -202,17 +202,6 @@ class Player:
         return item
 
 
-
-def generate_items() -> list:
-    """generate random items from 0 to 5, using the game inventory"""
-    num_of_items = random.randint(0, 5)
-    items_list = []
-    for i in range(num_of_items):
-        items_list.append(random.choice(inventory))
-
-    return items_list
-    
-
 # Enemy     
 class Enemy:
     """This class encapsulates data for Enemy
@@ -234,7 +223,17 @@ class Enemy:
         player.hp -= self.attack
 
 
-def generate_enemy() -> list:
+def generate_items() -> list[Item]:
+    """generate random items from 0 to 5, using the game inventory"""
+    num_of_items = random.randint(0, 5)
+    items_list = []
+    for i in range(num_of_items):
+        items_list.append(random.choice(inventory))
+
+    return items_list
+    
+
+def generate_enemy() -> list[Enemy]:
     """generate random enemies in a room"""
     enemy_list = []
     num_of_enemies = random.randint(0, 5)
