@@ -56,7 +56,7 @@ class MUDGame:
         choice = self.input(question)
         while choice not in options:
             print(Colours.colourised(Colours.RED, errormsg))
-            choice = self.input(Colours.colourised(col, question))
+            choice = self.input(Colours.colourised(col, question + ": "))
         return choice
 
         
@@ -81,14 +81,14 @@ class MUDGame:
                 available.append(keys[i])
         direction_choice = self.prompt_valid_choice(
             available,
-            question=f'\n{text.direction_prompt}: ',
+            question=f'\n{text.direction_prompt}',
             errormsg=f'\n{text.direction_error}',
             col = Colours.BLUE
         )
         numpaths = len(choices[keys.index(direction_choice)])
         if numpaths == 1:
             path_choice = 0
-        else:    
+        else:
             path_choices = [str(i) for i in range(1, numpaths + 1)]
             question = text.path_instruction(path_choices)
             path_choice = self.prompt_valid_choice(path_choices, question, f'\n{text.path_error}', col=Colours.BLUE)
@@ -121,7 +121,7 @@ class MUDGame:
         self.player.inventory.show()
         consume = self.prompt_valid_choice(
             options=['y', 'n'],
-            question=f"{text.use_item_prompt}: ",
+            question=f"{text.use_item_prompt}",
             errormsg=f'\n{text.use_item_error}\n',
             col= Colours.LIGHT_GREEN
         )
@@ -129,10 +129,10 @@ class MUDGame:
         if consume == 'n':
             return None
 
-        else: 
+        else:
             name = self.prompt_valid_choice(
                 options=self.player.inventory.item_names(),
-                question=f"{text.choose_item_prompt}: ",
+                question=text.choose_item_prompt,
                 errormsg=text.choose_item_error,
                 col=Colours.LIGHT_GREEN
             )
@@ -180,7 +180,7 @@ class MUDGame:
                         print(text.enemy_enter)
                     
         
-    def pick_item(self, items): 
+    def pick_item(self, items):
         """Displays the item available in the room"""
         for i in items:
             item = Colours.colourised(Colours.YELLOW, i.name)
@@ -226,7 +226,7 @@ class MUDGame:
                 print(Colours.colourised(Colours.PURPLE, (f'\n{text.hp_report(self.player.name, self.player.hp)}')))
                 print(Colours.colourised(Colours.GREEN, text.boss_dead))
             else:
-                print(Colours.colourised(Colours.PURPLE, (f'\n{self.player.name} hp: {self.player.hp}')))
+                print(Colours.colourised(Colours.PURPLE, (f'\n{text.hp_report(self.player.name, self.player.hp)')))
                 print(Colours.colourised(Colours.GREEN, (f'{text.hp_report("boss", boss.hp)}\n')))
 
     def win(self) -> bool:
@@ -260,7 +260,7 @@ class MUDGame:
             self.movement()
             self.room_desc(data.Player())
             enemy_list = data.generate_enemy()
-            if self.enemy_presence(enemy_list):                    
+            if self.enemy_presence(enemy_list):
                 print(Colours.colourised(Colours.BROWN, (f'\n{text.enemy_present}')))
                 self.inventory_consume_item()
                 self.fight(enemy_list)
