@@ -94,8 +94,8 @@ class MUDGame:
                 available.append(keys[i])
         direction_choice = self.prompt_valid_choice(
             available,
-            question=f'{text.direction_prompt}',
-            errormsg=f'\n{text.direction_error}',
+            question=text.direction_prompt,
+            errormsg=text.direction_error,
             col = Colours.BLUE
         )
         numpaths = len(choices[keys.index(direction_choice)])
@@ -106,7 +106,8 @@ class MUDGame:
             question = text.path_instruction(path_choices)
             path_choice = self.prompt_valid_choice(path_choices, question, text.path_error, col=Colours.BLUE)
         self.player.current = self.map[self.player.current][direction_choice][int(path_choice) - 1] #  updating the player position 
-        print(Colours.colourised(Colours.DARK_GRAY,'\n' * 3 + 'You are now in the '+ self.map[self.player.current]["name"] + '!\n')) # printing the name of the room
+        linebreak()
+        show_text(Colours.colourised(Colours.DARK_GRAY, 'You are now in the ' + self.map[self.player.current]["name"] + '!')) # printing the name of the room
 
     
     def intro(self):
