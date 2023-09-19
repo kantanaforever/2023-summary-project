@@ -40,16 +40,6 @@ class MUDGame:
         """
         return self.player.is_dead()
 
-    def enemy_presence(self, enemy_list):
-        """checks if any enemies is present in the room
-        """
-        return enemy_list != []
-
-    def item_presence(self, items_list):
-        """checks if any items are present in the room
-        """
-        return items_list != []
-
     def last_room(self):
         """checks if player is at last room
         """
@@ -300,17 +290,17 @@ class MUDGame:
         while not self.game_over() and not self.last_room():
             self.movement()
             self.room_desc()
-            enemy_list = data.generate_enemy()
-            if self.enemy_presence(enemy_list):
+            enemies = data.generate_enemy()
+            if enemies:
                 show_text(color.brown(text.enemy_present))
                 self.inventory_consume_item()
-                self.fight(enemy_list)
+                self.fight(enemies)
             else:
                 show_text(color.light_gray(text.enemy_absent))
             if not self.game_over():
-                items_list = data.generate_items()
-                if self.item_presence(items_list):
-                    self.pick_item(items_list)
+                items = data.generate_items()
+                if items:
+                    self.pick_item(items)
                     self.player.inventory.show()
                 else:
                     show_text(color.light_gray(text.item_absent))
