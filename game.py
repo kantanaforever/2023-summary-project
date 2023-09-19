@@ -17,7 +17,7 @@ class MUDGame:
         + self.boss: contains the Boss class
         """
         self.end = '10'
-        self.player = data.Player()
+        self.player = data.Player(hp=1000)
         self.map = data.map
         self.boss = data.Enemy(hp=500, attack=10)
 

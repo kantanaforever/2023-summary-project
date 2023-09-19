@@ -151,14 +151,37 @@ class Inventory:
                 return item
         return None
 
-        
-class Player:
+
+class Combatant:
+    """A combatant has HP and is dead when HP drops to 0 or below.
+
+    Attributes
+    ----------
+    + hp: int
+      Combatant's hit points (health)
+
+    Methods
+    -------
+    + is_dead() -> bool:
+    + take_damage(dmg: int) -> None
+    """
+    def __init__(self, hp: int):
+        self.hp = hp
+
+    def is_dead(self) -> bool:
+        return self.hp <= 0
+
+    def take_damage(self, dmg: int) -> None:
+        # In future, might want to do validation here
+        self.hp -= dmg
+
+
+class Player(Combatant):
     """This class encapsulates data for Player
     
     Attributes
     ----------
     + self.name: (str) Player username
-    + self.hp: (int) Player hit points (health)
     + self.attack_punch: (int) Player punch damage per hit
     + self.attack_weapon: (int) Player attack damage per hit
     + self.current: (int) Room number (player position)
@@ -170,9 +193,9 @@ class Player:
     + self.attack_p(target: object) -> None: player punch target (object)
     + self.attack_w(target: object) -> None: player weapon target (object)
     """
-    def __init__(self) -> None: # map in json
+    def __init__(self, hp: int) -> None: # map in json
+        super().__init__(hp)
         self.name = ''
-        self.hp = 1000
         self.attack_punch = 10
         self.attack_weapon = 10
         self.current = '0'
@@ -203,24 +226,16 @@ class Player:
 
 
 # Enemy     
-class Enemy:
+class Enemy(Combatant):
     """This class encapsulates data for Enemy
     
     Attributes
     -----------
-    + self.hp: (int) enemy hit points (health)
     + self.attack: (int) enemy damage per hit
-
-    Methods
-    -------
-    + self.atk(Player: class) enemy attack player
     """
     def __init__(self, hp: int = 200, attack: int = 5):
         self.hp = hp
         self.attack = attack
-
-    def atk(self, player):
-        player.hp -= self.attack
 
 
 def generate_items() -> list[Item]:
