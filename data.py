@@ -55,10 +55,10 @@ class Item:
     self.equipped: (str) whether item is equipped
     self.magnitude: (str) magnitude of items
     """
-    def __init__(self, name: str, type: str, equipped: str, magnitude: str) -> None:
+    def __init__(self, name: str, type: str, magnitude: str) -> None:
         self.name  = name
         self.type = type
-        self.equipped = equipped
+        self.equipped = False
         self.magnitude = magnitude
 
 
@@ -76,7 +76,6 @@ with open("content/items.csv", 'r') as f:
         # Record is a dict with column headers as keys, row data as values
         # The ** operator unpacks a dict into keyword arguments
         consumable = bool(record.pop("consumable"))
-        record["equipped"] = bool(record["equipped"])
         record["magnitude"] = int(record["magnitude"])        
         if consumable:
             item = Consumable(**record)
