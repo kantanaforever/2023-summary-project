@@ -6,8 +6,7 @@ from data import Colours
 
 class MUDGame:
     def __init__(self):
-        """
-        This class encapsulates data for MUDGame
+        """This class encapsulates data for MUDGame
                     
         Attributes
         -----------
@@ -26,39 +25,33 @@ class MUDGame:
         self.boss = data.Boss()
 
     def game_over(self) -> bool:
-        """
-        returns True if player's hp is less than 0
+        """returns True if player's hp is less than 0
         otherwise returns False
         """
         return self.player.hp < 0
 
     def enemy_presence(self, enemy_list):
-        """
-        checks if any enemies is present in the room
+        """checks if any enemies is present in the room
         """
         return enemy_list != []
 
     def item_presence(self, items_list):
-        """
-        checks if any items are present in the room
+        """checks if any items are present in the room
         """
         return items_list != []
 
     def room_10(self):
-        """
-        checks if player is at room 10
+        """checks if player is at room 10
         """
         return self.player.current == self.end
 
     def input(self, prompt: str) -> str:
-        """
-        strips the empty spaces and changes the input to lower case
+        """strips the empty spaces and changes the input to lower case
         """
         return input(prompt).strip().lower()
 
     def prompt_valid_choice(self, options, question, errormsg, col):
-        """
-        Prompt the user with a question.
+        """Prompt the user with a question.
         If the choice is not in options, display errormsg and re-prompt the user.
         If the choice is valid, return player choice.
         """
@@ -70,8 +63,7 @@ class MUDGame:
 
         
     def movement(self): # can change after game is working
-        """
-        Displays the direction that the player can travel in
+        """Displays the direction that the player can travel in
         If there are more than one paths in that direction, prompts user to select a path
         Prints the name of the room
         """
@@ -111,44 +103,33 @@ class MUDGame:
 
     
     def intro(self):
-        """
-        prints the introduction to the game
-        """
+        """prints the introduction to the game"""
         with open('content/intro.txt', 'r') as f:
             for line in f:
                 print(Colours.colourised(Colours.DARK_GRAY, line), end= '')
 
     def ask_username(self):
-        """
-        sets the player's username
-        """
+        """prompts and sets the player's username"""
         name = self.input('What would you like to be called: ')
         self.player.name = name
 
     def room_desc(self, Player):
-        """
-        prints the description for the room the player is in
+        """prints the description for the room the player is in
         """
         desc = self.map[self.player.current]['description']
         print(Colours.colourised(Colours.BROWN, f'\n{desc}'))
 
     def generate_items(self):
-        """
-        generates a random list of items for each room
-        """
+        """generates a random list of items for each room"""
         return data.generate_items()
 
     def generate_enemy(self):
-        """
-        generates a random list of enemies for each room
-        """
+        """generates a random list of enemies for each room"""
         return data.generate_enemy()
         
     def inventory_show(self): # can seperately implement in a class
         # 62
-        """
-        displays the player's inventory
-        """
+        """displays the player's inventory"""
         used = []
         print(Colours.colourised(Colours.LIGHT_WHITE, ('╔═══════════════════════════════════════════════════════╗')))
         print(Colours.colourised(Colours.LIGHT_WHITE, ('║                   Inventory Display                   ║')))
@@ -169,8 +150,7 @@ class MUDGame:
         print(Colours.colourised(Colours.LIGHT_WHITE, ('╚═══════════════════════════════════════════════════════╝')))
 
     def is_equipped(self):
-        """
-        if player wishes to equip another weapon, 
+        """if player wishes to equip another weapon, 
         unquip the initial one and equip the new one 
         """
         for i in self.player_inventory:
@@ -180,8 +160,7 @@ class MUDGame:
         
  
     def inventory_consume_item(self) -> None:
-        """
-        Display the inventory to the player
+        """Display the inventory to the player
         Prompt the player if they want to comsume any items from their inventory.
         """
         if self.player_inventory == []:
@@ -261,9 +240,7 @@ class MUDGame:
                     
         
     def pick_item(self, items): 
-        """
-        Displays the item available in the room
-        """
+        """Displays the item available in the room"""
         for i in items:
             item = Colours.colourised(Colours.YELLOW, i.name)
         #print(self.colour...item)
@@ -280,8 +257,7 @@ class MUDGame:
                 
     
     def final_room(self):
-        """
-        Display the story text for the final room.
+        """Display the story text for the final room.
         Prompt the player if they would like to consume any items.
         Make the player fight the enemy
         """
@@ -290,9 +266,7 @@ class MUDGame:
                 print(Colours.colourised(Colours.DARK_GRAY, (line.strip())))
 
     def final_boss_fight(self):
-        """
-        player and final boss take turns to attack each other
-        """ 
+        """player and final boss take turns to attack each other""" 
         print(Colours.colourised(Colours.PURPLE, (f'{self.player.name} hp: {self.player.hp}')))           
         print(Colours.colourised(Colours.GREEN, (f'boss hp: {self.boss.hp}\n')))
         while self.player.hp > 0 and self.boss.hp > 0:
@@ -318,8 +292,7 @@ class MUDGame:
                 print(Colours.colourised(Colours.GREEN, (f'boss hp: {self.boss.hp}\n')))
 
     def win(self) -> bool:
-        """
-        Prints winning plot when boss hp is less than 0, returns True
+        """Prints winning plot when boss hp is less than 0, returns True
         Otherwise returns False
         """
         if not self.game_over():
@@ -334,7 +307,8 @@ class MUDGame:
         return False
     
     def run(self) -> str:
-        """ 
+        """ Begin the game loop.
+        
         1. method to call story intro
         2. set username
         3. movement
