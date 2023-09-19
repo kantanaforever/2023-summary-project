@@ -103,6 +103,15 @@ class _PlayerInventory:
         else:
             print('Invalid item')
 
+    def get_item(self, name: str) -> Item | None:
+        """Returns the first item matching name, without removing it
+        from inventory.
+        """
+        for item in self._data:
+            if item.name == name:
+                return item
+        return None
+
     def is_empty(self) -> bool:
         return len(self._data) == 0
 
@@ -110,6 +119,15 @@ class _PlayerInventory:
         """Returns a list of item names in the inventory"""
         return [item.name for item in self._data]
             
+    def pop_item(self, name: str) -> Item | None:
+        """Returns the first item matching name, removing it
+        from inventory.
+        """
+        for i, item in enumerate(self._data):
+            if item.name == name:
+                return self._data.pop(i)
+        return None
+
     def show(self):
         """displays the player's inventory"""
         used = []
