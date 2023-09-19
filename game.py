@@ -162,7 +162,7 @@ class MUDGame:
         """
         for i in range(len(enemy_list)):
             
-            while self.player.hp > 0 and enemy_list[i].hp > 0:
+            while not self.player.is_dead() and not enemy_list[i].is_dead():
                 print(Colours.colourised(Colours.PURPLE, (f'\n{self.player.name} hp: {self.player.hp}')))
                 print(Colours.colourised(Colours.GREEN, (f'enemy hp: {enemy_list[i].hp}')))
                 choice = self.prompt_valid_choice(
@@ -174,11 +174,10 @@ class MUDGame:
             
     
                 if choice == '1':
-                    self.player.attack_p(enemy_list[i])
+                    enemy_list[i].take_damage(self.player.attack_punch)
                 elif choice == '2':
-                    self.player.attack_w(enemy_list[i])
-                
-                enemy_list[i].atk(self.player)
+                    enemy_list[i].take_damage(self.player.attack_weapon)
+                self.player.take_damage(enemy_list[i].attack)
     
                 if enemy_list[i].hp <= 0:
                     print(Colours.colourised(Colours.LIGHT_WHITE, ('\nYou have defeated the enemy!\n')))
@@ -225,11 +224,10 @@ class MUDGame:
                 )
             
             if choice == '1':
-                self.player.attack_p(self.boss)
+                self.boss.take_damage(self.player.attack_punch)
             else:
-                self.player.attack_w(self.boss)
-
-            self.boss.atk(self.player)
+                self.boss.take_damage(self.player.attack_weapon)
+            self.player.take_damage(boss.attack)
 
             if self.boss.hp <= 0:
                 print(Colours.colourised(Colours.PURPLE, (f'\n{self.player.name} hp: {self.player.hp}')))

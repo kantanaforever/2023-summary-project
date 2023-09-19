@@ -201,12 +201,6 @@ class Player(Combatant):
         self.current = '0'
         self.inventory = Inventory()
 
-    def attack_p(self, target: object) -> None: # Enemy object
-        target.hp -= self.attack_punch
-            
-    def attack_w(self, target: object) -> None:
-        target.hp -= self.attack_weapon
-
     def take_item(self, item: Item) -> None:
         self.inventory.add_item(item)
 
