@@ -46,8 +46,7 @@ class Player:
 
 # Items
 class Item:
-    """
-    This class encapsulates data for Item
+    """This class encapsulates data for Item
 
     Attributes
     -----------
@@ -62,15 +61,31 @@ class Item:
         self.type = type
         self.consumable = consumable
         self.status = status
-        self.magnitude = int(magnitude)
+        self.magnitude = magnitude
 
+
+class Consumable(Item):
+    def __init__(self, name: str, type: str, consumable: str, status: str, magnitude: str) -> None:
+        super().__init__(name, type, True, status, magnitude)
+
+
+class Equippable(Item):
+    def __init__(self, name: str, type: str, consumable: str, status: str, magnitude: str) -> None:
+        super().__init__(name, type, False, status, magnitude)
+    
 
 inventory = []
 with open("content/items.csv", 'r') as f:
     for record in csv.DictReader(f):
         # Record is a dict with column headers as keys, row data as values
         # The ** operator unpacks a dict into keyword arguments
-        item = Item(**record)
+        record["consumable"] = bool(record["consumable"])
+        record["status"] = bool(record["status"])
+        record["magnitude"] = int(record["magnitude"])
+        if record["consumable"]:
+            item = Consumable(**record)
+        else:
+            item = Equippable(**record)
         inventory.append(item)
 
 

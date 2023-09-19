@@ -145,7 +145,7 @@ class MUDGame:
                 col=Colours.LIGHT_GREEN
             )
             used_item = self.player_inventory.get_item(name)
-            if used_item.consumable == True:
+            if isinstance(used_item, data.Consumable):
                 print(Colours.colourised(Colours.BLUE, (f'{used_item.name} has been consumed!')))
                 if used_item.type == 'hp':
                     self.player.hp += int(used_item.magnitude)
