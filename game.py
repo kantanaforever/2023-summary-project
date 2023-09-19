@@ -165,12 +165,13 @@ class MUDGame:
                 if isinstance(used_item, data.Weapon):
                     print(Colours.colourised(Colours.BLUE, (f'weapon attack is now {self.player.attack_weapon}')))
             
-    def fight(self, enemy_list):
+    def fight(self, enemies: list[data.Enemy]):
         #if enemy_presence -> choose whether to consume an item -> player attack enemy first then enemy attack player -> if player hp reaches 0 before enemy, player looses -> else continue
         """
         The player and enemy take turns to attack each other until one of their hp is less than 0
         """
-        for i, enemy in enumerate(enemy_list):
+        while enemies:
+            enemy = enemies.pop(0)
             
             while not self.player.is_dead() and not enemy.is_dead():
                 print(Colours.colourised(Colours.PURPLE, text.hp_report(self.player.name, self.player.hp)))
@@ -191,8 +192,8 @@ class MUDGame:
     
                 if enemy.is_dead():
                     show_text(Colours.colourised(Colours.LIGHT_WHITE, text.enemy_defeated))
-                    if i < len(enemy_list) - 1:
-                        print(text.enemy_enter)
+                    if enemies:
+                        show_text(text.enemy_enter)
                     
         
     def pick_item(self, items):
@@ -210,8 +211,6 @@ class MUDGame:
             if choice.lower() == "y":
                 self.player.inventory.add_item(i)
                 
-                
-    
     def final_room(self):
         """Display the story text for the final room.
         Prompt the player if they would like to consume any items.
