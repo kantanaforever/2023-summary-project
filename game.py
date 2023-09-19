@@ -118,12 +118,12 @@ class MUDGame:
             for line in f:
                 print(Colours.colourised(Colours.DARK_GRAY, line), end= '')
 
-    def set_username(self, Player): # no colour yet
+    def ask_username(self):
         """
         sets the player's username
         """
         name = self.input('What would you like to be called: ')
-        self.player.set_username(name)
+        self.player.name = name
 
     def room_desc(self, Player):
         """
@@ -345,7 +345,7 @@ class MUDGame:
         """
         self.intro()
         print('\n')
-        self.set_username(data.Player())
+        self.ask_username()
         while not self.game_over()  and not self.room_10():
             self.movement()
             self.room_desc(data.Player())

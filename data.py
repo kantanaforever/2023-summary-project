@@ -30,7 +30,7 @@ class Player:
     + self.attack_w(target: object) -> None: player weapon target (object)
     """
     def __init__(self) -> None: # map in json
-        self.name = '' # user input
+        self.name = ''
         self.hp = 1000
         self.attack_punch = 10
         self.attack_weapon = 10
@@ -41,9 +41,6 @@ class Player:
             
     def attack_w(self, target: object) -> None:
         target.hp -= self.attack_weapon
-
-    def set_username(self, name: str) -> None:
-        self.name = name
 
 
 # Items
