@@ -59,7 +59,11 @@ class MUDGame:
         """
         return input(prompt).strip().lower()
 
-    def prompt_valid_choice(self, options: list, question: str, errormsg: str, colorise=color.black):
+    def prompt_valid_choice(self,
+                            options: list,
+                            question: str,
+                            errormsg: str,
+                            colorise=color.black):
         """Prompt the user with a question.
         If the choice is not in options, display errormsg and re-prompt the user.
         If the choice is valid, return player choice.
@@ -105,7 +109,10 @@ class MUDGame:
         else:
             path_choices = [str(i) for i in range(1, numpaths + 1)]
             question = text.path_instruction(path_choices)
-            path_choice = self.prompt_valid_choice(path_choices, question, text.path_error, col=color.BLUE)
+            path_choice = self.prompt_valid_choice(path_choices,
+                                                   question,
+                                                   text.path_error,
+                                                   colorise=color.blue)
         self.player.current = self.map[self.player.current][direction_choice][int(path_choice) - 1] #  updating the player position 
         linebreak()
         show_text(color.dark_gray('You are now in the ' + self.map[self.player.current]["name"] + '!')) # printing the name of the room
@@ -134,11 +141,10 @@ class MUDGame:
             show_text(color.red(text.inventory_empty))
             return
         self.player.inventory.show()
-        consume = self.prompt_valid_choice(
-            options=['y', 'n'],
-            question=text.use_item_prompt,
-            errormsg=text.use_item_error,
-            col= color.LIGHT_GREEN
+        consume = self.prompt_valid_choice(options=['y', 'n'],
+                                           question=text.use_item_prompt,
+                                           errormsg=text.use_item_error,
+                                           colorise=color.light_green
         )
         
         if consume == 'n':
@@ -149,7 +155,7 @@ class MUDGame:
                 options=self.player.inventory.item_names(),
                 question=text.choose_item_prompt,
                 errormsg=text.choose_item_error,
-                col=color.LIGHT_GREEN
+                colorise=color.light_green
             )
             used_item = self.player.use_item(name)
             if isinstance(used_item, data.Consumable):
@@ -182,7 +188,7 @@ class MUDGame:
                     options=['1', '2'],
                     question=text.combat_prompt,
                     errormsg=text.combat_error,
-                    col=color.LIGHT_GREEN
+                    colorise=color.light_green
                 )
             
     
@@ -207,7 +213,7 @@ class MUDGame:
                 options=['y', 'n'],
                 question=text.loot_prompt(item.name),
                 errormsg=text.loot_error,
-                col=color.LIGHT_GREEN
+                colorise=color.light_green
             )
 
             if choice.lower() == "y":
@@ -229,7 +235,7 @@ class MUDGame:
                 options=['1','2'],
                 question = text.combat_prompt,
                 errormsg=text.combat_error,
-                col=color.LIGHT_GREEN
+                colorise=color.light_green
                 )
             
             if choice == '1':
