@@ -10,40 +10,6 @@ with open('content/zonemap.json', 'r') as f:
 
 # Class Implementation
 
-# Player
-class Player:
-    """
-    This class encapsulates data for Player
-    
-    Attributes
-    ----------
-    + self.name: (str) Player username
-    + self.hp: (int) Player hit points (health)
-    + self.attack_punch: (int) Player punch damage per hit
-    + self.attack_weapon: (int) Player attack damage per hit
-    + self.current: (int) Room number (player position)
-   
-
-    Methods
-    -------
-    + self.set_username(name: str) -> None
-    + self.attack_p(target: object) -> None: player punch target (object)
-    + self.attack_w(target: object) -> None: player weapon target (object)
-    """
-    def __init__(self) -> None: # map in json
-        self.name = ''
-        self.hp = 1000
-        self.attack_punch = 10
-        self.attack_weapon = 10
-        self.current = '0'
-
-    def attack_p(self, target: object) -> None: # Enemy object
-        target.hp -= self.attack_punch
-            
-    def attack_w(self, target: object) -> None:
-        target.hp -= self.attack_weapon
-
-
 # Items
 class Item:
     """This class encapsulates data for Item
@@ -187,6 +153,40 @@ class _PlayerInventory:
         return None
 
         
+class Player:
+    """
+    This class encapsulates data for Player
+    
+    Attributes
+    ----------
+    + self.name: (str) Player username
+    + self.hp: (int) Player hit points (health)
+    + self.attack_punch: (int) Player punch damage per hit
+    + self.attack_weapon: (int) Player attack damage per hit
+    + self.current: (int) Room number (player position)
+   
+
+    Methods
+    -------
+    + self.set_username(name: str) -> None
+    + self.attack_p(target: object) -> None: player punch target (object)
+    + self.attack_w(target: object) -> None: player weapon target (object)
+    """
+    def __init__(self) -> None: # map in json
+        self.name = ''
+        self.hp = 1000
+        self.attack_punch = 10
+        self.attack_weapon = 10
+        self.current = '0'
+        self.inventory = PlayerInventory()
+
+    def attack_p(self, target: object) -> None: # Enemy object
+        target.hp -= self.attack_punch
+            
+    def attack_w(self, target: object) -> None:
+        target.hp -= self.attack_weapon
+
+
 
 def generate_items() -> list:
     """

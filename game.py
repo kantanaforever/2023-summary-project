@@ -14,14 +14,11 @@ class MUDGame:
         + self.player: contains the Player class
         + self.map: contains json file with rooms and their characteristics
         + self.inventory: contins the inventory class
-        + self.player_inventory: contains the player's inventory
         + self.boss: contains the Boss class
         """
         self.end = '10'
         self.player = data.Player()
         self.map = data.map
-        # self.inventory = data.inventory
-        self.player_inventory = data._PlayerInventory()
         self.boss = data.Boss()
 
     def game_over(self) -> bool:
@@ -123,10 +120,10 @@ class MUDGame:
         """Display the inventory to the player
         Prompt the player if they want to comsume any items from their inventory.
         """
-        if self.player_inventory.is_empty():
+        if self.player.inventory.is_empty():
             print(Colours.colourised(Colours.RED, "\nNothing in inventory!\n"))
             return
-        self.player_inventory.show()
+        self.player.inventory.show()
         consume = self.prompt_valid_choice(
             options=['y', 'n'],
             question="Would you like to equip/consume any item?(y/n)?: ",
@@ -139,12 +136,12 @@ class MUDGame:
 
         else: 
             name = self.prompt_valid_choice(
-                options=self.player_inventory.item_names(),
+                options=self.player.inventory.item_names(),
                 question="Which item would you like to equip/consume?: ",
                 errormsg='Invalid item!',
                 col=Colours.LIGHT_GREEN
             )
-            used_item = self.player_inventory.use_item(name)
+            used_item = self.player.inventory.use_item(name)
             if isinstance(used_item, data.Consumable):
                 print(Colours.colourised(Colours.BLUE, (f'{used_item.name} has been consumed!')))
                 if used_item.type == 'hp':
@@ -157,7 +154,7 @@ class MUDGame:
             else:
                 print(Colours.colourised(Colours.BLUE, (f'{used_item.name} has been equipped!')))
                 if used_item.type == 'weapon':
-                    self.player_inventory.unequip_all()
+                    self.player.inventory.unequip_all()
                     prev = self.player.attack_weapon
                     self.player.attack_weapon = used_item.magnitude
                     print(Colours.colourised(Colours.BLUE, (f'weapon attack was {prev}. weapon attack is now {self.player.attack_weapon}')))
@@ -206,7 +203,7 @@ class MUDGame:
             )
 
             if choice.lower() == "y":
-                self.player_inventory.add_item(i)
+                self.player.inventory.add_item(i)
                 
                 
     
@@ -288,7 +285,7 @@ class MUDGame:
                 items_list = data.generate_items()
                 if self.item_presence(items_list):
                     self.pick_item(items_list)
-                    self.player_inventory.show()
+                    self.player.inventory.show()
                 else:
                     print(Colours.colourised(Colours.LIGHT_GRAY, ("Aww too bad, there are no items in this room :(")))
                     
