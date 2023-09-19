@@ -173,7 +173,7 @@ class MUDGame:
 
     @staticmethod
     def hp_report(combatant: data.Combatant) -> None:
-        """Display the HP status of a combatant"""
+        """Display the HP status of a combatant."""
         if isinstance(combatant, data.Player):
             show_text(color.purple(text.hp_report(combatant.name, combatant.hp)),
                       break_after=False)
@@ -191,9 +191,7 @@ class MUDGame:
         player.take_damage(enemy.attack)
         
     def combat_choice(self, player: data.Player, enemy: data.Enemy) -> str:
-        """Present choice of combat options to user.
-        Process the effects.
-        """
+        """Present choice of combat options to user."""
         self.hp_report(player)
         self.hp_report(enemy)
         choice = self.prompt_valid_choice(
