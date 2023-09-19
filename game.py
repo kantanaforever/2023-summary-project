@@ -124,7 +124,7 @@ class MUDGame:
         Prompt the player if they want to comsume any items from their inventory.
         """
         # TODO: Avoid direct attribute access, use a method
-        if self.player_inventory._data == []:
+        if self.player_inventory.is_empty():
             print(Colours.colourised(Colours.RED, "\nNothing in inventory!\n"))
             return
         self.player_inventory.show()

@@ -102,6 +102,9 @@ class _PlayerInventory:
                 flag = False 
         else:
             print('Invalid item')
+
+    def is_empty(self) -> bool:
+        return len(self._data) == 0
             
     def show(self):
         """displays the player's inventory"""
