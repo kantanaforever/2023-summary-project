@@ -1,7 +1,7 @@
 # Import statements
 import csv
 import json
-import random as r
+import random
 
 
 with open('content/zonemap.json', 'r') as f:
@@ -209,10 +209,10 @@ def generate_items() -> list:
     """
     generate random items from 0 to 5, using the game inventory
     """
-    num_of_items = r.randint(0, 5)
+    num_of_items = random.randint(0, 5)
     items_list = []
     for i in range(num_of_items):
-        items_list.append(r.choice(inventory))
+        items_list.append(random.choice(inventory))
 
     return items_list
     
@@ -253,8 +253,8 @@ class Enemy1(Enemy):
     """
     def __init__(self):
         super().__init__()
-        self.hp = r.randint(100, 200)
-        self.attack = r.randint(0, 5)
+        self.hp = random.randint(100, 200)
+        self.attack = random.randint(0, 5)
     
     def atk(self, player):
         super().atk(player)
@@ -274,8 +274,8 @@ class Enemy2(Enemy):
     """
     def __init__(self):
         super().__init__()
-        self.hp = r.randint(100, 200)
-        self.attack = r.randint(0, 5)
+        self.hp = random.randint(100, 200)
+        self.attack = random.randint(0, 5)
     
     def atk(self, player):
         super().atk(player)
@@ -288,9 +288,9 @@ def generate_enemy() -> list:
     enemy_list = []
     enemy1 = Enemy1()
     enemy2 = Enemy2()
-    num_of_enemies = r.randint(0, 5)
+    num_of_enemies = random.randint(0, 5)
     for i in range(num_of_enemies):
-        flag = r.choice([True, False])
+        flag = random.choice([True, False])
         if flag:
             enemy_list.append(enemy1)
         else:
