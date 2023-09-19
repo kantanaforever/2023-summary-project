@@ -104,17 +104,6 @@ class _PlayerInventory:
     def add_item(self, item: object) -> None:
         self._data.append(item)
         
-    def consume_item(self, item: object) -> bool:
-        item = item.lower()
-        flag = True
-        while flag:
-            if item in self._data:
-                item_index = self._data.index(item)
-                self._data.pop(item_index)
-                flag = False 
-        else:
-            print('Invalid item')
-
     def get_item(self, name: str) -> Item | None:
         """Returns the first item matching name, without removing it
         from inventory.
@@ -130,15 +119,6 @@ class _PlayerInventory:
     def item_names(self) -> list[str]:
         """Returns a list of item names in the inventory"""
         return [item.name for item in self._data]
-
-    def pop_item(self, name: str) -> Item | None:
-        """Returns the first item matching name, removing it
-        from inventory.
-        """
-        for i, item in enumerate(self._data):
-            if item.name == name:
-                return self._data.pop(i)
-        return None
 
     def show(self):
         """displays the player's inventory"""
