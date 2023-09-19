@@ -55,9 +55,8 @@ class Item:
     self.equipped: (str) whether item is equipped
     self.magnitude: (str) magnitude of items
     """
-    def __init__(self, name: str, type: str, magnitude: str) -> None:
+    def __init__(self, name: str, magnitude: str) -> None:
         self.name  = name
-        self.type = type
         self.equipped = False
         self.magnitude = magnitude
 
@@ -68,14 +67,14 @@ class Consumable(Item):
 
 class HP(Consumable):
     """HP items increase HP when consumed"""
-    def __init__(self, name: str, type: str, magnitude: str) -> None:
-        super().__init__(name, "hp", magnitude)
+    def __init__(self, name: str, magnitude: str) -> None:
+        super().__init__(name, magnitude)
     
 
 class Attack(Consumable):
     """Attack items increase attack when consumed"""
-    def __init__(self, name: str, type: str, magnitude: str) -> None:
-        super().__init__(name, "attack", magnitude)
+    def __init__(self, name: str, magnitude: str) -> None:
+        super().__init__(name, magnitude)
     
 
 class Equippable(Item):
@@ -84,8 +83,8 @@ class Equippable(Item):
 
 class Weapon(Equippable):
     """A weapon boosts the user's attack when equipped"""
-    def __init__(self, name: str, type: str, magnitude: str) -> None:
-        super().__init__(name, "weapon", magnitude)
+    def __init__(self, name: str, magnitude: str) -> None:
+        super().__init__(name, magnitude)
 
 
 inventory = []
@@ -94,16 +93,17 @@ with open("content/items.csv", 'r') as f:
         # Record is a dict with column headers as keys, row data as values
         # The ** operator unpacks a dict into keyword arguments
         consumable = bool(record.pop("consumable"))
+        type_ = record.pop("type")
         record["magnitude"] = int(record["magnitude"])        
         if consumable:
-            if record["type"] == "hp":
+            if type_ == "hp":
                 item = HP(**record)
-            elif record["type"] == "attack":
+            elif type_ == "attack":
                 item = Attack(**record)
             else:
                 item = Consumable(**record)
         else:
-            if record["type"] == "weapon":
+            if type_ == "weapon":
                 item = Weapon(**record)
             else:
                 item = Equippable(**record)
