@@ -266,6 +266,10 @@ def generate_enemy() -> list[Enemy]:
     """generate random enemies in a room"""
     enemy_list = []
     num_of_enemies = random.randint(0, 5)
-    for i in range(num_of_enemies):
-        enemy_list.append(Enemy(random.randint(100, 200), random.randint(0, 5)))
+    for _ in range(num_of_enemies):
+        enemy_list.append(Enemy(
+            name="enemy",
+            hp=random.randint(100, 200),
+            attack=random.randint(0, 5),
+        ))
     return enemy_list
