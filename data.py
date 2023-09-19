@@ -20,7 +20,7 @@ class Zone:
     ----------
     + name: str
     + description: str
-    + paths: dict[str, str]
+    + paths: dict[str, str | list]
     """
     def __init__(self, name: str, description: str, paths: dict={}):
         self.name = name
@@ -41,8 +41,6 @@ with open('content/zonemap.json', 'r') as f:
 map = {}
 for key, record in map_data.items():
     map[key] = zone_from_dict(record)
-
-
 
 
 # Items
