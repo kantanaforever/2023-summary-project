@@ -322,9 +322,10 @@ class MUDGame:
             self.use_item(item_name)
             enemies = data.generate_enemy()
             self.fight(enemies)
-            if not self.game_over():
-                items = data.generate_items()
-                self.pick_item(items)
+            if self.game_over():
+                break
+            items = data.generate_items()
+            self.pick_item(items)
 
         self.show_final_room()
         self.prompt_use_item()
