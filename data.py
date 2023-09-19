@@ -99,8 +99,13 @@ class Inventory:
    
     Methods
     -------
-    + self.consume_item(item: object) -> None: remove item from inventory upon consumption
-    + self.add_item(item: object) -> None: add item to inventory
+    + add_item(item: Item) -> None
+    + get_item(name: str) -> Item | None
+    + is_empty() -> bool
+    + item_names() -> list[str]
+    + show() -> None
+    + unequip_all() -> None
+    + use_item(name: str) -> Item | None
     """
     def __init__(self) -> None:
         self._data = []
@@ -124,7 +129,7 @@ class Inventory:
         """Returns a list of item names in the inventory"""
         return [item.name for item in self._data]
 
-    def show(self):
+    def show(self) -> None:
         """displays the player's inventory"""
         used = []
         print(color.light_white('╔═══════════════════════════════════════════════════════╗'))
@@ -140,7 +145,7 @@ class Inventory:
 
     def unequip_all(self) -> None:
         for item in self._data:
-            if item.equipped == True:
+            if item.equipped is True:
                 item.equipped = False
 
     def use_item(self, name: str) -> Item | None:
