@@ -119,28 +119,6 @@ class MUDGame:
         desc = self.map[self.player.current]['description']
         print(Colours.colourised(Colours.BROWN, f'\n{desc}'))
 
-    def inventory_show(self): # can seperately implement in a class
-        # 62
-        """displays the player's inventory"""
-        used = []
-        print(Colours.colourised(Colours.LIGHT_WHITE, ('╔═══════════════════════════════════════════════════════╗')))
-        print(Colours.colourised(Colours.LIGHT_WHITE, ('║                   Inventory Display                   ║')))
-        print(Colours.colourised(Colours.LIGHT_WHITE, ('╟───────────────────────────────────────────────────────╢')))
-        for j in self.player_inventory:
-            if j.name not in used:
-                used.append(j.name)
-                if j.consumable == True:
-                    status = 'Usable'
-                else:
-                    if j.status == True:
-                        status = 'Equipped'
-                    else:
-                        status = 'carriable'
-                count = self.player_inventory.count(j)
-                print(Colours.colourised(Colours.LIGHT_WHITE, (f'║{j.name:<20}x{count:<4}{"["+status+"]":<15}{j.magnitude:<5}{"["+j.type+"]":<10}║'))) # formating for inventory
-              
-        print(Colours.colourised(Colours.LIGHT_WHITE, ('╚═══════════════════════════════════════════════════════╝')))
-
     def is_equipped(self):
         """if player wishes to equip another weapon, 
         unquip the initial one and equip the new one 
@@ -158,7 +136,7 @@ class MUDGame:
         if self.player_inventory == []:
             print(Colours.colourised(Colours.RED, "\nNothing in inventory!\n"))
             return
-        self.inventory_show()
+        self.player_inventory.show()
         consume = self.prompt_valid_choice(
             options=['y', 'n'],
             question="Would you like to equip/consume any item?(y/n)?: ",
@@ -326,7 +304,7 @@ class MUDGame:
                 items_list = data.generate_items()
                 if self.item_presence(items_list):
                     self.pick_item(items_list)
-                    self.inventory_show()
+                    self.player_inventory.show()
                 else:
                     print(Colours.colourised(Colours.LIGHT_GRAY, ("Aww too bad, there are no items in this room :(")))
                     

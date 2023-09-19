@@ -100,6 +100,27 @@ class _PlayerInventory:
         else:
             print('Invalid item')
             
+    def inventory_show(self):
+        """displays the player's inventory"""
+        used = []
+        print(Colours.colourised(Colours.LIGHT_WHITE, ('╔═══════════════════════════════════════════════════════╗')))
+        print(Colours.colourised(Colours.LIGHT_WHITE, ('║                   Inventory Display                   ║')))
+        print(Colours.colourised(Colours.LIGHT_WHITE, ('╟───────────────────────────────────────────────────────╢')))
+        for j in self.player_inventory:
+            if j.name not in used:
+                used.append(j.name)
+                if j.consumable == True:
+                    status = 'Usable'
+                else:
+                    if j.status == True:
+                        status = 'Equipped'
+                    else:
+                        status = 'carriable'
+                count = self.player_inventory.count(j)
+                print(Colours.colourised(Colours.LIGHT_WHITE, (f'║{j.name:<20}x{count:<4}{"["+status+"]":<15}{j.magnitude:<5}{"["+j.type+"]":<10}║'))) # formating for inventory
+              
+        print(Colours.colourised(Colours.LIGHT_WHITE, ('╚═══════════════════════════════════════════════════════╝')))
+
 
     def add_item(self, item: object) -> None:
         self.player_inventory.append(item)
