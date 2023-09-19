@@ -8,11 +8,39 @@ from text import title_box
 
 
 # Constants
+DIRECTIONS = ('up', 'down', 'left', 'right')
 WIDTH = 55
 LAST_ROOM = "10"
 
+
+class Zone:
+    """Encapsulates data for a game location.
+
+    Attributes
+    ----------
+    + name: str
+    + description: str
+    + paths: dict[str, str]
+    """
+    def __init__(self, name: str, description: str, paths: dict={}):
+        self.name = name
+        self.description = description
+        self.paths = paths
+
+
+def zone_from_dict(record: dict) -> Zone:
+    name = record.pop("name")
+    description = record.pop("description")
+    # Remaining keys should be directions only
+    return Zone(name, description, paths=record)
+    
+
 with open('content/zonemap.json', 'r') as f:
-    map = json.load(f)
+    map_data = json.load(f)
+
+map = {}
+for key, record in map_data.items():
+    map[key] = zone_from_dict(record)
 
 
 

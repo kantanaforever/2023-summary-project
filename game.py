@@ -33,7 +33,7 @@ class MUDGame:
         + self.boss: contains the Boss class
         """
         self.player = data.Player("player", hp=1000)
-        self.map = data.map
+        self.map = data.map_data
         self.boss = data.Enemy("boss", hp=500, attack=10)
 
     def game_over(self) -> bool:
