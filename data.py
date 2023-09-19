@@ -66,9 +66,27 @@ class Consumable(Item):
     """A Consumable is removed from inventory when used"""
 
 
+class HP(Consumable):
+    """HP items increase HP when consumed"""
+    def __init__(self, name: str, type: str, magnitude: str) -> None:
+        super().__init__(name, "hp", magnitude)
+    
+
+class Attack(Consumable):
+    """Attack items increase attack when consumed"""
+    def __init__(self, name: str, type: str, magnitude: str) -> None:
+        super().__init__(name, "attack", magnitude)
+    
+
 class Equippable(Item):
     """An Equippable is equipped in inventory when used"""
-    
+
+
+class Weapon(Equippable):
+    """A weapon boosts the user's attack when equipped"""
+    def __init__(self, name: str, type: str, magnitude: str) -> None:
+        super().__init__(name, "weapon", magnitude)
+
 
 inventory = []
 with open("content/items.csv", 'r') as f:
@@ -78,9 +96,17 @@ with open("content/items.csv", 'r') as f:
         consumable = bool(record.pop("consumable"))
         record["magnitude"] = int(record["magnitude"])        
         if consumable:
-            item = Consumable(**record)
+            if record["type"] == "hp":
+                item = HP(**record)
+            elif record["type"] == "attack":
+                item = Attack(**record)
+            else:
+                item = Consumable(**record)
         else:
-            item = Equippable(**record)
+            if record["type"] == "weapon":
+                item = Weapon(**record)
+            else:
+                item = Equippable(**record)
         inventory.append(item)
 
 
