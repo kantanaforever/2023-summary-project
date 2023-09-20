@@ -296,7 +296,6 @@ class MUDGame:
         7. when reach last room, fight the final boss. If the player is defeated before the enemy is over, prompt game over.
         """
         self.show_intro()
-        linebreak()
         self.prompt_username()
         while not self.game_over() and not self.last_room():
             path = self.prompt_movement()
